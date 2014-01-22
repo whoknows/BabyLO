@@ -1,0 +1,82 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Ajouter Partie{% endblock %}
+
+{% block body %}
+	<form class="form-horizontal" role="form" id="form-addgame">
+		<h2>Ajouter une partie</h2>
+		<br />
+		<div class="form-group">
+			<label for="datepartie" class="col-sm-2 control-label">Date</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="datepartie" placeholder="Date de la partie">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="player1Team1" class="col-sm-2 control-label">Joueur 1 Equipe 1</label>
+			<div class="col-sm-10">
+				<select id="player1Team1" class="form-control">
+					{% for player in players %}
+						<option value="{{ player.id }}">{{ player.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="player2Team1" class="col-sm-2 control-label">Joueur 2 Equipe 1</label>
+			<div class="col-sm-10">
+				<select id="player2Team1" class="form-control">
+					{% for player in players %}
+						<option value="{{ player.id }}">{{ player.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="player1Team2" class="col-sm-2 control-label">Joueur 1 Equipe 2</label>
+			<div class="col-sm-10">
+				<select id="player1Team2" class="form-control">
+					{% for player in players %}
+						<option value="{{ player.id }}">{{ player.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="player2Team2" class="col-sm-2 control-label">Joueur 2 Equipe 2</label>
+			<div class="col-sm-10">
+				<select id="player2Team2" class="form-control">
+					{% for player in players %}
+						<option value="{{ player.id }}">{{ player.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="score1" class="col-sm-2 control-label">Score Equipe 1</label>
+			<div class="col-sm-10">
+				<select id="score1" class="form-control">
+					{% for i in 0..10 %}
+						<option value="{{ i }}">{{ i }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="score2" class="col-sm-2 control-label">Score Equipe 2</label>
+			<div class="col-sm-10">
+				<select id="score2" class="form-control">
+					{% for i in 0..10 %}
+						<option value="{{ i }}">{{ i }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div id="form-addgame-error" class="text-danger">Error :</div>
+				<button type="submit" id="submitformgame" class="btn btn-default">Enregistrer</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

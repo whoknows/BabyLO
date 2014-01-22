@@ -1,0 +1,4 @@
+baby_stat:
+    resource: "@BabyStatBundle/Resources/config/routing.yml"
+    prefix:   /
+

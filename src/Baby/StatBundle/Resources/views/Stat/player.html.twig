@@ -1,0 +1,96 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Joueurs{% endblock %}
+
+{% block body %}
+	<h3>Joueurs</h3>
+	<div class="row">
+		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+			<h4>Classement par ratio</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Victoires</th>
+						<th>Défaites</th>
+						<th>Ratio (V/D)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players.ratio %}
+						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="success">{{ player.victoires }}</td>
+							<td class="danger">{{ player.defaites }}</td>
+							<td class="{{ c }} score">{{ player.ratio }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+			<h4>Classement par victoires</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Victoires</th>
+						<th>Défaites</th>
+						<th>Ratio (V/D)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players.victoires %}
+						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="success score">{{ player.victoires }}</td>
+							<td class="danger">{{ player.defaites }}</td>
+							<td class="{{ c }}">{{ player.ratio }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+			<h4>Classement par defaites</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Victoires</th>
+						<th>Défaites</th>
+						<th>Ratio (V/D)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players.defaites %}
+						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="success">{{ player.victoires }}</td>
+							<td class="danger score">{{ player.defaites }}</td>
+							<td class="{{ c }}">{{ player.ratio }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" id="morestat">
+		<p id="clickinfo"><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></p>
+		<div id="chart1" class="col-md-12 col-xs-12 col-lg-12 col-sm-12" style="width:100%; height:260px;"></div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('js/vendor/highcharts.js') }}"></script>
+{% endblock %}

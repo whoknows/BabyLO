@@ -1,0 +1,51 @@
+#main-container {
+	background:white;
+	margin:20px 0;
+}
+
+.nav li a i {
+	margin-right: 5px;
+}
+
+th, td {
+	background-color: white;
+	text-align: center;
+	vertical-align: middle!important;
+}
+
+.score {
+	font-weight: bold;
+}
+
+#form-addgame-error {
+	display:none;
+}
+
+.ui-widget {
+	font-size:0.9em;
+}
+
+#formSearchGame {
+	margin: 10px 0;
+}
+
+#formSearchGame .btn {
+	margin:3px 0 0 0;
+}
+
+.player {
+	cursor:pointer;
+}
+
+.player:hover{
+	color:#008cba;
+}
+
+#clickinfo {
+	font-size:14px;
+	margin-left:20px;
+}
+
+#form-recherche-error {
+	display:none;
+}

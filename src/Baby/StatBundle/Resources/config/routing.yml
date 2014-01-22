@@ -1,0 +1,27 @@
+babystat_accueil:
+    path:     /stat
+    defaults: { _controller: BabyStatBundle:Stat:index }
+
+babystat_joueur:
+    path:     /stat/player
+    defaults: { _controller: BabyStatBundle:Stat:player }
+
+babystat_joueurstat:
+    path:     /stat/morestat
+    defaults: { _controller: BabyStatBundle:Stat:morestat }
+
+babystat_partie:
+    path:     /stat/game
+    defaults: { _controller: BabyStatBundle:Stat:game }
+
+babystat_nbpartie:
+    path:     /stat/nbgame
+    defaults: { _controller: BabyStatBundle:Stat:nbgame }
+
+babystat_ajoutpartie:
+    path:     /stat/addgame
+    defaults: { _controller: BabyStatBundle:Stat:addgame }
+
+babystat_savepartie:
+    path:     /stat/savegame
+    defaults: { _controller: BabyStatBundle:Stat:savegame }

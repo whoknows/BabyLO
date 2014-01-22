@@ -1,0 +1,6 @@
+parameters:
+#    baby_stat.example.class: Baby\StatBundle\Example
+
+#    baby_stat.example:
+#        class: %baby_stat.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
