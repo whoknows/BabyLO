@@ -25,7 +25,7 @@ $(document).ready(function(){
 				}
 
 				if(error !== ""){
-					$('#form-addgame-error').text(error).show("blind", {}, 300).delay(3000).hide("blind", {}, 300);
+					$('#form-addgame-error').text(error).show("blind").delay(3000).hide("blind");
 				} else {
 					var data = {
 						date:$('#datepartie').val(),
@@ -40,11 +40,11 @@ $(document).ready(function(){
 						if(ret == 'ok'){
 							$('#submitformgame').prop('disabled', true);
 							$('#form-addgame-error').removeClass('text-danger').addClass('text-success');
-							$('#form-addgame-error').text('Partie enregistrée !').show("blind", {}, 300).delay(2000).hide(300, function(){
+							$('#form-addgame-error').text('Partie enregistrée !').show("blind").delay(2000).hide(300, function(){
 								window.location.reload();
 							});
 						} else {
-							$('#form-addgame-error').text('Erreur : La partie n\'a pas été enregistrée').show("blind", {}, 300).delay(3000).hide("blind", {}, 300);
+							$('#form-addgame-error').text('Erreur : La partie n\'a pas été enregistrée').show("blind").delay(3000).hide("blind");
 						}
 					});
 				}
@@ -56,7 +56,7 @@ $(document).ready(function(){
 		case 'game':
 			$('#formSearchGame').submit(function(e){
 				e.preventDefault();
-				$('#form-recherche-error').text('Erreur : Ça marche pas encore tavu').show("blind", {}, 300).delay(3000).hide("blind", {}, 300);
+				$('#form-recherche-error').text('Erreur : Ça marche pas encore tavu').show("blind").delay(3000).hide("blind");
 				return false;
 			});
 		break;

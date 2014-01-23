@@ -2,12 +2,6 @@
 
 {% block title %}{{ parent() }} - Ajouter Partie{% endblock %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
-{% endblock %}
-
 {% block body %}
 	<form class="form-horizontal" role="form" id="form-addgame">
 		<h2>Ajouter une partie</h2>
@@ -85,9 +79,4 @@
 			</div>
 		</div>
 	</form>
-{% endblock %}
-{% block javascripts %}
-	{{ parent() }}
-	<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
 {% endblock %}

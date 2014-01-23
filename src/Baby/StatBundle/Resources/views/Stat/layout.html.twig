@@ -6,10 +6,13 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
 
-		{% block stylesheets %}
+		{% stylesheets '@BabyStatBundle/Resources/public/css/*' filter='cssrewrite' %}
 			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
-			<link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" />
-		{% endblock %}
+			<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
+			<link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
+
 		<title>{% block title %}BabyLO{% endblock %}</title>
 	</head>
 	<body>
@@ -43,11 +46,15 @@
 			</div>
 		</div>
 
-		{% block javascripts %}
+		{% javascripts '@BabyStatBundle/Resources/public/js/*' %}
 			<script type="text/javascript" src="{{ asset('js/vendor/jquery-1.10.1.min.js') }}"></script>
 			<script type="text/javascript" src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
-			<script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
-		{% endblock %}
+			<script type="text/javascript" src="{{ asset('js/vendor/highcharts.js') }}"></script>
+			<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
+			<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+
 		<div class="container" id="footercontainer">
 			<footer>
 				<p>&copy; Copy-raiiiight LO 3014</p>
