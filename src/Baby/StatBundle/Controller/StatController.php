@@ -12,7 +12,7 @@ class StatController extends Controller {
 
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager(), 5),
-			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(),5)
+			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(),6)
 		));
 	}
 
@@ -48,15 +48,19 @@ class StatController extends Controller {
 		$session = new Session();
 		$session->start();
 
+		$postPwd = $this->getRequest()->get('passwd_addgame', null);
+
 		$pwd = '42f0ec45b09b4ba1db89586ed8e0ed8ea6b836ea';
 
-		if(sha1($session->get('password')) == $pwd || sha1($this->getRequest()->get('passwd_addgame')) == $pwd){
+		if($session->get('password') == $pwd || sha1($postPwd) == $pwd){
 			$session->set('password', $pwd);
 			return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
 				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Player')->findAll(),
 			));
 		} else {
-			return $this->render('BabyStatBundle:Stat:addgamelogin.html.twig');
+			return $this->render('BabyStatBundle:Stat:addgamelogin.html.twig',array(
+				'msg' => $postPwd !== null ? 'Erreur : Mauvais mot de passe' : 'login'
+			));
 		}
 
 	}

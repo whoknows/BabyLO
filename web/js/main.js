@@ -40,7 +40,7 @@ $(document).ready(function(){
 						if(ret == 'ok'){
 							$('#submitformgame').prop('disabled', true);
 							$('#form-addgame-error').removeClass('text-danger').addClass('text-success');
-							$('#form-addgame-error').text('Partie enregistrée !').show("blind", {}, 300).delay(3000).hide(300, function(){
+							$('#form-addgame-error').text('Partie enregistrée !').show("blind", {}, 300).delay(2000).hide(300, function(){
 								window.location.reload();
 							});
 						} else {
@@ -51,7 +51,7 @@ $(document).ready(function(){
 				return false;
 			});
 
-			$('#datepartie').datepicker({ dateFormat: "dd-mm-yy" });
+			$('#datepartie').pickadate({format : 'dd-mm-yyyy'});
 		break;
 		case 'game':
 			$('#formSearchGame').submit(function(e){
@@ -86,8 +86,8 @@ $(document).ready(function(){
 				});
 			});
 		break;
-		case 'stat':
-			$.post('stat/nbgame', {playerId: $(this).data('id')}, function(pdata){
+		case '':
+			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata){
 				$('#nbbaby').highcharts({
 					chart: { type: 'line' },
 					title: { text: 'Nombre de parties jouées par jours' },

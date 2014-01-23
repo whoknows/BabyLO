@@ -7,7 +7,6 @@
 		<meta name="viewport" content="width=device-width">
 
 		{% block stylesheets %}
-			<link rel="stylesheet" href="{{ asset('css/ui-lightness/jquery-ui-1.10.4.custom.min.css') }}" type="text/css" />
 			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
 			<link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" />
 		{% endblock %}
@@ -22,7 +21,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">BabyLO</a>
+					<a class="navbar-brand" href="{{ path('babystat_accueil') }}">BabyLO</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
@@ -46,7 +45,6 @@
 
 		{% block javascripts %}
 			<script type="text/javascript" src="{{ asset('js/vendor/jquery-1.10.1.min.js') }}"></script>
-			<script type="text/javascript" src="{{ asset('js/vendor/jquery-ui-1.10.4.custom.min.js') }}"></script>
 			<script type="text/javascript" src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
 			<script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 		{% endblock %}
