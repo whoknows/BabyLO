@@ -28,6 +28,20 @@ class BabyPlayer
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=100, nullable=false)
+     */
+    private $password;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="rank", type="integer", nullable=false)
+     */
+    private $rank;
+
 
 
     /**
@@ -61,5 +75,51 @@ class BabyPlayer
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return BabyPlayer
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set rank
+     *
+     * @param integer $rank
+     * @return BabyPlayer
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return integer 
+     */
+    public function getRank()
+    {
+        return $this->rank;
     }
 }

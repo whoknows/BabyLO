@@ -13,9 +13,9 @@ use Doctrine\ORM\EntityRepository;
 class GameRepository extends EntityRepository {
 
 	public static function getGameList($em, $limit = null, $filter = array()) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:Game');
-		$playerrepo = $em->getRepository('BabyStatBundle:Player');
-		$playedrepo = $em->getRepository('BabyStatBundle:Played');
+		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
+		$playerrepo = $em->getRepository('BabyStatBundle:BabyPlayer');
+		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
 
 		$repoGames = $gamerepo->findBy(array(), array('date' => 'DESC'));
 
@@ -44,7 +44,7 @@ class GameRepository extends EntityRepository {
 	}
 
 	public static function getGameCount($em) {
-		$gr = $em->getRepository('BabyStatBundle:Game');
+		$gr = $em->getRepository('BabyStatBundle:BabyGame');
 		$data = array(
 			'date' => array(),
 			'nb' => array(),

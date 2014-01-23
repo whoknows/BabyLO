@@ -13,9 +13,9 @@ use Doctrine\ORM\EntityRepository;
 class PlayerRepository extends EntityRepository {
 
 	public static function getPlayerList($em, $limit = null, $multi = false) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:Game');
-		$playerrepo = $em->getRepository('BabyStatBundle:Player');
-		$playedrepo = $em->getRepository('BabyStatBundle:Played');
+		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
+		$playerrepo = $em->getRepository('BabyStatBundle:BabyPlayer');
+		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
 
 		$players = array();
 
@@ -56,7 +56,7 @@ class PlayerRepository extends EntityRepository {
 			if($tmp['defaites'] == 0) {
 				$tmp['ratio'] = $tmp['victoires'];
 			} else {
-				$tmp['ratio'] = round($tmp['victoires'] / $tmp['defaites'],1);
+				$tmp['ratio'] = round($tmp['victoires'] / ($tmp['victoires']+$tmp['defaites']),2);
 			}
 
 			$players[] = $tmp;
@@ -83,10 +83,10 @@ class PlayerRepository extends EntityRepository {
 	}
 
 	public static function getPlayerData($id, $em) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:Game');
-		$playedrepo = $em->getRepository('BabyStatBundle:Played');
+		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
+		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
 
-		$player = $em->getRepository('BabyStatBundle:Player')->find($id);
+		$player = $em->getRepository('BabyStatBundle:BabyPlayer')->find($id);
 
 		$playedGames = $playedrepo->findBy(array('idPlayer' => $player->getId()));
 
@@ -97,7 +97,8 @@ class PlayerRepository extends EntityRepository {
 		$data = array(
 			'dates' => array(),
 			'victoires' => array(),
-			'defaites' => array()
+			'defaites' => array(),
+			'ratio' => array()
 		);
 
 		$dataTmp = array();
@@ -134,6 +135,7 @@ class PlayerRepository extends EntityRepository {
 			$data['dates'][] = $d['date'];
 			$data['victoires'][] = $d['victoires'];
 			$data['defaites'][] = $d['defaites'];
+			$data['ratio'][] = round($d['victoires'] / ($d['victoires'] + $d['defaites']),2);
 		}
 
 		return $data;

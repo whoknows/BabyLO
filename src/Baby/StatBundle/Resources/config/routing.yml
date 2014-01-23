@@ -10,6 +10,10 @@ babystat_joueurstat:
     path:     /morestat
     defaults: { _controller: BabyStatBundle:Stat:morestat }
 
+babystat_pagejoueur:
+    path:     /playerstat
+    defaults: { _controller: BabyStatBundle:Stat:playerstat }
+
 babystat_partie:
     path:     /game
     defaults: { _controller: BabyStatBundle:Stat:game }
@@ -25,3 +29,11 @@ babystat_ajoutpartie:
 babystat_savepartie:
     path:     /savegame
     defaults: { _controller: BabyStatBundle:Stat:savegame }
+
+babystat_login:
+    path:     /login
+    defaults: { _controller: BabyStatBundle:Stat:login }
+
+babystat_logout:
+    path:     /logout
+    defaults: { _controller: BabyStatBundle:Stat:logout }

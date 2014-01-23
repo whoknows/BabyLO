@@ -8,5 +8,7 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="name" type="string" column="name" length="50" nullable="false"/>
+    <field name="password" type="string" column="password" length="100" nullable="false"/>
+    <field name="rank" type="integer" column="rank" nullable="false"/>
   </entity>
 </doctrine-mapping>

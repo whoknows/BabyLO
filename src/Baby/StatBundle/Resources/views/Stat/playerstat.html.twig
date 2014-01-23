@@ -1,0 +1,65 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Statistiques perso{% endblock %}
+
+{% block body %}
+	<h3>Statistiques</h3>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+			<table class="table" id="playerstatstable">
+				<tr>
+					<td>Nombre de parties jouées</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de parties gagnées</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de parties perdues</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Ratio</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de parties perdues fanny</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de parties gagnées fanny</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de buts marqués</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Nombre de buts pris</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Pire ennemi</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Moins bon adversaire</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Meilleur partenaire</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Pire partenaire</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+			ici les graphes
+		</div>
+	</div>
+{% endblock %}

@@ -32,9 +32,31 @@
 						<li><a href="{{ path('babystat_partie') }}"><i class="glyphicon glyphicon-star"></i>Parties</a></li>
 						<li><a href="{{ path('babystat_joueur') }}"><i class="glyphicon glyphicon-user"></i>Joueurs</a></li>
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-cog"></i>Ajouter une partie</a></li>
-					</ul>
+
+					{% if user != "null" %}
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ user }} <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{{ path('babystat_pagejoueur') }}"><i class="glyphicon glyphicon-stats"></i>Statistiques</a></li>
+									{% if rank >= 1 %}
+										<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-cog"></i>Ajouter une partie</a></li>
+									{% endif %}
+									<li><a href="{{ path('babystat_logout') }}"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
+								</ul>
+							</li>
+						</ul>
+					{% else %}
+						<form class="navbar-form navbar-right" id="formlogin">
+							<div class="form-group">
+								<input type="text" placeholder="Email" class="form-control" id="userlogin">
+							</div><div class="form-group">
+								<input type="password" placeholder="Password" class="form-control" id="userpwd">
+							</div><div class="form-group">
+								<button type="submit" class="btn btn-success btn-sm">Sign in</button>
+							</div>
+						</form>
+					{% endif %}
 				</div>
 			</div>
 		</div>

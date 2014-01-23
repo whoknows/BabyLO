@@ -9,17 +9,40 @@ use Symfony\Component\HttpFoundation\Response;
 class StatController extends Controller {
 
 	public function indexAction() {
+		$session = new Session();
+		$session->start();
 
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager(), 5),
-			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(),6)
+			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(),6),
+			'user' => $session->get('user', 'null'),
+			'rank' => $session->get('rank', -1)
 		));
 	}
 
 	public function playerAction() {
+		$session = new Session();
+		$session->start();
+
 		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
 			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(), null, true),
+			'user' => $session->get('user', 'null'),
+			'rank' => $session->get('rank', -1)
 		));
+	}
+
+	public function playerstatAction() {
+		$session = new Session();
+		$session->start();
+
+		if($session->get('user') != null){
+			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
+				'user' => $session->get('user', 'null'),
+				'rank' => $session->get('rank', -1)
+			));
+		} else {
+			return $this->redirect($this->generateUrl('babystat_accueil'));
+		}
 	}
 
 	public function morestatAction() {
@@ -32,8 +55,13 @@ class StatController extends Controller {
 	}
 
 	public function gameAction() {
+		$session = new Session();
+		$session->start();
+
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager())
+			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager()),
+			'user' => $session->get('user', 'null'),
+			'rank' => $session->get('rank', -1)
 		));
 	}
 
@@ -48,19 +76,14 @@ class StatController extends Controller {
 		$session = new Session();
 		$session->start();
 
-		$postPwd = $this->getRequest()->get('passwd_addgame', null);
-
-		$pwd = '42f0ec45b09b4ba1db89586ed8e0ed8ea6b836ea';
-
-		if($session->get('password') == $pwd || sha1($postPwd) == $pwd){
-			$session->set('password', $pwd);
+		if($session->get('user') !== null || $session->get('rank') >= 1){
 			return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Player')->findAll(),
+				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findAll(),
+				'user' => $session->get('user', 'null'),
+				'rank' => $session->get('rank', -1)
 			));
 		} else {
-			return $this->render('BabyStatBundle:Stat:addgamelogin.html.twig',array(
-				'msg' => $postPwd !== null ? 'Erreur : Mauvais mot de passe' : 'login'
-			));
+			return $this->redirect($this->generateUrl('babystat_accueil'));
 		}
 
 	}
@@ -71,8 +94,7 @@ class StatController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 
 		try {
-
-			$game = new \Baby\StatBundle\Entity\Game();
+			$game = new \Baby\StatBundle\Entity\BabyGame();
 			$game->setDate(new \DateTime($request->get('date')));
 			$game->setScoreTeam1($request->get('score1'));
 			$game->setScoreTeam2($request->get('score2'));
@@ -82,9 +104,9 @@ class StatController extends Controller {
 
 			for($i=1; $i<=2; $i++){
 				for($j=1; $j<=2; $j++){
-					$played = new \Baby\StatBundle\Entity\Played();
-					$played->setIdGame($game->getId());
-					$played->setIdPlayer($request->get('joueur'.$j.'equipe'.$i));
+					$played = new \Baby\StatBundle\Entity\BabyPlayed();
+					$played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
+					$played->setIdPlayer($em->getRepository('BabyStatBundle:BabyPlayer')->find($request->get('joueur'.$j.'equipe'.$i)));
 					$played->setTeam($i);
 					$em->persist($played);
 					$em->flush();
@@ -95,5 +117,66 @@ class StatController extends Controller {
 		}
 
 		return new Response('ok');
+	}
+
+	public function loginAction() {
+		$session = new Session();
+		$session->start();
+
+		$return = array(
+			"type" => "",
+			"msg" => ""
+		);
+
+		$login = $this->getRequest()->get('login',null);
+		$password = $this->getRequest()->get('password',null);
+
+		if($session->get('user', null) !== null){
+			$return = array(
+				"type" => "warning",
+				"msg" => "Déjà connecté"
+			);
+		} elseif($login === "" || $password === "") {
+			$return = array(
+				"type" => "error",
+				"msg" => "Spécifiez un login/password."
+			);
+		} else {
+			$plr = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer');
+			$usr = $plr->findBy(array('name' => $login, 'password' => sha1($password)));
+
+			if(sizeof($usr) != 1){
+				$return = array(
+					"type" => "error",
+					"msg" => "Login/password invalides."
+				);
+			} else {
+				$session->set('user', $login);
+				$session->set('rank', $usr[0]->getRank());
+
+				$return = array(
+					"type" => "success",
+					"msg" => "ok"
+				);
+			}
+		}
+
+		$response = new Response(json_encode($return));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+
+	public function logoutAction() {
+		$session = new Session();
+		$session->clear();
+		$session->remove('user');
+		$session->remove('rank');
+
+		return $this->redirect($this->generateUrl('babystat_accueil'));
+	}
+
+	public function getLogginStatus() {
+		return false;
 	}
 }

@@ -1,4 +1,17 @@
 $(document).ready(function(){
+
+	$('#formlogin').submit(function(e){
+		e.preventDefault();
+		$.post('login', {'login':$('#userlogin').val(), 'password':$('#userpwd').val()}, function(retdata){
+			if(retdata.type != 'error'){
+				window.location.reload();
+			} else {
+				//gestion erreur
+			}
+		});
+		return false;
+	})
+
 	var t = window.location.pathname.split('/');
 
 	switch(t[t.length - 1]) {
@@ -71,16 +84,30 @@ $(document).ready(function(){
 						xAxis: {
 							categories: pdata.dates
 						},
-						yAxis: {
+						yAxis: [{
 							min:0,
 							title: { text: 'Parties jouées' }
-						},
-						series: [{
-							name: 'Victoires',
-							data: pdata.victoires
 						}, {
+							min:0,
+							max:1,
+							title: { text: 'Ratio' },
+							opposite: true
+						}],
+						series: [{
+							yAxis:0,
+							name: 'Victoires',
+							data: pdata.victoires,
+							color:'#77b300'
+						}, {
+							yAxis:0,
 							name: 'Défaites',
-							data: pdata.defaites
+							data: pdata.defaites,
+							color: '#f04124'
+						}, {
+							yAxis:1,
+							name: 'Ratio',
+							data: pdata.ratio,
+							color: '#2a9fd6'
 						}]
 					});
 				});

@@ -49,3 +49,19 @@ th, td {
 #form-recherche-error {
 	display:none;
 }
+
+#formlogin div {
+	margin: 0 1px;
+}
+
+#playerstatstable {
+	margin-top: 40px;
+}
+
+#playerstatstable td {
+	text-align: left;
+}
+
+#alertbox {
+	margin-top:20px;
+}
