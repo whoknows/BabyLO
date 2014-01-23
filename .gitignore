@@ -1,4 +1,4 @@
-/app/log
+/app/logs
 /app/cache
 /vendor
 composer.lock
