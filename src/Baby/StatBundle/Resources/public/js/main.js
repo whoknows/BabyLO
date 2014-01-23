@@ -10,7 +10,7 @@ $(document).ready(function(){
 			}
 		});
 		return false;
-	})
+	});
 
 	var t = window.location.pathname.split('/');
 
