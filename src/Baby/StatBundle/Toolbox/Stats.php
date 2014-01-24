@@ -66,7 +66,7 @@ class Stats {
 	public static function formatData($sql){
 		$data = array(
 			'date' => array(),
-			'nb' => array()
+			'data' => array()
 		);
 
 		try {
@@ -76,7 +76,7 @@ class Stats {
 		}
 
 		foreach($req->fetchAll(\PDO::FETCH_ASSOC) as $row){
-			$data['nb'][] = $row['ct'];
+			$data['data'][] = $row['ct'];
 			$data['date'][] = date('d-m-Y',strtotime($row['date']));
 		}
 

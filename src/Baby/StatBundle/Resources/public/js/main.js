@@ -128,18 +128,16 @@ $(document).ready(function(){
 			$('.graphme').click(function(){
 				$.post('playerstatgraph', {action:$(this).data('action')}, function(ret){
 					$('#customchart').highcharts({
-						chart: { type: 'column' },
+						chart: { type: 'line' },
 						title: { text: 'Nombre de parties jouées par jours' },
-						xAxis: {
-							categories: ret.date
-						},
+						xAxis: { categories: ret.date },
 						yAxis: {
 							min:0,
 							title: { text: 'Parties jouées' }
 						},
 						series: [{
 							name: 'Nombre de parties',
-							data: ret.nb
+							data: ret.data
 						}]
 					});
 				},'json');
