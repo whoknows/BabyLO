@@ -71,30 +71,30 @@ class BabyStats
     private $nbButTaken;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="best_oponent", type="integer", nullable=false)
+     * @ORM\Column(name="best_oponent", type="string", length=50, nullable=false)
      */
     private $bestOponent;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="worst_oponent", type="integer", nullable=false)
+     * @ORM\Column(name="worst_oponent", type="string", length=50, nullable=false)
      */
     private $worstOponent;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="best_mate", type="integer", nullable=false)
+     * @ORM\Column(name="best_mate", type="string", length=50, nullable=false)
      */
     private $bestMate;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="worst_mate", type="integer", nullable=false)
+     * @ORM\Column(name="worst_mate", type="string", length=50, nullable=false)
      */
     private $worstMate;
 
@@ -284,7 +284,7 @@ class BabyStats
     /**
      * Set bestOponent
      *
-     * @param integer $bestOponent
+     * @param string $bestOponent
      * @return BabyStats
      */
     public function setBestOponent($bestOponent)
@@ -297,7 +297,7 @@ class BabyStats
     /**
      * Get bestOponent
      *
-     * @return integer 
+     * @return string 
      */
     public function getBestOponent()
     {
@@ -307,7 +307,7 @@ class BabyStats
     /**
      * Set worstOponent
      *
-     * @param integer $worstOponent
+     * @param string $worstOponent
      * @return BabyStats
      */
     public function setWorstOponent($worstOponent)
@@ -320,7 +320,7 @@ class BabyStats
     /**
      * Get worstOponent
      *
-     * @return integer 
+     * @return string 
      */
     public function getWorstOponent()
     {
@@ -330,7 +330,7 @@ class BabyStats
     /**
      * Set bestMate
      *
-     * @param integer $bestMate
+     * @param string $bestMate
      * @return BabyStats
      */
     public function setBestMate($bestMate)
@@ -343,7 +343,7 @@ class BabyStats
     /**
      * Get bestMate
      *
-     * @return integer 
+     * @return string 
      */
     public function getBestMate()
     {
@@ -353,7 +353,7 @@ class BabyStats
     /**
      * Set worstMate
      *
-     * @param integer $worstMate
+     * @param string $worstMate
      * @return BabyStats
      */
     public function setWorstMate($worstMate)
@@ -366,7 +366,7 @@ class BabyStats
     /**
      * Get worstMate
      *
-     * @return integer 
+     * @return string 
      */
     public function getWorstMate()
     {

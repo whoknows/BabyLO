@@ -16,6 +16,7 @@ class StatController extends Controller {
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
 			'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(),6),
+			'tops' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(),1, true),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
@@ -40,7 +41,13 @@ class StatController extends Controller {
 
 			$em = $this->getDoctrine()->getManager();
 
-			$stat = $em->getRepository('BabyStatBundle:BabyStats')->findBy(array('player' => $em->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))))[0];
+			$stat = $em->getRepository('BabyStatBundle:BabyStats')->findBy(array('player' => $em->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))));
+
+			if(sizeof($stat) > 0){
+				$stat = $stat[0];
+			} else {
+				$stat = false;
+			}
 
 			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
 				'user' => $session->get('user', 'null'),
@@ -50,6 +57,15 @@ class StatController extends Controller {
 		} else {
 			return $this->redirect($this->generateUrl('babystat_accueil'));
 		}
+	}
+
+	public function calculatestatAction() {
+		$session = new Session();
+		$session->start();
+
+		$player = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')));
+
+		return new Response (Toolbox\Stats::calculate($player[0]->getId()));
 	}
 
 	public function morestatAction() {
@@ -87,7 +103,7 @@ class StatController extends Controller {
 
 		if($session->get('user') !== null || $session->get('rank') >= 1){
 			return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findAll(),
+				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array(),array('name' => 'ASC')),
 				'user' => $session->get('user', 'null'),
 				'rank' => $session->get('rank', -1)
 			));

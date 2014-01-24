@@ -67,8 +67,14 @@ class Player {
 			self::aasort($players, 'ratio');
 		}
 
-		if($multi === false && $limit !== null){
-			$players = array_slice($players, 0, $limit);
+		if($limit !== null){
+			if($multi === false){
+				$players = array_slice($players, 0, $limit);
+			} else {
+				$players['defaites'] = array_slice($players['defaites'],0,$limit);
+				$players['victoires'] = array_slice($players['victoires'],0,$limit);
+				$players['ratio'] = array_slice($players['ratio'],0,$limit);
+			}
 		}
 
 		return $players;
@@ -131,6 +137,10 @@ class Player {
 		}
 
 		return $data;
+	}
+
+	public static function getDailyTops() {
+		//
 	}
 
 	private static function aasort(&$array, $key) {

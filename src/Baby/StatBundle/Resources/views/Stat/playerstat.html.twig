@@ -7,56 +7,62 @@
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-			<table class="table" id="playerstatstable">
-				<tr>
-					<td>Nombre de parties jouées</td>
-					<td>{{ stat.nbGames }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de parties gagnées</td>
-					<td>{{ stat.nbWin }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de parties perdues</td>
-					<td>{{ stat.nbLose }}</td>
-				</tr>
-				<tr>
-					<td>Ratio</td>
-					<td>{{ stat.nbWin / (stat.nbGames) }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de parties perdues fanny</td>
-					<td>{{ stat.nbWinFanny }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de parties gagnées fanny</td>
-					<td>{{ stat.nbLoseFanny }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de buts marqués</td>
-					<td>{{ stat.nbButScored }}</td>
-				</tr>
-				<tr>
-					<td>Nombre de buts pris</td>
-					<td>{{ stat.nbButTaken }}</td>
-				</tr>
-				<tr>
-					<td>Pire ennemi</td>
-					<td>{{ stat.bestOponent }}</td>
-				</tr>
-				<tr>
-					<td>Moins bon adversaire</td>
-					<td>{{ stat.worstOponent }}</td>
-				</tr>
-				<tr>
-					<td>Meilleur partenaire</td>
-					<td>{{ stat.bestMate }}</td>
-				</tr>
-				<tr>
-					<td>Pire partenaire</td>
-					<td>{{ stat.worstMate }}</td>
-				</tr>
-			</table>
+			{% if stat == false %}
+				<h5 class="text-warning">Les données n'ont pas encore été calculées.</h5>
+			{% else %}
+				<table class="table" id="playerstatstable">
+					<tr>
+						<td>Nombre de parties jouées</td>
+						<td>{{ stat.nbGames }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de parties gagnées</td>
+						<td>{{ stat.nbWin }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de parties perdues</td>
+						<td>{{ stat.nbLose }}</td>
+					</tr>
+					<tr>
+						<td>Ratio</td>
+						<td>{{ stat.nbWin / (stat.nbGames) }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de parties perdues fanny</td>
+						<td>{{ stat.nbWinFanny }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de parties gagnées fanny</td>
+						<td>{{ stat.nbLoseFanny }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de buts marqués</td>
+						<td>{{ stat.nbButScored }}</td>
+					</tr>
+					<tr>
+						<td>Nombre de buts pris</td>
+						<td>{{ stat.nbButTaken }}</td>
+					</tr>
+					<tr>
+						<td>Pire ennemi</td>
+						<td>{{ stat.bestOponent }}</td>
+					</tr>
+					<tr>
+						<td>Moins bon adversaire</td>
+						<td>{{ stat.worstOponent }}</td>
+					</tr>
+					<tr>
+						<td>Meilleur partenaire</td>
+						<td>{{ stat.bestMate }}</td>
+					</tr>
+					<tr>
+						<td>Pire partenaire</td>
+						<td>{{ stat.worstMate }}</td>
+					</tr>
+				</table>
+			{% endif %}
+			<h6>Ces données sont précalculées, pour relancer le calcul cliquez sur le bouton ci-dessous</h6>
+			<button id="gocalculstat" class="btn btn-sm btn-primary">Relancer le calcul</button>
 		</div>
 		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
 			ici les graphes

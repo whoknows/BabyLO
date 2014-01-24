@@ -29,7 +29,7 @@ th, td {
 	margin: 10px 0;
 }
 
-#formSearchGame div {
+#formSearchGame .form-group {
 	margin:0 3px 0 0;
 }
 

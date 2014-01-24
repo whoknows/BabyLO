@@ -114,10 +114,22 @@ $(document).ready(function(){
 				});
 			});
 		break;
+		case 'playerstat' :
+			$('#gocalculstat').click(function(){
+				$(this).text('Calcul en cours').prop('disabled', true);
+				$.post('calculatestat', {}, function(msg){
+					if(msg == 'ok'){
+						window.location.reload();
+					} else {
+						console.log(msg);
+					}
+				});
+			});
+		break;
 		case '':
 			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata){
 				$('#nbbaby').highcharts({
-					chart: { type: 'line' },
+					chart: { type: 'column' },
 					title: { text: 'Nombre de parties jouées par jours' },
 					xAxis: {
 						categories: pdata.date
