@@ -76,7 +76,7 @@ class Stats {
 		}
 
 		foreach($req->fetchAll(\PDO::FETCH_ASSOC) as $row){
-			$data['data'][] = $row['ct'];
+			$data['data'][] = intval($row['ct']);
 			$data['date'][] = date('d-m-Y',strtotime($row['date']));
 		}
 
