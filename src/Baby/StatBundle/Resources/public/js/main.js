@@ -64,7 +64,7 @@ $(document).ready(function(){
 				return false;
 			});
 
-			$('#datepartie').pickadate({format : 'dd-mm-yyyy'});
+			$('#datepartie').pickadate({format : 'dd-mm-yyyy', formatSubmit:'dd-mm-yyyy'});
 		break;
 		case 'game':
 			$('#gamedate').pickadate({format : 'dd-mm-yyyy'});
@@ -124,6 +124,25 @@ $(document).ready(function(){
 						console.log(msg);
 					}
 				});
+			});
+			$('.graphme').click(function(){
+				$.post('playerstatgraph', {action:$(this).data('action')}, function(ret){
+					$('#customchart').highcharts({
+						chart: { type: 'column' },
+						title: { text: 'Nombre de parties jouées par jours' },
+						xAxis: {
+							categories: ret.date
+						},
+						yAxis: {
+							min:0,
+							title: { text: 'Parties jouées' }
+						},
+						series: [{
+							name: 'Nombre de parties',
+							data: ret.nb
+						}]
+					});
+				},'json');
 			});
 		break;
 		case '':

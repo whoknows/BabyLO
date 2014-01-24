@@ -16,7 +16,7 @@ class Game {
 			}
 		}
 
-		$repoGames = $gamerepo->findBy($f, array('date' => 'DESC'));
+		$repoGames = $gamerepo->findBy($f, array('date' => 'DESC', 'id' => 'DESC'));
 
 		$games = array();
 

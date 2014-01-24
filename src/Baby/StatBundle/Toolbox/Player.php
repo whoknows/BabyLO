@@ -140,7 +140,10 @@ class Player {
 	}
 
 	public static function getDailyTops() {
-		//
+		// meilleur du jour
+		// moins bon du jour
+		// moins bon du mois
+		// moins bon du mois dernier
 	}
 
 	private static function aasort(&$array, $key) {

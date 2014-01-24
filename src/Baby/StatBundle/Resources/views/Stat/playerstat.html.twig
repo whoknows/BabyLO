@@ -10,22 +10,22 @@
 			{% if stat == false %}
 				<h5 class="text-warning">Les données n'ont pas encore été calculées.</h5>
 			{% else %}
-				<table class="table" id="playerstatstable">
-					<tr>
+				<table class="table table-striped" id="playerstatstable">
+					<tr class="text-primary graphme" data-action="nbGames">
 						<td>Nombre de parties jouées</td>
 						<td>{{ stat.nbGames }}</td>
 					</tr>
-					<tr>
+					<tr class="text-primary graphme" data-action="nbWin">
 						<td>Nombre de parties gagnées</td>
 						<td>{{ stat.nbWin }}</td>
 					</tr>
-					<tr>
+					<tr class="text-primary graphme" data-action="nbLose">
 						<td>Nombre de parties perdues</td>
 						<td>{{ stat.nbLose }}</td>
 					</tr>
-					<tr>
+					<tr class="text-primary graphme" data-action="ratio">
 						<td>Ratio</td>
-						<td>{{ stat.nbWin / (stat.nbGames) }}</td>
+						<td>{{ stat.nbWin / (stat.nbGames) | round(2) }}</td>
 					</tr>
 					<tr>
 						<td>Nombre de parties perdues fanny</td>
@@ -35,11 +35,11 @@
 						<td>Nombre de parties gagnées fanny</td>
 						<td>{{ stat.nbLoseFanny }}</td>
 					</tr>
-					<tr>
+					<tr class="text-primary graphme" data-action="nbButScored">
 						<td>Nombre de buts marqués</td>
 						<td>{{ stat.nbButScored }}</td>
 					</tr>
-					<tr>
+					<tr class="text-primary graphme" data-action="nbButTaken">
 						<td>Nombre de buts pris</td>
 						<td>{{ stat.nbButTaken }}</td>
 					</tr>
@@ -65,7 +65,7 @@
 			<button id="gocalculstat" class="btn btn-sm btn-primary">Relancer le calcul</button>
 		</div>
 		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-			ici les graphes
+			<div id="customchart" style="width:100%; height:300px;"></div>
 		</div>
 	</div>
 {% endblock %}

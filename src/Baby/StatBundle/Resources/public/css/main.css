@@ -63,7 +63,17 @@ th, td {
 }
 
 #playerstatstable td {
+	font-weight: normal;
+	text-align: right;
+}
+
+#playerstatstable tr td:first-child {
+	font-weight: 300;
 	text-align: left;
+}
+
+.graphme {
+	cursor:pointer;
 }
 
 #alertbox {

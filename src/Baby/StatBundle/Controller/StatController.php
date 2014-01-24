@@ -68,6 +68,19 @@ class StatController extends Controller {
 		return new Response (Toolbox\Stats::calculate($player[0]->getId()));
 	}
 
+	public function playerstatgraphAction() {
+		$session = new Session();
+		$session->start();
+
+		$function = 'get'.strtoupper($this->getRequest()->get('action'));
+		$player = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')));
+
+		$response = new Response(json_encode(Toolbox\Stats::$function($player[0]->getId())));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+
 	public function morestatAction() {
 		$id = $this->getRequest()->get('playerId');
 
@@ -84,7 +97,7 @@ class StatController extends Controller {
 		$filters = array();
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
+			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 10, $filters),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
