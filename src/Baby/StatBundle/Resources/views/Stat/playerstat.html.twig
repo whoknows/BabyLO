@@ -10,51 +10,51 @@
 			<table class="table" id="playerstatstable">
 				<tr>
 					<td>Nombre de parties jouées</td>
-					<td></td>
+					<td>{{ stat.nbGames }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de parties gagnées</td>
-					<td></td>
+					<td>{{ stat.nbWin }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de parties perdues</td>
-					<td></td>
+					<td>{{ stat.nbLose }}</td>
 				</tr>
 				<tr>
 					<td>Ratio</td>
-					<td></td>
+					<td>{{ stat.nbWin / (stat.nbGames) }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de parties perdues fanny</td>
-					<td></td>
+					<td>{{ stat.nbWinFanny }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de parties gagnées fanny</td>
-					<td></td>
+					<td>{{ stat.nbLoseFanny }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de buts marqués</td>
-					<td></td>
+					<td>{{ stat.nbButScored }}</td>
 				</tr>
 				<tr>
 					<td>Nombre de buts pris</td>
-					<td></td>
+					<td>{{ stat.nbButTaken }}</td>
 				</tr>
 				<tr>
 					<td>Pire ennemi</td>
-					<td></td>
+					<td>{{ stat.bestOponent }}</td>
 				</tr>
 				<tr>
 					<td>Moins bon adversaire</td>
-					<td></td>
+					<td>{{ stat.worstOponent }}</td>
 				</tr>
 				<tr>
 					<td>Meilleur partenaire</td>
-					<td></td>
+					<td>{{ stat.bestMate }}</td>
 				</tr>
 				<tr>
 					<td>Pire partenaire</td>
-					<td></td>
+					<td>{{ stat.worstMate }}</td>
 				</tr>
 			</table>
 		</div>

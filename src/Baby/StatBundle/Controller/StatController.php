@@ -5,6 +5,7 @@ namespace Baby\StatBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
+use Baby\StatBundle\Toolbox;
 
 class StatController extends Controller {
 
@@ -13,8 +14,8 @@ class StatController extends Controller {
 		$session->start();
 
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
-			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager(), 5),
-			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(),6),
+			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
+			'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(),6),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
@@ -25,7 +26,7 @@ class StatController extends Controller {
 		$session->start();
 
 		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
-			'players' => \Baby\StatBundle\Entity\PlayerRepository::getPlayerList($this->getDoctrine()->getManager(), null, true),
+			'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), null, true),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
@@ -36,9 +37,15 @@ class StatController extends Controller {
 		$session->start();
 
 		if($session->get('user') != null){
+
+			$em = $this->getDoctrine()->getManager();
+
+			$stat = $em->getRepository('BabyStatBundle:BabyStats')->findBy(array('player' => $em->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))))[0];
+
 			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
 				'user' => $session->get('user', 'null'),
-				'rank' => $session->get('rank', -1)
+				'rank' => $session->get('rank', -1),
+				'stat' => $stat
 			));
 		} else {
 			return $this->redirect($this->generateUrl('babystat_accueil'));
@@ -48,7 +55,7 @@ class StatController extends Controller {
 	public function morestatAction() {
 		$id = $this->getRequest()->get('playerId');
 
-		$response = new Response(json_encode(\Baby\StatBundle\Entity\PlayerRepository::getPlayerData($id, $this->getDoctrine()->getManager())));
+		$response = new Response(json_encode(Toolbox\Player::getPlayerData($id, $this->getDoctrine()->getManager())));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -58,15 +65,17 @@ class StatController extends Controller {
 		$session = new Session();
 		$session->start();
 
+		$filters = array();
+
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-			'games' => \Baby\StatBundle\Entity\GameRepository::getGameList($this->getDoctrine()->getManager()),
+			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
 	}
 
 	public function nbgameAction() {
-		$response = new Response(json_encode(\Baby\StatBundle\Entity\GameRepository::getGameCount($this->getDoctrine()->getManager())));
+		$response = new Response(json_encode(Toolbox\Game::getGameCount($this->getDoctrine()->getManager())));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -174,9 +183,5 @@ class StatController extends Controller {
 		$session->remove('rank');
 
 		return $this->redirect($this->generateUrl('babystat_accueil'));
-	}
-
-	public function getLogginStatus() {
-		return false;
 	}
 }

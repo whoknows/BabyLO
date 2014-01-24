@@ -67,6 +67,7 @@ $(document).ready(function(){
 			$('#datepartie').pickadate({format : 'dd-mm-yyyy'});
 		break;
 		case 'game':
+			$('#gamedate').pickadate({format : 'dd-mm-yyyy'});
 			$('#formSearchGame').submit(function(e){
 				e.preventDefault();
 				$('#form-recherche-error').text('Erreur : Ça marche pas encore tavu').show("blind").delay(3000).hide("blind");

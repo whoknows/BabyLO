@@ -29,6 +29,10 @@ th, td {
 	margin: 10px 0;
 }
 
+#formSearchGame div {
+	margin:0 3px 0 0;
+}
+
 #formSearchGame .btn {
 	margin:3px 0 0 0;
 }
