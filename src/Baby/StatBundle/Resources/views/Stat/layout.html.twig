@@ -28,19 +28,19 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="{{ path('babystat_accueil') }}"><i class="glyphicon glyphicon-home"></i>Home</a></li>
-						<li><a href="{{ path('babystat_partie') }}"><i class="glyphicon glyphicon-star"></i>Parties</a></li>
-						<li><a href="{{ path('babystat_joueur') }}"><i class="glyphicon glyphicon-user"></i>Joueurs</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a href="{{ path('babystat_accueil') }}"><i class="glyphicon glyphicon-home"></i>Home</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a href="{{ path('babystat_partie') }}"><i class="glyphicon glyphicon-star"></i>Parties</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a href="{{ path('babystat_joueur') }}"><i class="glyphicon glyphicon-user"></i>Joueurs</a></li>
 					</ul>
 
 					{% if user != "null" %}
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ user }} <span class="caret"></span></a>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ user | capitalize }} <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ path('babystat_pagejoueur') }}"><i class="glyphicon glyphicon-stats"></i>Statistiques</a></li>
 									{% if rank >= 1 %}
-										<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-cog"></i>Ajouter une partie</a></li>
+										<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-plus"></i>Ajouter une partie</a></li>
 									{% endif %}
 									<li><a href="{{ path('babystat_logout') }}"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 								</ul>
@@ -60,7 +60,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="jumbotron" id="main-container">
 			<div class="container">
 			{% block body %}

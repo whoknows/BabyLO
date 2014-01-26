@@ -6,7 +6,8 @@ $(document).ready(function(){
 			if(retdata.type != 'error'){
 				window.location.reload();
 			} else {
-				//gestion erreur
+				$('#userlogin').parent().addClass('has-error');
+				$('#userpwd').parent().addClass('has-error');
 			}
 		});
 		return false;
@@ -74,7 +75,7 @@ $(document).ready(function(){
 				return false;
 			});
 		break;
-		case 'player':
+		case 'player':  
 			$('.player').click(function(){
 				var name = $(this).text();
 				//loader modal ?
@@ -112,6 +113,11 @@ $(document).ready(function(){
 						}]
 					});
 				});
+				var the_id = $(this).children('a').attr("href");
+				$('html, body').animate({
+					scrollTop:$(the_id).offset().top
+				}, 'slow');
+				return false;
 			});
 		break;
 		case 'playerstat' :

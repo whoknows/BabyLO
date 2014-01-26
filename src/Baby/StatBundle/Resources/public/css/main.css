@@ -17,10 +17,6 @@ th, td {
 	font-weight: bold;
 }
 
-#form-addgame-error {
-	display:none;
-}
-
 .ui-widget {
 	font-size:0.9em;
 }
@@ -37,12 +33,8 @@ th, td {
 	margin:3px 0 0 0;
 }
 
-.player {
-	cursor:pointer;
-}
-
-.player:hover{
-	color:#008cba;
+.player a{
+	text-decoration: none;
 }
 
 #clickinfo {
@@ -50,7 +42,7 @@ th, td {
 	margin-left:20px;
 }
 
-#form-recherche-error {
+#form-recherche-error, #form-addgame-error{
 	display:none;
 }
 

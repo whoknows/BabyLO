@@ -22,7 +22,7 @@
 						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
 						<tr>
 							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
 							<td class="success">{{ player.victoires }}</td>
 							<td class="danger">{{ player.defaites }}</td>
 							<td class="{{ c }} score">{{ player.ratio }}</td>
@@ -48,7 +48,7 @@
 						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
 						<tr>
 							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
 							<td class="success score">{{ player.victoires }}</td>
 							<td class="danger">{{ player.defaites }}</td>
 							<td class="{{ c }}">{{ player.ratio }}</td>
@@ -74,7 +74,7 @@
 						{% set c = (player.ratio >= 1) ? 'success' : 'danger' %}
 						<tr>
 							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}">{{ player.name }}</td>
+							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
 							<td class="success">{{ player.victoires }}</td>
 							<td class="danger score">{{ player.defaites }}</td>
 							<td class="{{ c }}">{{ player.ratio }}</td>
