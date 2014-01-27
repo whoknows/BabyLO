@@ -4,14 +4,14 @@
 
 {% block body %}
 	<h3>Parties</h3>
-	<form class="form-inline" role="form" id="formSearchGame">
-		<div class="form-group">
+	<form class="form-inline" role="form" id="formSearchGame" method="POST" action="{{ path('babystat_partie') }}">
+		<!--<div class="form-group">
 			<label class="sr-only" for="playername">Joueur</label>
-			<input type="text" class="form-control" id="playername" placeholder="Nom du joueur">
-		</div>
+			<input type="text" class="form-control" id="playername" name="name" placeholder="Nom du joueur">
+		</div>-->
 		<div class="form-group">
 			<label class="sr-only" for="gamedate">Date</label>
-			<input type="text" class="form-control" id="gamedate" placeholder="Date de la partie">
+			<input type="text" class="form-control" id="gamedate" data-value="{{ date }}" name="date" placeholder="Date de la partie">
 		</div>
 		<button type="submit" class="btn btn-default btn-sm">Recherche</button>
 	</form>
@@ -48,12 +48,12 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<ul class="pagination pull-right">
+	<!--<ul class="pagination pull-right">
 		<li class="active"><a href="#">1</a></li>
 		<li><a href="#">2</a></li>
 		<li><a href="#">3</a></li>
 		<li><a href="#">4</a></li>
 		<li><a href="#">5</a></li>
-	</ul>
+	</ul>-->
 
 {% endblock %}

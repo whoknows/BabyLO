@@ -10,10 +10,8 @@ class Game {
 		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
 
 		$f = array();
-		if(sizeof($filter) > 0){
-			if($filter['date']){
-				$f[] = array('date' => $filter['date']);
-			}
+		if(isset($filter['date']) && $filter['date'] != ''){
+			$f['date'] = new \DateTime($filter['date']);
 		}
 
 		$repoGames = $gamerepo->findBy($f, array('date' => 'DESC', 'id' => 'DESC'));

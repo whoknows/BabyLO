@@ -10,10 +10,6 @@ babystat_joueurstat:
     path:     /morestat
     defaults: { _controller: BabyStatBundle:Stat:morestat }
 
-babystat_calculatestat:
-    path:     /calculatestat
-    defaults: { _controller: BabyStatBundle:Stat:calculatestat }
-
 babystat_playerstatgraph:
     path:     /playerstatgraph
     defaults: { _controller: BabyStatBundle:Stat:playerstatgraph }

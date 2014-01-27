@@ -68,23 +68,30 @@ $(document).ready(function(){
 			$('#datepartie').pickadate({format : 'dd-mm-yyyy', formatSubmit:'dd-mm-yyyy'});
 		break;
 		case 'game':
-			$('#gamedate').pickadate({format : 'dd-mm-yyyy'});
-			$('#formSearchGame').submit(function(e){
+			$('#gamedate').pickadate({format : 'dd-mm-yyyy', formatSubmit:'dd-mm-yyyy'});
+			/*$('#formSearchGame').submit(function(e){
 				e.preventDefault();
 				$('#form-recherche-error').text('Erreur : Ça marche pas encore tavu').show("blind").delay(3000).hide("blind");
 				return false;
-			});
+			});*/
 		break;
-		case 'player':  
+		case 'player':
 			$('.player').click(function(){
 				var name = $(this).text();
-				//loader modal ?
 				$.post('morestat', {playerId: $(this).data('id')}, function(pdata){
+
+					if(typeof pdata.stats.nbGames !== 'undefined'){
+						for(var i in pdata.stats){
+							$('#stat-'+i).text(pdata.stats[i]);
+						}
+						$('#playerstatstable').removeClass('hide');
+					}
+
 					$('#chart1').highcharts({
 						chart: { type: 'line' },
 						title: { text: 'Evolution de ' + name },
 						xAxis: {
-							categories: pdata.dates
+							categories: pdata.graph.dates
 						},
 						yAxis: [{
 							min:0,
@@ -98,17 +105,17 @@ $(document).ready(function(){
 						series: [{
 							yAxis:0,
 							name: 'Victoires',
-							data: pdata.victoires,
+							data: pdata.graph.victoires,
 							color:'#77b300'
 						}, {
 							yAxis:0,
 							name: 'Défaites',
-							data: pdata.defaites,
+							data: pdata.graph.defaites,
 							color: '#f04124'
 						}, {
 							yAxis:1,
 							name: 'Ratio',
-							data: pdata.ratio,
+							data: pdata.graph.ratio,
 							color: '#2a9fd6'
 						}]
 					});
@@ -121,16 +128,6 @@ $(document).ready(function(){
 			});
 		break;
 		case 'playerstat' :
-			$('#gocalculstat').click(function(){
-				$(this).text('Calcul en cours').prop('disabled', true);
-				$.post('calculatestat', {}, function(msg){
-					if(msg == 'ok'){
-						window.location.reload();
-					} else {
-						console.log(msg);
-					}
-				});
-			});
 			$('.graphme').click(function(){
 				$.post('playerstatgraph', {action:$(this).data('action')}, function(ret){
 					$('#customchart').highcharts({

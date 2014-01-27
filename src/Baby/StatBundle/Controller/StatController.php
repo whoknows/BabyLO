@@ -39,33 +39,24 @@ class StatController extends Controller {
 
 		if($session->get('user') != null){
 
-			$em = $this->getDoctrine()->getManager();
+			$id = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))[0]->getId();
 
-			$stat = $em->getRepository('BabyStatBundle:BabyStats')->findBy(array('player' => $em->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))));
+			$st = Toolbox\Stats::getAllStats($id);
 
-			if(sizeof($stat) > 0){
-				$stat = $stat[0];
+			if(sizeof($st) == 0){
+				$st = array();
 			} else {
-				$stat = false;
+				$st['ratio'] = round($st['nbWin'] / $st['nbGames'],2);
 			}
 
 			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
 				'user' => $session->get('user', 'null'),
 				'rank' => $session->get('rank', -1),
-				'stat' => $stat
+				'stat' => $st
 			));
 		} else {
 			return $this->redirect($this->generateUrl('babystat_accueil'));
 		}
-	}
-
-	public function calculatestatAction() {
-		$session = new Session();
-		$session->start();
-
-		$player = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')));
-
-		return new Response (Toolbox\Stats::calculate($player[0]->getId()));
 	}
 
 	public function playerstatgraphAction() {
@@ -83,8 +74,19 @@ class StatController extends Controller {
 
 	public function morestatAction() {
 		$id = $this->getRequest()->get('playerId');
+		$em = $this->getDoctrine()->getManager();
+		$st = Toolbox\Stats::getAllStats($id);
 
-		$response = new Response(json_encode(Toolbox\Player::getPlayerData($id, $this->getDoctrine()->getManager())));
+		if(sizeof($st) == 0){
+			$st = array();
+		} else {
+			$st['ratio'] = round($st['nbWin'] / $st['nbGames'],2);
+		}
+
+		$response = new Response(json_encode(array(
+			'graph' => Toolbox\Player::getPlayerData($id, $em),
+			'stats' => $st
+		)));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -94,12 +96,16 @@ class StatController extends Controller {
 		$session = new Session();
 		$session->start();
 
-		$filters = array();
+		$filters = array(
+			"date" => $this->getRequest()->get('date', date('d-m-Y')),
+			//"name" => $this->getRequest()->get('name', null),
+		);
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 10, $filters),
+			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
 			'user' => $session->get('user', 'null'),
-			'rank' => $session->get('rank', -1)
+			'rank' => $session->get('rank', -1),
+			'date' => $filters['date'],
 		));
 	}
 

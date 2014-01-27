@@ -5,53 +5,33 @@ namespace Baby\StatBundle\Toolbox;
 class Player {
 
 	public static function getPlayerList($em, $limit = null, $multi = false) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
-		$playerrepo = $em->getRepository('BabyStatBundle:BabyPlayer');
-		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
+		$query = $em->createQuery(
+			'SELECT p.id, p.name,
+					SUM(
+						CASE
+							WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+							WHEN pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+						ELSE 0 END
+					) as victoires,
+					SUM(
+						CASE
+							WHEN pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+							WHEN pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+						ELSE 0 END
+					) as defaites
+			FROM BabyStatBundle:BabyPlayer p
+			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
+			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
+			GROUP BY p.id');
 
-		$players = array();
+		if($limit !== null) {
+			$query->setMaxResults($limit);
+		}
 
-		foreach($playerrepo->findAll() as $player){
-			$tmp = array(
-				"id" => $player->getId(),
-				"name" => $player->getName(),
-				"victoires" => 0,
-				"defaites" => 0,
-				"ratio" => 0
-			);
+		$players = $query->getResult();
 
-			$playedGames = $playedrepo->findBy(array('idPlayer' => $player->getId()));
-
-			if($playedGames === null) {
-				$players[] = $tmp;
-				continue;
-			}
-
-			foreach($playedGames as $pg){
-				$game = $gamerepo->find($pg->getIdGame());
-
-				if($pg->getTeam() == 1){
-					if($game->getScoreTeam1() < $game->getScoreTeam2()){
-						$tmp['defaites']++;
-					} else {
-						$tmp['victoires']++;
-					}
-				} else {
-					if($game->getScoreTeam2() < $game->getScoreTeam1()){
-						$tmp['defaites']++;
-					} else {
-						$tmp['victoires']++;
-					}
-				}
-			}
-
-			if($tmp['defaites'] == 0) {
-				$tmp['ratio'] = $tmp['victoires'];
-			} else {
-				$tmp['ratio'] = round($tmp['victoires'] / ($tmp['victoires']+$tmp['defaites']),2);
-			}
-
-			$players[] = $tmp;
+		foreach($players as &$p) {
+			$p['ratio'] = round($p['victoires'] / ($p['victoires'] + $p['defaites']),2);
 		}
 
 		if($multi) {
@@ -67,83 +47,55 @@ class Player {
 			self::aasort($players, 'ratio');
 		}
 
-		if($limit !== null){
-			if($multi === false){
-				$players = array_slice($players, 0, $limit);
-			} else {
-				$players['defaites'] = array_slice($players['defaites'],0,$limit);
-				$players['victoires'] = array_slice($players['victoires'],0,$limit);
-				$players['ratio'] = array_slice($players['ratio'],0,$limit);
-			}
-		}
-
 		return $players;
 	}
 
 	public static function getPlayerData($id, $em) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
-		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
-
-		$player = $em->getRepository('BabyStatBundle:BabyPlayer')->find($id);
-
-		$playedGames = $playedrepo->findBy(array('idPlayer' => $player->getId()));
-
-		if($playedGames === null) {
-			return array();
-		}
+		$query = $em->createQuery(
+			'SELECT p.id, p.name, g.date,
+					SUM(
+						CASE
+							WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+							WHEN pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+						ELSE 0 END
+					) as victoires,
+					SUM(
+						CASE
+							WHEN pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+							WHEN pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+						ELSE 0 END
+					) as defaites
+			FROM BabyStatBundle:BabyPlayer p
+			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
+			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
+			WHERE p.id = :id
+			GROUP BY g.date')->setParameter('id', $id);
 
 		$data = array(
 			'dates' => array(),
+			'ratio' => array(),
 			'victoires' => array(),
 			'defaites' => array(),
-			'ratio' => array()
 		);
 
-		$dataTmp = array();
-
-		foreach($playedGames as $pg){
-			$game = $gamerepo->find($pg->getIdGame());
-
-			$date = $game->getDate()->format('d-m-Y');
-
-			if(!isset($dataTmp[$date])){
-				$dataTmp[$date] = array(
-					'date' => $date,
-					'victoires' => 0,
-					'defaites' => 0
-				);
-			}
-
-			if($pg->getTeam() == 1){
-				if($game->getScoreTeam1() < $game->getScoreTeam2()){
-					$dataTmp[$date]['defaites']++;
-				} else {
-					$dataTmp[$date]['victoires']++;
-				}
-			} else {
-				if($game->getScoreTeam2() < $game->getScoreTeam1()){
-					$dataTmp[$date]['defaites']++;
-				} else {
-					$dataTmp[$date]['victoires']++;
-				}
-			}
-		}
-
-		foreach($dataTmp as $d){
+		foreach($query->getResult() as $d){
 			$data['dates'][] = $d['date'];
-			$data['victoires'][] = $d['victoires'];
-			$data['defaites'][] = $d['defaites'];
-			$data['ratio'][] = round($d['victoires'] / ($d['victoires'] + $d['defaites']),2);
+			$data['victoires'][] = intval($d['victoires']);
+			$data['defaites'][] = intval($d['defaites']);
+			$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])),2);
 		}
 
 		return $data;
 	}
 
 	public static function getDailyTops() {
-		// meilleur du jour
-		// moins bon du jour
-		// moins bon du mois
-		// moins bon du mois dernier
+		//self::getPlayerList($this->getDoctrine()->getManager(), null, true);
+		return array(
+			'best' => 'test',
+			'worst' => 'test',
+			'nextchoco' => 'test',
+			'lastchoco' => 'test',
+		);
 	}
 
 	private static function aasort(&$array, $key) {
