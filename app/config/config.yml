@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: true
-    bundles: [BabyStatBundle]
+    bundles: [BabyStatBundle, BabyUserBundle]
 
     #java: /usr/bin/java
     filters:

@@ -5,17 +5,11 @@
 {% block body %}
 	<h3>Parties</h3>
 	<form class="form-inline" role="form" id="formSearchGame" method="POST" action="{{ path('babystat_partie') }}">
-		<!--<div class="form-group">
-			<label class="sr-only" for="playername">Joueur</label>
-			<input type="text" class="form-control" id="playername" name="name" placeholder="Nom du joueur">
-		</div>-->
 		<div class="form-group">
 			<label class="sr-only" for="gamedate">Date</label>
 			<input type="text" class="form-control" id="gamedate" data-value="{{ date }}" name="date" placeholder="Date de la partie">
 		</div>
-		<button type="submit" class="btn btn-default btn-sm">Recherche</button>
 	</form>
-	<div id="form-recherche-error" class="text-danger"></div>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
@@ -40,10 +34,10 @@
 					<td>{{ game.date|date("d/m/Y") }}</td>
 					<td class="{{ c1 }}">{{ game.player1Team1 }}</td>
 					<td class="{{ c1 }}">{{ game.player2Team1 }}</td>
-					<td class="{{ c1 }} score">{{ game.scoreTeam1 }}</td>
+					<td class="{{ c1 }}"><strong>{{ game.scoreTeam1 }}</strong></td>
 					<td class="{{ c2 }}">{{ game.player1Team2 }}</td>
 					<td class="{{ c2 }}">{{ game.player2Team2 }}</td>
-					<td class="{{ c2 }} score">{{ game.scoreTeam2 }}</td>
+					<td class="{{ c2 }}"><strong>{{ game.scoreTeam2 }}</strong></td>
 				</tr>
 			{% endfor %}
 		</tbody>

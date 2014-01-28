@@ -38,13 +38,14 @@ class Player {
 			$tmp = $players;
 			$players = array();
 			self::aasort($tmp, 'ratio');
-			$players['ratio'] = $tmp;
+			$players['ratio'] = array_values($tmp);
 			self::aasort($tmp, 'victoires');
-			$players['victoires'] = $tmp;
+			$players['victoires'] = array_values($tmp);
 			self::aasort($tmp, 'defaites');
-			$players['defaites'] = $tmp;
+			$players['defaites'] = array_values($tmp);
 		} else {
 			self::aasort($players, 'ratio');
+			$players = array_values($players);
 		}
 
 		return $players;
@@ -88,13 +89,31 @@ class Player {
 		return $data;
 	}
 
-	public static function getDailyTops() {
-		//self::getPlayerList($this->getDoctrine()->getManager(), null, true);
+	public static function getDailyTops($em) {
+		$q1 = $em->createQuery("SELECT p.name, COUNT(p.id) as ct
+								FROM BabyStatBundle:BabyPlayed pl
+								INNER JOIN BabyStatBundle:BabyPlayer p WITH p.id = pl.idPlayer
+								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
+								WHERE ((pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2)) AND g.date = :date
+								GROUP BY p.id
+								ORDER BY ct DESC")->setParameter('date', new \Datetime(date('Y-m-d', strtotime('-1 day'))))->setMaxResults(1);
+
+		$q2 = $em->createQuery("SELECT p.name, COUNT(p.id) as ct
+								FROM BabyStatBundle:BabyPlayed pl
+								INNER JOIN BabyStatBundle:BabyPlayer p WITH p.id = pl.idPlayer
+								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
+								WHERE ((pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2)) AND g.date = :date
+								GROUP BY p.id
+								ORDER BY ct DESC")->setParameter('date', new \Datetime(date('Y-m-d', strtotime('-1 day'))))->setMaxResults(1);
+		$q1 = $q1->getResult();
+		$q2 = $q2->getResult();
+		$q3 = self::getPlayerList($em);
+
 		return array(
-			'best' => 'test',
-			'worst' => 'test',
-			'nextchoco' => 'test',
-			'lastchoco' => 'test',
+			'best' => sizeof($q1) > 0 ? $q1[0]['name'] : 'N/A',
+			'worst' => sizeof($q2) > 0 ? $q2[0]['name'] : 'N/A',
+			'nextchoco' => $q3[sizeof($q3)-1]['name'],
+			'lastchoco' => 'N/A',
 		);
 	}
 

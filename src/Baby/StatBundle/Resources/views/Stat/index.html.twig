@@ -8,7 +8,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-xs-12 col-lg-6 col-sm-12">
-			<h3>Top du jour</h3>
+			<h3>Stats d'hier</h3>
 		</div>
 		<div class="col-md-6 col-xs-12 col-lg-6 col-sm-12">
 			<h3>ChocoMan</h3>
@@ -16,20 +16,20 @@
 	</div>
 	<div class="row">
 		<div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
-			<div class="alert alert-success">Meileur joueur : <b>test</b>.</div>
+			<div class="alert alert-success">Plus de victoires : <b>{{ tops.best }}</b></div>
 		</div>
 		<div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
-			<div class="alert alert-danger">Moins bon joueur : <b>test</b>.</div>
+			<div class="alert alert-danger">Plus de défaites : <b>{{ tops.worst }}</b></div>
 		</div>
 		<div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
-			<div class="alert alert-warning">Attention <b>test</b>, tu es le plus mauvais !</div>
+			<div class="alert alert-warning">Attention <b>{{ tops.nextchoco }}</b>, tu es le plus mauvais !</div>
 		</div>
 		<div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
-			<div class="alert alert-info"><b>N/A</b> a amené les chocos le dernier.</div>
+			<div class="alert alert-info"><b>{{ tops.lastchoco }}</b> a amené les chocos le dernier.</div>
 		</div>
 	</div>
 
-	<div class="row" id="alertbox">
+	<div class="row">
 		<div class="col-md-7 col-xs-12 col-lg-7 col-sm-12">
 			<h3>Dernières parties</h3>
 			<table class="table table-bordered">
@@ -56,10 +56,10 @@
 							<td>{{ game.date|date("d/m/Y") }}</td>
 							<td class="{{ c1 }}">{{ game.player1Team1 }}</td>
 							<td class="{{ c1 }}">{{ game.player2Team1 }}</td>
-							<td class="{{ c1 }} score">{{ game.scoreTeam1 }}</td>
+							<td class="{{ c1 }}"><strong>{{ game.scoreTeam1 }}</strong></td>
 							<td class="{{ c2 }}">{{ game.player1Team2 }}</td>
 							<td class="{{ c2 }}">{{ game.player2Team2 }}</td>
-							<td class="{{ c2 }} score">{{ game.scoreTeam2 }}</td>
+							<td class="{{ c2 }}"><strong>{{ game.scoreTeam2 }}</strong></td>
 						</tr>
 					{% endfor %}
 				</tbody>

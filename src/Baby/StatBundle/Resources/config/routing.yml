@@ -33,11 +33,3 @@ babystat_ajoutpartie:
 babystat_savepartie:
     path:     /savegame
     defaults: { _controller: BabyStatBundle:Stat:savegame }
-
-babystat_login:
-    path:     /login
-    defaults: { _controller: BabyStatBundle:Stat:login }
-
-babystat_logout:
-    path:     /logout
-    defaults: { _controller: BabyStatBundle:Stat:logout }

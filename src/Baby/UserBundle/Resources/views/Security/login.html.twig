@@ -1,0 +1,149 @@
+<html lang="en-Us">
+<head>
+	<meta charset="utf-8">
+	<title>BabyLO Login</title>
+
+	<style>
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+		/* ---------- FONTAWESOME ---------- */
+
+		[class*="fontawesome-"]:before {
+		  font-family: 'FontAwesome', sans-serif;
+		}
+
+		/* ---------- GENERAL ---------- */
+
+		body {
+			background: #f4f4f4;
+			color: #5a5656;
+			font: 100%/1.5em 'Open Sans', sans-serif;
+			margin: 0;
+		}
+
+		a { text-decoration: none; }
+
+		h1 { font-size: 1em; }
+
+		h1, p {
+			margin-bottom: 10px;
+		}
+
+		strong {
+			font-weight: bold;
+		}
+
+		.uppercase { text-transform: uppercase; }
+
+		/* ---------- LOGIN ---------- */
+
+		#login {
+			margin: 200px auto;
+			width: 300px;
+		}
+
+		form fieldset input[type="text"], input[type="password"] {
+			background: #e5e5e5;
+			border: none;
+			color: #5a5656;
+			font-family: inherit;
+			font-size: 14px;
+			height: 50px;
+			outline: none;
+			padding: 0px 10px;
+			width: 300px;
+		  -webkit-appearance:none;
+		}
+
+		form fieldset input[type="submit"] {
+			background-color: #008dde;
+			border: none;
+			color: #f4f4f4;
+			cursor: pointer;
+			font-family: inherit;
+			height: 50px;
+			text-transform: uppercase;
+			width: 300px;
+		  -webkit-appearance:none;
+		}
+
+		form fieldset a {
+			color: #5a5656;
+			font-size: 10px;
+		}
+
+		.alert {
+			font-size: 12px;
+			font-weight: 300;
+			padding: 15px;
+			margin-bottom: 21px;
+			border: 1px solid transparent;
+			border-radius: 0;
+		}
+		.alert-danger {
+			color: #fff;
+			background-color: #f04124;
+			border-color: #ea2f10;
+		}
+
+		form fieldset a:hover { text-decoration: underline; }
+	</style>
+</head>
+
+<body>
+	<div id="login">
+		<h1><strong>Bienvenue.</strong> Veuillez vous connecter.</h1>
+		<form action="{{ path('login_check') }}" method="post">
+			<fieldset>
+				<p><input type="text" required name="_username" placeholder="Username"></p>
+				<p><input type="password" required name="_password" placeholder="Password"></p>
+				<p><input type="submit" value="Login"></p>
+			</fieldset>
+		</form>
+		{% if error %}
+		    <div class="alert alert-danger">{{ error.message }}</div>
+		{% endif %}
+	</div>
+</body>
+</html>

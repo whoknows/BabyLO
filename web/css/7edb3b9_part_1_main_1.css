@@ -1,0 +1,77 @@
+#indexHeader {
+	background: center bottom url('../../Resources/public/images/wood.jpg');
+}
+
+#main-container {
+	background:white;
+	margin:20px 0;
+}
+
+.nav li a i {
+	margin-right: 5px;
+}
+
+th, td {
+	background-color: white;
+	text-align: center;
+	vertical-align: middle!important;
+}
+
+.score {
+	font-weight: bold;
+}
+
+.ui-widget {
+	font-size:0.9em;
+}
+
+#formSearchGame {
+	margin: 10px 0;
+}
+
+#formSearchGame .form-group {
+	margin:0 3px 0 0;
+}
+
+#formSearchGame .btn {
+	margin:3px 0 0 0;
+}
+
+.player a{
+	text-decoration: none;
+}
+
+#clickinfo {
+	font-size:14px;
+	margin-left:20px;
+}
+
+#form-recherche-error, #form-addgame-error{
+	display:none;
+}
+
+#formlogin div {
+	margin: 0 1px;
+}
+
+#playerstatstable {
+	margin-top: 40px;
+}
+
+#playerstatstable td {
+	font-weight: normal;
+	text-align: right;
+}
+
+#playerstatstable tr td:first-child {
+	font-weight: 300;
+	text-align: left;
+}
+
+.graphme {
+	cursor:pointer;
+}
+
+#alertbox {
+	margin-top:20px;
+}

@@ -8,11 +8,20 @@ th, td {
 	vertical-align: middle!important;
 }
 
+.ui-widget {
+	font-size:0.9em;
+}
+
 .player a{
 	text-decoration: none;
 }
 
-#form-addgame-error{
+#clickinfo {
+	font-size:14px;
+	margin-left:20px;
+}
+
+#form-recherche-error, #form-addgame-error{
 	display:none;
 }
 

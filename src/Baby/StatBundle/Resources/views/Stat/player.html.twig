@@ -14,7 +14,7 @@
 						<th>Nom</th>
 						<th>Victoires</th>
 						<th>Défaites</th>
-						<th>Ratio</th>
+						<th class="text-primary">Ratio</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -25,7 +25,7 @@
 							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
 							<td class="success">{{ player.victoires }}</td>
 							<td class="danger">{{ player.defaites }}</td>
-							<td class="{{ c }} score">{{ player.ratio }}</td>
+							<td class="{{ c }}"><strong>{{ player.ratio }}</strong></td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -38,7 +38,7 @@
 					<tr>
 						<th>#</th>
 						<th>Nom</th>
-						<th>Victoires</th>
+						<th class="text-primary">Victoires</th>
 						<th>Défaites</th>
 						<th>Ratio</th>
 					</tr>
@@ -49,7 +49,7 @@
 						<tr>
 							<td>{{ loop.index }}</td>
 							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
-							<td class="success score">{{ player.victoires }}</td>
+							<td class="success"><strong>{{ player.victoires }}</strong></td>
 							<td class="danger">{{ player.defaites }}</td>
 							<td class="{{ c }}">{{ player.ratio }}</td>
 						</tr>
@@ -65,7 +65,7 @@
 						<th>#</th>
 						<th>Nom</th>
 						<th>Victoires</th>
-						<th>Défaites</th>
+						<th class="text-primary">Défaites</th>
 						<th>Ratio</th>
 					</tr>
 				</thead>
@@ -76,7 +76,7 @@
 							<td>{{ loop.index }}</td>
 							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
 							<td class="success">{{ player.victoires }}</td>
-							<td class="danger score">{{ player.defaites }}</td>
+							<td class="danger"><strong>{{ player.defaites }}</strong></td>
 							<td class="{{ c }}">{{ player.ratio }}</td>
 						</tr>
 					{% endfor %}
@@ -85,7 +85,9 @@
 		</div>
 	</div>
 	<div class="row" id="morestat">
-		<p id="clickinfo"><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></p>
+		<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+			<h5><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></h5>
+		</div>
 		<div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
 			<table class="table table-striped hide" id="playerstatstable">
 				<tr>

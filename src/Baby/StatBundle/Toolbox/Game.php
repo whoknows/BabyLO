@@ -5,36 +5,45 @@ namespace Baby\StatBundle\Toolbox;
 class Game {
 
 	public static function getGameList($em, $limit = null, $filter = array()) {
-		$gamerepo   = $em->getRepository('BabyStatBundle:BabyGame');
-		$playerrepo = $em->getRepository('BabyStatBundle:BabyPlayer');
-		$playedrepo = $em->getRepository('BabyStatBundle:BabyPlayed');
-
 		$f = array();
 		if(isset($filter['date']) && $filter['date'] != ''){
 			$f['date'] = new \DateTime($filter['date']);
 		}
 
-		$repoGames = $gamerepo->findBy($f, array('date' => 'DESC', 'id' => 'DESC'));
-
-		$games = array();
-
-		if($repoGames !== null){
-			foreach($repoGames as $game){
-				$games[] = array(
-					"id" => $game->getId(),
-					"date" => $game->getDate(),
-					"scoreTeam1" => $game->getScoreTeam1(),
-					"scoreTeam2" => $game->getScoreTeam2(),
-					"player1Team1" => $playerrepo->find($playedrepo->findBy(array('idGame' => $game->getId(), 'team' => 1), array('idPlayer' => 'ASC'),1,0)[0]->getIdPlayer())->getName(),
-					"player2Team1" => $playerrepo->find($playedrepo->findBy(array('idGame' => $game->getId(), 'team' => 1), array('idPlayer' => 'DESC'),1,0)[0]->getIdPlayer())->getName(),
-					"player1Team2" => $playerrepo->find($playedrepo->findBy(array('idGame' => $game->getId(), 'team' => 2), array('idPlayer' => 'ASC'),1,0)[0]->getIdPlayer())->getName(),
-					"player2Team2" => $playerrepo->find($playedrepo->findBy(array('idGame' => $game->getId(), 'team' => 2), array('idPlayer' => 'DESC'),1,0)[0]->getIdPlayer())->getName(),
-				);
-			}
+		$query = $em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
+								FROM BabyStatBundle:BabyGame g
+								'. (isset($f['date']) ?  'WHERE g.date = :date' : '') .'
+								ORDER BY g.date DESC');
+		if(isset($f['date'])){
+			$query->setParameter('date', $f['date']);
 		}
 
-		if($limit !== null){
-			$games = array_slice($games, 0, $limit);
+		if($limit !== null) {
+			$query->setMaxResults($limit);
+		}
+
+		$games = array();
+		foreach($query->getResult() as $row){
+			$t1 = $em->createQuery('SELECT p.name as name
+									FROM BabyStatBundle:BabyPlayer p
+									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
+									WHERE pl.team = 1 AND pl.idGame = :game
+									ORDER BY pl.id ASC')->setParameter('game', $row['id']);
+			$t2 = $em->createQuery('SELECT p.name as name
+									FROM BabyStatBundle:BabyPlayer p
+									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
+									WHERE pl.team = 2 AND pl.idGame = :game
+									ORDER BY pl.id ASC')->setParameter('game', $row['id']);
+			$t1 = $t1->getResult();
+			$t2 = $t2->getResult();
+
+
+			$games[] = array_merge($row, array(
+				"player1Team1" => $t1[0]['name'],
+				"player2Team1" => $t1[1]['name'],
+				"player1Team2" => $t2[0]['name'],
+				"player2Team2" => $t2[1]['name'],
+			));
 		}
 
 		return $games;

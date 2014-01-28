@@ -5,41 +5,35 @@ namespace Baby\StatBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Baby\StatBundle\Toolbox;
 
 class StatController extends Controller {
 
 	public function indexAction() {
 		$session = new Session();
-		$session->start();
 
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
 			'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(),6),
-			'tops' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(),1, true),
-			'user' => $session->get('user', 'null'),
-			'rank' => $session->get('rank', -1)
+			'tops' => Toolbox\Player::getDailyTops($this->getDoctrine()->getManager()),
 		));
 	}
 
 	public function playerAction() {
 		$session = new Session();
-		$session->start();
 
 		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
 			'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), null, true),
-			'user' => $session->get('user', 'null'),
-			'rank' => $session->get('rank', -1)
 		));
 	}
 
 	public function playerstatAction() {
-		$session = new Session();
-		$session->start();
+		$usr = $this->getUser();
+		if($usr){
 
-		if($session->get('user') != null){
-
-			$id = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')))[0]->getId();
+			$id = $usr->getId();
 
 			$st = Toolbox\Stats::getAllStats($id);
 
@@ -50,8 +44,7 @@ class StatController extends Controller {
 			}
 
 			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
-				'user' => $session->get('user', 'null'),
-				'rank' => $session->get('rank', -1),
+				'user' => $this->getUser()->getUsername(),
 				'stat' => $st
 			));
 		} else {
@@ -60,13 +53,9 @@ class StatController extends Controller {
 	}
 
 	public function playerstatgraphAction() {
-		$session = new Session();
-		$session->start();
-
 		$function = 'get'.strtoupper($this->getRequest()->get('action'));
-		$player = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array('name' => $session->get('user')));
 
-		$response = new Response(json_encode(Toolbox\Stats::$function($player[0]->getId())));
+		$response = new Response(json_encode(Toolbox\Stats::$function($this->getUser()->getId())));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -94,17 +83,13 @@ class StatController extends Controller {
 
 	public function gameAction() {
 		$session = new Session();
-		$session->start();
 
 		$filters = array(
 			"date" => $this->getRequest()->get('date', date('d-m-Y')),
-			//"name" => $this->getRequest()->get('name', null),
 		);
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
 			'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
-			'user' => $session->get('user', 'null'),
-			'rank' => $session->get('rank', -1),
 			'date' => $filters['date'],
 		));
 	}
@@ -118,18 +103,16 @@ class StatController extends Controller {
 
 	public function addgameAction() {
 		$session = new Session();
-		$session->start();
 
-		if($session->get('user') !== null || $session->get('rank') >= 1){
-			return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-				'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array(),array('name' => 'ASC')),
-				'user' => $session->get('user', 'null'),
-				'rank' => $session->get('rank', -1)
-			));
-		} else {
-			return $this->redirect($this->generateUrl('babystat_accueil'));
+		if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			throw new AccessDeniedHttpException('Accès limité aux admin');
 		}
 
+		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
+			'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array(),array('name' => 'ASC')),
+			'user' => $session->get('user', 'null'),
+			'rank' => $session->get('rank', -1)
+		));
 	}
 
 	public function savegameAction() {
@@ -163,9 +146,27 @@ class StatController extends Controller {
 		return new Response('ok');
 	}
 
-	public function loginAction() {
+	/*public function loginAction() {
+		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			return $this->redirect($this->generateUrl('sdzblog_accueil'));
+		}
+
+		$request = $this->getRequest();
+		$session = $request->getSession();
+
+		if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+			$error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+		} else {
+			$error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+			$session->remove(SecurityContext::AUTHENTICATION_ERROR);
+		}
+
+		return $this->render('BabyUserBundle:Security:login.html.twig', array(
+			'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+			'error'         => $error,
+		));
+
 		$session = new Session();
-		$session->start();
 
 		$return = array(
 			"type" => "",
@@ -209,7 +210,7 @@ class StatController extends Controller {
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
-	}
+	}*/
 
 	public function logoutAction() {
 		$session = new Session();

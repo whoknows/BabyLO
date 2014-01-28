@@ -1,0 +1,7 @@
+parameters:
+#    baby_user.example.class: Baby\UserBundle\Example
+
+services:
+#    baby_user.example:
+#        class: %baby_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

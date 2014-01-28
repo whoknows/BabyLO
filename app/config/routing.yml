@@ -2,3 +2,12 @@ baby_stat:
     resource: "@BabyStatBundle/Resources/config/routing.yml"
     prefix:   /
 
+login:
+    pattern:   /login
+    defaults: { _controller: BabyUserBundle:Security:login }
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    pattern:   /logout

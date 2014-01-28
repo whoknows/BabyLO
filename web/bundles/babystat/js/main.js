@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	/*$('#formlogin').submit(function(e){
+	$('#formlogin').submit(function(e){
 		e.preventDefault();
 		$.post('login', {'login':$('#userlogin').val(), 'password':$('#userpwd').val()}, function(retdata){
 			if(retdata.type != 'error'){
@@ -11,7 +11,7 @@ $(document).ready(function(){
 			}
 		});
 		return false;
-	});*/
+	});
 
 	var t = window.location.pathname.split('/');
 
