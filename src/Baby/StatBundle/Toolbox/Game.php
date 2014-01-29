@@ -24,13 +24,13 @@ class Game {
 
 		$games = array();
 		foreach($query->getResult() as $row){
-			$t1 = $em->createQuery('SELECT p.name as name
-									FROM BabyStatBundle:BabyPlayer p
+			$t1 = $em->createQuery('SELECT p.username as name
+									FROM BabyUserBundle:User p
 									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
 									WHERE pl.team = 1 AND pl.idGame = :game
 									ORDER BY pl.id ASC')->setParameter('game', $row['id']);
-			$t2 = $em->createQuery('SELECT p.name as name
-									FROM BabyStatBundle:BabyPlayer p
+			$t2 = $em->createQuery('SELECT p.username as name
+									FROM BabyUserBundle:User p
 									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
 									WHERE pl.team = 2 AND pl.idGame = :game
 									ORDER BY pl.id ASC')->setParameter('game', $row['id']);

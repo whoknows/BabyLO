@@ -17,7 +17,7 @@
 			<div class="col-sm-10">
 				<select id="player1Team1" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.name }}</option>
+						<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -27,7 +27,7 @@
 			<div class="col-sm-10">
 				<select id="player2Team1" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.name }}</option>
+						<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -37,7 +37,7 @@
 			<div class="col-sm-10">
 				<select id="player1Team2" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.name }}</option>
+						<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -47,7 +47,7 @@
 			<div class="col-sm-10">
 				<select id="player2Team2" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.name }}</option>
+						<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>

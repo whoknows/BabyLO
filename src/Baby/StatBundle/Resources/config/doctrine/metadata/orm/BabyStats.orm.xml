@@ -18,7 +18,7 @@
     <field name="worstOponent" type="string" column="worst_oponent" length="50" nullable="false"/>
     <field name="bestMate" type="string" column="best_mate" length="50" nullable="false"/>
     <field name="worstMate" type="string" column="worst_mate" length="50" nullable="false"/>
-    <many-to-one field="player" target-entity="BabyPlayer">
+    <many-to-one field="player" target-entity="User">
       <join-columns>
         <join-column name="player_id" referenced-column-name="id"/>
       </join-columns>

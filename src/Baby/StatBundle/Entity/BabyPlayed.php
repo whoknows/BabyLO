@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BabyPlayed
  *
- * @ORM\Table(name="baby_played", indexes={@ORM\Index(name="id_player", columns={"id_player"}), @ORM\Index(name="id_game", columns={"id_game"})})
+ * @ORM\Table(name="baby_played", indexes={@ORM\Index(name="id_game", columns={"id_game"}), @ORM\Index(name="baby_played_ibfk_1", columns={"id_player"})})
  * @ORM\Entity
  */
 class BabyPlayed
@@ -29,9 +29,9 @@ class BabyPlayed
     private $team;
 
     /**
-     * @var \BabyPlayer
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="BabyPlayer")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_player", referencedColumnName="id")
      * })
@@ -86,10 +86,10 @@ class BabyPlayed
     /**
      * Set idPlayer
      *
-     * @param \Baby\StatBundle\Entity\BabyPlayer $idPlayer
+     * @param \Baby\StatBundle\Entity\User $idPlayer
      * @return BabyPlayed
      */
-    public function setIdPlayer(\Baby\StatBundle\Entity\BabyPlayer $idPlayer = null)
+    public function setIdPlayer(\Baby\StatBundle\Entity\User $idPlayer = null)
     {
         $this->idPlayer = $idPlayer;
 
@@ -99,7 +99,7 @@ class BabyPlayed
     /**
      * Get idPlayer
      *
-     * @return \Baby\StatBundle\Entity\BabyPlayer 
+     * @return \Baby\StatBundle\Entity\User 
      */
     public function getIdPlayer()
     {

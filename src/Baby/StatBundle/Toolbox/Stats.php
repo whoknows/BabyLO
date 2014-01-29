@@ -129,44 +129,44 @@ class Stats {
 					WHERE id_player = ".$id."
 				) as nbButTaken,
 				(
-					SELECT pl.name
+					SELECT pl.username
 					FROM baby_played p
 					INNER JOIN baby_game g ON p.id_game = g.id
 					INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-					INNER JOIN baby_player pl ON pl.id = p2.id_player
+					INNER JOIN User pl ON pl.id = p2.id_player
 					WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 2 AND score_team1 < score_team2, p2.team = 1 AND score_team1 > score_team2)
 					GROUP BY p2.id_player
 					ORDER BY COUNT(p.id) DESC
 					LIMIT 0,1
 				) as bestOponent,
 				(
-					SELECT pl.name
+					SELECT pl.username
 					FROM baby_played p
 					INNER JOIN baby_game g ON p.id_game = g.id
 					INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-					INNER JOIN baby_player pl ON pl.id = p2.id_player
+					INNER JOIN User pl ON pl.id = p2.id_player
 					WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 2 AND score_team1 > score_team2, p2.team = 1 AND score_team1 < score_team2)
 					GROUP BY p2.id_player
 					ORDER BY COUNT(p.id) DESC
 					LIMIT 0,1
 				) as worstOponent,
 				(
-					SELECT pl.name
+					SELECT pl.username
 					FROM baby_played p
 					INNER JOIN baby_game g ON p.id_game = g.id
 					INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-					INNER JOIN baby_player pl ON pl.id = p2.id_player
+					INNER JOIN User pl ON pl.id = p2.id_player
 					WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 1 AND score_team1 > score_team2, p2.team = 2  AND score_team1 < score_team2)
 					GROUP BY p2.id_player
 					ORDER BY COUNT(p.id) DESC
 					LIMIT 0,1
 				) as bestMate,
 				(
-					SELECT pl.name
+					SELECT pl.username
 					FROM baby_played p
 					INNER JOIN baby_game g ON p.id_game = g.id
 					INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-					INNER JOIN baby_player pl ON pl.id = p2.id_player
+					INNER JOIN User pl ON pl.id = p2.id_player
 					WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 1 AND score_team1 < score_team2, p2.team = 2  AND score_team1 > score_team2)
 					GROUP BY p2.id_player
 					ORDER BY COUNT(p.id) DESC
@@ -226,44 +226,44 @@ class Stats {
 				WHERE id_player = ".$id."
 			),
 			(
-				SELECT pl.name
+				SELECT pl.username
 				FROM baby_played p
 				INNER JOIN baby_game g ON p.id_game = g.id
 				INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-				INNER JOIN baby_player pl ON pl.id = p2.id_player
+				INNER JOIN User pl ON pl.id = p2.id_player
 				WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 2 AND score_team1 < score_team2, p2.team = 1 AND score_team1 > score_team2)
 				GROUP BY p2.id_player
 				ORDER BY COUNT(p.id) DESC
 				LIMIT 0,1
 			),
 			(
-				SELECT pl.name
+				SELECT pl.username
 				FROM baby_played p
 				INNER JOIN baby_game g ON p.id_game = g.id
 				INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-				INNER JOIN baby_player pl ON pl.id = p2.id_player
+				INNER JOIN User pl ON pl.id = p2.id_player
 				WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 2 AND score_team1 > score_team2, p2.team = 1 AND score_team1 < score_team2)
 				GROUP BY p2.id_player
 				ORDER BY COUNT(p.id) DESC
 				LIMIT 0,1
 			),
 			(
-				SELECT pl.name
+				SELECT pl.username
 				FROM baby_played p
 				INNER JOIN baby_game g ON p.id_game = g.id
 				INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-				INNER JOIN baby_player pl ON pl.id = p2.id_player
+				INNER JOIN User pl ON pl.id = p2.id_player
 				WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 1 AND score_team1 > score_team2, p2.team = 2  AND score_team1 < score_team2)
 				GROUP BY p2.id_player
 				ORDER BY COUNT(p.id) DESC
 				LIMIT 0,1
 			),
 			(
-				SELECT pl.name
+				SELECT pl.username
 				FROM baby_played p
 				INNER JOIN baby_game g ON p.id_game = g.id
 				INNER JOIN baby_played p2 ON p2.id_game = g.id AND p2.id_player != p.id_player
-				INNER JOIN baby_player pl ON pl.id = p2.id_player
+				INNER JOIN User pl ON pl.id = p2.id_player
 				WHERE p.id_player = ".$id." AND IF(p.team = 1, p2.team = 1 AND score_team1 < score_team2, p2.team = 2  AND score_team1 > score_team2)
 				GROUP BY p2.id_player
 				ORDER BY COUNT(p.id) DESC

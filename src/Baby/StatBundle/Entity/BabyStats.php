@@ -99,9 +99,9 @@ class BabyStats
     private $worstMate;
 
     /**
-     * @var \BabyPlayer
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="BabyPlayer")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="player_id", referencedColumnName="id")
      * })
@@ -376,10 +376,10 @@ class BabyStats
     /**
      * Set player
      *
-     * @param \Baby\StatBundle\Entity\BabyPlayer $player
+     * @param \Baby\StatBundle\Entity\User $player
      * @return BabyStats
      */
-    public function setPlayer(\Baby\StatBundle\Entity\BabyPlayer $player = null)
+    public function setPlayer(\Baby\StatBundle\Entity\User $player = null)
     {
         $this->player = $player;
 
@@ -389,7 +389,7 @@ class BabyStats
     /**
      * Get player
      *
-     * @return \Baby\StatBundle\Entity\BabyPlayer 
+     * @return \Baby\StatBundle\Entity\User 
      */
     public function getPlayer()
     {

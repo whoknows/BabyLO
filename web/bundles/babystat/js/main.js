@@ -1,18 +1,5 @@
 $(document).ready(function(){
 
-	$('#formlogin').submit(function(e){
-		e.preventDefault();
-		$.post('login', {'login':$('#userlogin').val(), 'password':$('#userpwd').val()}, function(retdata){
-			if(retdata.type != 'error'){
-				window.location.reload();
-			} else {
-				$('#userlogin').parent().addClass('has-error');
-				$('#userpwd').parent().addClass('has-error');
-			}
-		});
-		return false;
-	});
-
 	var t = window.location.pathname.split('/');
 
 	switch(t[t.length - 1]) {

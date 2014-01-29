@@ -109,7 +109,7 @@ class StatController extends Controller {
 		}
 
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-			'players' => $playerrepo = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer')->findBy(array(),array('name' => 'ASC')),
+			'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(),array('username' => 'ASC')),
 			'user' => $session->get('user', 'null'),
 			'rank' => $session->get('rank', -1)
 		));
@@ -133,7 +133,7 @@ class StatController extends Controller {
 				for($j=1; $j<=2; $j++){
 					$played = new \Baby\StatBundle\Entity\BabyPlayed();
 					$played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
-					$played->setIdPlayer($em->getRepository('BabyStatBundle:BabyPlayer')->find($request->get('joueur'.$j.'equipe'.$i)));
+					$played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->get('joueur'.$j.'equipe'.$i)));
 					$played->setTeam($i);
 					$em->persist($played);
 					$em->flush();
@@ -187,7 +187,7 @@ class StatController extends Controller {
 				"msg" => "Spécifiez un login/password."
 			);
 		} else {
-			$plr = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyPlayer');
+			$plr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 			$usr = $plr->findBy(array('name' => $login, 'password' => sha1($password)));
 
 			if(sizeof($usr) != 1){
