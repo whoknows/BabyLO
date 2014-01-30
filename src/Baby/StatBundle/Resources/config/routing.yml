@@ -33,3 +33,11 @@ babystat_ajoutpartie:
 babystat_savepartie:
     path:     /savegame
     defaults: { _controller: BabyStatBundle:Stat:savegame }
+
+babystat_matchmaker:
+    path:     /matchmaker
+    defaults: { _controller: BabyStatBundle:Stat:matchmaker }
+
+babystat_matchmaking:
+    path:     /matchmaking
+    defaults: { _controller: BabyStatBundle:Stat:matchmaking }

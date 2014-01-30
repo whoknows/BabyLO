@@ -80,7 +80,7 @@ class Player {
 		);
 
 		foreach($query->getResult() as $d){
-			$data['dates'][] = $d['date'];
+			$data['dates'][] = $d['date']->format('d-m-Y');
 			$data['victoires'][] = intval($d['victoires']);
 			$data['defaites'][] = intval($d['defaites']);
 			$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])),2);

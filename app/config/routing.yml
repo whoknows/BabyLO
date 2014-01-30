@@ -1,12 +1,12 @@
 login:
-    pattern:   /login
+    path:   /login
     defaults: { _controller: BabyUserBundle:Security:login }
 
 login_check:
-    pattern:   /login_check
+    path:   /login_check
 
 logout:
-    pattern:   /logout
+    path:   /logout
 
 baby_stat:
     resource: "@BabyStatBundle/Resources/config/routing.yml"

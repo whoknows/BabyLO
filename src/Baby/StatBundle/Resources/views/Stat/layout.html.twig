@@ -31,6 +31,7 @@
 						<li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a href="{{ path('babystat_accueil') }}"><i class="glyphicon glyphicon-home"></i>Home</a></li>
 						<li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a href="{{ path('babystat_partie') }}"><i class="glyphicon glyphicon-star"></i>Parties</a></li>
 						<li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a href="{{ path('babystat_joueur') }}"><i class="glyphicon glyphicon-user"></i>Joueurs</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}><a href="{{ path('babystat_matchmaker') }}"><i class="glyphicon glyphicon-cog"></i>Match Maker</a></li>
 					</ul>
 
 					{% if app.user != null %}
@@ -47,11 +48,11 @@
 							</li>
 						</ul>
 					{% else %}
-						<form class="navbar-form navbar-right" id="formlogin" method="POST" action="{{ path('login_check') }}">
+						<form class="navbar-form navbar-right" id="formloginnav" method="POST" action="{{ path('login_check') }}">
 							<div class="form-group">
-								<input type="text" placeholder="Login" class="form-control" name="_username">
+								<input type="text" placeholder="Login" class="form-control" id="username" name="_username">
 							</div><div class="form-group">
-								<input type="password" placeholder="Password" class="form-control" name="_password">
+								<input type="password" placeholder="Password" class="form-control" id="password" name="_password">
 							</div><div class="form-group">
 								<button type="submit" class="btn btn-success btn-sm">Sign in</button>
 							</div>

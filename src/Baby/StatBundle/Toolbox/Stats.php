@@ -38,11 +38,6 @@ class Stats {
 		return self::formatData($sql);
 	}
 
-	public static function getRatio($id) {
-		$sql = "";
-		return self::formatData($sql);
-	}
-
 	public static function getNbButScored($id) {
 		$sql = "SELECT SUM(IF(team = 1, score_team1, score_team2)) as ct, `date`
 				FROM baby_played p
@@ -61,10 +56,6 @@ class Stats {
 				GROUP BY `date`
 				ORDER BY `date` ASC";
 		return self::formatData($sql);
-	}
-
-	public static function getDailyBest() {
-		$sql = "";
 	}
 
 	public static function formatData($sql){

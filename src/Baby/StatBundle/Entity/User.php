@@ -28,6 +28,13 @@ class User
      */
     private $username;
 
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="position", type="string", length=255, nullable=false)
+     */
+    private $position;
+
     /**
      * @var string
      *
@@ -69,7 +76,7 @@ class User
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -92,11 +99,34 @@ class User
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
         return $this->username;
+    }
+
+	/**
+     * Set position
+     *
+     * @param string $position
+     * @return User
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 
     /**
@@ -115,7 +145,7 @@ class User
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -138,7 +168,7 @@ class User
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -171,7 +201,7 @@ class User
     /**
      * Get role
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRole()
     {
