@@ -10,6 +10,7 @@
 			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
 			<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
 			<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
 
@@ -43,6 +44,9 @@
 									{% if is_granted('ROLE_ADMIN') %}
 										<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-plus"></i>Ajouter une partie</a></li>
 									{% endif %}
+									{% if is_granted('ROLE_SUPER_ADMIN') %}
+										<li><a href="{{ path('babystat_useradmin') }}"><i class="glyphicon glyphicon-list"></i>Gestion des utilisateurs</a></li>
+									{% endif %}
 									<li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 								</ul>
 							</li>
@@ -74,6 +78,7 @@
 			<script type="text/javascript" src="{{ asset('js/vendor/highcharts.js') }}"></script>
 			<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
 			<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
+			<script type="text/javascript" src="{{ asset('js/vendor/chosen.jquery.min.js') }}"></script>
 			<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 

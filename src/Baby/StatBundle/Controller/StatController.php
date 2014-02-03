@@ -171,4 +171,17 @@ class StatController extends Controller {
 		return $response;
 	}
 
+	public function useradminAction() {
+		if (!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+			throw new AccessDeniedHttpException('Accès limité aux supers admin.');
+		}
+
+		$em = $this->getDoctrine()->getManager();
+
+		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
+					'users' => $em->getRepository('BabyStatBundle:User')->findAll(),
+					'roles' => $em->getRepository('BabyStatBundle:Roles')->findAll()
+		));
+	}
+
 }

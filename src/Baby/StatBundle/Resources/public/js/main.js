@@ -166,6 +166,9 @@ $(document).ready(function(){
 				}
 			});
 		break;
+		case 'useradmin':
+			$('.role-selector').chosen();
+		break;
 		case '':
 			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata){
 				$('#nbbaby').highcharts({

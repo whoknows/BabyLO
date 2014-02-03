@@ -30,10 +30,6 @@ class Player {
 				'end' => new \DateTime(date('Y-m-t'))
 			));
 
-		if($limit !== null) {
-			$query->setMaxResults($limit);
-		}
-
 		foreach($query->getResult() as $p) {
 			$p['ratio'] = round($p['victoires'] / ($p['victoires'] + $p['defaites']),2);
 			$players[$p['id']] = $p;
@@ -51,16 +47,18 @@ class Player {
 		} else {
 			self::aasort($players, 'ratio');
 			$players = array_values($players);
+			if($limit !== null) {
+				$players = array_slice($players, 0, $limit);
+			}
 		}
+
 
 		return $players;
 	}
 
-	public static function getBasePlayers($em, $limit = null) {
+	public static function getBasePlayers($em) {
 		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyUserBundle:User p');
-		if($limit !== null) {
-			$query->setMaxResults($limit);
-		}
+
 		$players = array();
 		try {
 			foreach($query->getResult() as $p){
