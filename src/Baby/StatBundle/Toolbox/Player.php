@@ -5,6 +5,8 @@ namespace Baby\StatBundle\Toolbox;
 class Player {
 
 	public static function getPlayerList($em, $limit = null, $multi = false) {
+		$players = self::getBasePlayers($em, $limit);
+
 		$query = $em->createQuery(
 			'SELECT p.id, p.username as name,
 					SUM(
@@ -22,16 +24,19 @@ class Player {
 			FROM BabyUserBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
-			GROUP BY p.id');
+			WHERE g.date BETWEEN :start AND :end
+			GROUP BY p.id')->setParameters(array(
+				'start' => new \DateTime(date('Y-m-01')),
+				'end' => new \DateTime(date('Y-m-t'))
+			));
 
 		if($limit !== null) {
 			$query->setMaxResults($limit);
 		}
 
-		$players = $query->getResult();
-
-		foreach($players as &$p) {
+		foreach($query->getResult() as $p) {
 			$p['ratio'] = round($p['victoires'] / ($p['victoires'] + $p['defaites']),2);
+			$players[$p['id']] = $p;
 		}
 
 		if($multi) {
@@ -48,6 +53,23 @@ class Player {
 			$players = array_values($players);
 		}
 
+		return $players;
+	}
+
+	public static function getBasePlayers($em, $limit = null) {
+		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyUserBundle:User p');
+		if($limit !== null) {
+			$query->setMaxResults($limit);
+		}
+		$players = array();
+		try {
+			foreach($query->getResult() as $p){
+				$players[$p['id']] = $p;
+				$players[$p['id']]['ratio'] = 0;
+			}
+		} catch (\Exception $e){
+			echo $e->getMessage();
+		}
 		return $players;
 	}
 
@@ -69,8 +91,12 @@ class Player {
 			FROM BabyUserBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
-			WHERE p.id = :id
-			GROUP BY g.date')->setParameter('id', $id);
+			WHERE p.id = :id AND g.date BETWEEN :start AND :end
+			GROUP BY g.date')->setParameters(array(
+				'start' => new \DateTime(date('Y-m-01')),
+				'end' => new \DateTime(date('Y-m-t')),
+				'id' => $id
+			));
 
 		$data = array(
 			'dates' => array(),
@@ -112,7 +138,7 @@ class Player {
 		return array(
 			'best' => sizeof($q1) > 0 ? $q1[0]['name'] : 'N/A',
 			'worst' => sizeof($q2) > 0 ? $q2[0]['name'] : 'N/A',
-			'nextchoco' => $q3[sizeof($q3)-1]['name'],
+			'nextchoco' => sizeof($q3) > 0 ? $q3[sizeof($q3)-1]['name'] : 'N/A',
 			'lastchoco' => 'N/A',
 		);
 	}

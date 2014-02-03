@@ -29,7 +29,7 @@ class StatController extends Controller {
 
 			$id = $usr->getId();
 
-			$st = Toolbox\Stats::getAllStats($id);
+			$st = Toolbox\Stats::getAllStats($id, false);
 
 			if (sizeof($st) == 0) {
 				$st = array();
@@ -58,12 +58,16 @@ class StatController extends Controller {
 	public function morestatAction() {
 		$id = $this->getRequest()->get('playerId');
 		$em = $this->getDoctrine()->getManager();
-		$st = Toolbox\Stats::getAllStats($id);
+		$st = Toolbox\Stats::getAllStats($id, true);
 
 		if (sizeof($st) == 0) {
 			$st = array();
 		} else {
-			$st['ratio'] = round($st['nbWin'] / $st['nbGames'], 2);
+			if($st['nbGames'] == 0){
+				$st['ratio'] = 0;
+			} else {
+				$st['ratio'] = round($st['nbWin'] / $st['nbGames'], 2);
+			}
 		}
 
 		$response = new Response(json_encode(array(
@@ -133,13 +137,32 @@ class StatController extends Controller {
 		return new Response('ok');
 	}
 
+	public function delgameAction() {
+		$em = $this->getDoctrine()->getManager();
+		$id = $this->getRequest()->get('id');
+
+		$game = $em->getRepository('BabyStatBundle:BabyGame')->find($id);
+
+		$played = $em->getRepository('BabyStatBundle:BabyPlayed')->findBy(array('idGame' => $id));
+
+		foreach($played as $p){
+			$em->remove($p);
+			$em->flush();
+		}
+
+		$em->remove($game);
+		$em->flush();
+
+		return new Response('ok');
+	}
+
 	public function matchmakerAction() {
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
 					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
 		));
 	}
 
-	public function matchmaking() {
+	public function matchmakingAction() {
 		$players = $this->getRequest()->get('ids', array());
 
 		$response = new Response(json_encode(Toolbox\Game::matchMaking($players)));

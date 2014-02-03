@@ -41,3 +41,7 @@ babystat_matchmaker:
 babystat_matchmaking:
     path:     /matchmaking
     defaults: { _controller: BabyStatBundle:Stat:matchmaking }
+
+babystat_delgame:
+    path:     /delgame
+    defaults: { _controller: BabyStatBundle:Stat:delgame }

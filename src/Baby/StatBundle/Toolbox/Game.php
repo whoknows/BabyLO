@@ -13,7 +13,7 @@ class Game {
 		$query = $em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
 								FROM BabyStatBundle:BabyGame g
 								' . (isset($f['date']) ? 'WHERE g.date = :date' : '') . '
-								ORDER BY g.date DESC');
+								ORDER BY g.date DESC, g.id DESC');
 		if (isset($f['date'])) {
 			$query->setParameter('date', $f['date']);
 		}

@@ -58,6 +58,15 @@ $(document).ready(function(){
 			$('#gamedate').pickadate({format : 'dd-mm-yyyy', formatSubmit:'dd-mm-yyyy'}).change(function(){
 				$('#formSearchGame').submit();
 			});
+
+			$('.del-game').click(function(){
+				var tr = $(this).parent().parent();
+				if(confirm('Supprimer cette partie ?')){
+					$.post('delgame', {id:$(this).data('id')}, function(){
+						tr.remove();
+					});
+				}
+			});
 		break;
 		case 'player':
 			$('.player').click(function(){
@@ -66,7 +75,11 @@ $(document).ready(function(){
 
 					if(typeof pdata.stats.nbGames !== 'undefined'){
 						for(var i in pdata.stats){
-							$('#stat-'+i).text(pdata.stats[i]);
+							if(pdata.stats[i] === null){
+								$('#stat-'+i).text('N/A');
+							} else {
+								$('#stat-'+i).text(pdata.stats[i]);
+							}
 						}
 						$('#playerstatstable').removeClass('hide');
 					}
@@ -101,9 +114,13 @@ $(document).ready(function(){
 							name: 'Ratio',
 							data: pdata.graph.ratio,
 							color: '#2a9fd6'
-						}]
+						}],
+						tooltip: {
+							shared:true,
+							borderRadius:0
+						}
 					});
-				});
+				},'json');
 				var the_id = $(this).children('a').attr("href");
 				$('html, body').animate({
 					scrollTop:$(the_id).offset().top

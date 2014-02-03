@@ -1,18 +1,5 @@
 $(document).ready(function(){
 
-	$('#formlogin').submit(function(e){
-		e.preventDefault();
-		$.post('login', {'login':$('#userlogin').val(), 'password':$('#userpwd').val()}, function(retdata){
-			if(retdata.type != 'error'){
-				window.location.reload();
-			} else {
-				$('#userlogin').parent().addClass('has-error');
-				$('#userpwd').parent().addClass('has-error');
-			}
-		});
-		return false;
-	});
-
 	var t = window.location.pathname.split('/');
 
 	switch(t[t.length - 1]) {
@@ -22,19 +9,19 @@ $(document).ready(function(){
 
 				var error = "";
 
-				if($('#score2').val() == $('#score1').val()){
+				if($('#score2').val() === $('#score1').val()){
 					error = 'Erreur : Les deux scores ne peuvent pas être égaux.';
 				}
 
-				if($('#player1Team1').val() == $('#player2Team1').val() || $('#player1Team2').val() == $('#player2Team2').val()){
+				if($('#player1Team1').val() === $('#player2Team1').val() || $('#player1Team2').val() === $('#player2Team2').val()){
 					error = 'Erreur : Même joueur présent dans la même équipe';
 				}
 
-				if($('#player1Team1').val() == $('#player1Team2').val() || $('#player1Team1').val() == $('#player2Team2').val() || $('#player2Team1').val() == $('#player1Team2').val() || $('#player2Team1').val() == $('#player2Team2').val()){
-					error = 'Erreur : Même joueur présent dans deux équipes'
+				if($('#player1Team1').val() === $('#player1Team2').val() || $('#player1Team1').val() === $('#player2Team2').val() || $('#player2Team1').val() === $('#player1Team2').val() || $('#player2Team1').val() === $('#player2Team2').val()){
+					error = 'Erreur : Même joueur présent dans deux équipes';
 				}
 
-				if($('#datepartie').val().trim() == ''){
+				if($('#datepartie').val().trim() === ''){
 					error = "Erreur : Veuillez spécifier une date";
 				}
 
@@ -51,7 +38,7 @@ $(document).ready(function(){
 						score2:$('#score2').val()
 					};
 					$.post('savegame', data, function(ret){
-						if(ret == 'ok'){
+						if(ret === 'ok'){
 							$('#submitformgame').prop('disabled', true);
 							$('#form-addgame-error').removeClass('text-danger').addClass('text-success');
 							$('#form-addgame-error').text('Partie enregistrée !').show("blind").delay(2000).hide(300, function(){
@@ -71,6 +58,15 @@ $(document).ready(function(){
 			$('#gamedate').pickadate({format : 'dd-mm-yyyy', formatSubmit:'dd-mm-yyyy'}).change(function(){
 				$('#formSearchGame').submit();
 			});
+
+			$('.del-game').click(function(){
+				var tr = $(this).parent().parent();
+				if(confirm('Supprimer cette partie ?')){
+					$.post('delgame', {id:$(this).data('id')}, function(){
+						tr.remove();
+					});
+				}
+			});
 		break;
 		case 'player':
 			$('.player').click(function(){
@@ -79,7 +75,11 @@ $(document).ready(function(){
 
 					if(typeof pdata.stats.nbGames !== 'undefined'){
 						for(var i in pdata.stats){
-							$('#stat-'+i).text(pdata.stats[i]);
+							if(pdata.stats[i] === null){
+								$('#stat-'+i).text('N/A');
+							} else {
+								$('#stat-'+i).text(pdata.stats[i]);
+							}
 						}
 						$('#playerstatstable').removeClass('hide');
 					}
@@ -114,9 +114,13 @@ $(document).ready(function(){
 							name: 'Ratio',
 							data: pdata.graph.ratio,
 							color: '#2a9fd6'
-						}]
+						}],
+						tooltip: {
+							shared:true,
+							borderRadius:0
+						}
 					});
-				});
+				},'json');
 				var the_id = $(this).children('a').attr("href");
 				$('html, body').animate({
 					scrollTop:$(the_id).offset().top
@@ -141,6 +145,25 @@ $(document).ready(function(){
 						}]
 					});
 				},'json');
+			});
+		break;
+		case 'matchmaker' :
+			$('.clickme-player').click(function(){
+				$(this).toggleClass('active');
+			});
+
+			$('.buttonmaker').click(function(){
+				var players = [];
+				$('.clickme-player.active').each(function(){
+					players.push($(this).data('id'));
+				});
+				if(players.length < 4){
+					$('#error-matchmaking').show("blind").delay(3000).hide("blind");
+				} else {
+					$.post('matchmaking', {ids:players}, function(pdata){
+						console.log(pdata);
+					});
+				}
 			});
 		break;
 		case '':
