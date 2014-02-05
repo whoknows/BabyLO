@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} - Joueurs{% endblock %}
 
 {% block body %}
+<div class="container">
 	<h3>Joueurs</h3>
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
@@ -19,13 +20,13 @@
 				</thead>
 				<tbody>
 					{% for player in players.ratio %}
-						<tr>
-							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
-							<td class="success">{{ player.victoires }}</td>
-							<td class="danger">{{ player.defaites }}</td>
-							<td><strong>{{ player.ratio }}</strong></td>
-						</tr>
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="success">{{ player.victoires }}</td>
+						<td class="danger">{{ player.defaites }}</td>
+						<td><strong>{{ player.ratio }}</strong></td>
+					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -44,13 +45,13 @@
 				</thead>
 				<tbody>
 					{% for player in players.victoires %}
-						<tr>
-							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
-							<td class="success"><strong>{{ player.victoires }}</strong></td>
-							<td class="danger">{{ player.defaites }}</td>
-							<td>{{ player.ratio }}</td>
-						</tr>
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="success"><strong>{{ player.victoires }}</strong></td>
+						<td class="danger">{{ player.defaites }}</td>
+						<td>{{ player.ratio }}</td>
+					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -69,13 +70,13 @@
 				</thead>
 				<tbody>
 					{% for player in players.defaites %}
-						<tr>
-							<td>{{ loop.index }}</td>
-							<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
-							<td class="success">{{ player.victoires }}</td>
-							<td class="danger"><strong>{{ player.defaites }}</strong></td>
-							<td>{{ player.ratio }}</td>
-						</tr>
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="success">{{ player.victoires }}</td>
+						<td class="danger"><strong>{{ player.defaites }}</strong></td>
+						<td>{{ player.ratio }}</td>
+					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -83,66 +84,74 @@
 	</div>
 	<div class="row" id="morestat">
 		<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-			<h5><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></h5>
+			<h5 id="playerstatnotice"><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></h5>
+		</div>
+		<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+			<h3 id="playerstattitle" class="hide">Statistiques détaillées</h3>
+			<!--<ul class="nav nav-pills hide" id="playerstatperiod">
+				<li class="active"><a href="#">Ce mois ci</a></li>
+				<li><a href="#">Le mois dernier</a></li>
+			</ul>-->
 		</div>
 		<div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
-			<table class="table table-striped hide" id="playerstatstable">
-				<tr>
-					<td>Position favorite</td>
-					<td id="stat-position"></td>
-				</tr>
-				<tr>
-					<td>Nombre de parties jouées</td>
-					<td id="stat-nbGames"></td>
-				</tr>
-				<tr>
-					<td>Nombre de parties gagnées</td>
-					<td id="stat-nbWin"></td>
-				</tr>
-				<tr>
-					<td>Nombre de parties perdues</td>
-					<td id="stat-nbLose"></td>
-				</tr>
-				<tr>
-					<td>Ratio</td>
-					<td id="stat-ratio"></td>
-				</tr>
-				<tr>
-					<td>Nombre de parties perdues fanny</td>
-					<td id="stat-nbWinFanny"></td>
-				</tr>
-				<tr>
-					<td>Nombre de parties gagnées fanny</td>
-					<td id="stat-nbLoseFanny"></td>
-				</tr>
-				<tr>
-					<td>Nombre de buts marqués</td>
-					<td id="stat-nbButScored"></td>
-				</tr>
-				<tr>
-					<td>Nombre de buts pris</td>
-					<td id="stat-nbButTaken"></td>
-				</tr>
-				<tr>
-					<td>Pire ennemi</td>
-					<td id="stat-bestOponent"></td>
-				</tr>
-				<tr>
-					<td>Moins bon adversaire</td>
-					<td id="stat-worstOponent"></td>
-				</tr>
-				<tr>
-					<td>Meilleur partenaire</td>
-					<td id="stat-bestMate"></td>
-				</tr>
-				<tr>
-					<td>Pire partenaire</td>
-					<td id="stat-worstMate"></td>
-				</tr>
-			</table>
+			<ul class="list-group hide" id="playerstatstable">
+				<li class="list-group-item">
+					<span class="badge" id="stat-position"></span>
+					Position favorite
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbGames"></span>
+					Nombre de parties jouées
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbWin"></span>
+					Nombre de parties gagnées
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbLose"></span>
+					Nombre de parties perdues
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-ratio"></span>
+					Ratio
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbWinFanny"></span>
+					Nombre de parties perdues fanny
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbLoseFanny"></span>
+					Nombre de parties gagnées fanny
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbButScored"></span>
+					Nombre de buts marqués
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-nbButTaken"></span>
+					Nombre de buts pris
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-bestOponent"></span>
+					Pire ennemi
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-worstOponent"></span>
+					Moins bon adversaire
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-bestMate"></span>
+					Meilleur partenaire
+				</li>
+				<li class="list-group-item">
+					<span class="badge" id="stat-worstMate"></span>
+					Pire partenaire
+				</li>
+			</ul>
 		</div>
 		<div class="col-md-7 col-xs-12 col-lg-7 col-sm-12">
-			<div id="chart1" style="width:100%; height:400;"></div>
+			<div id="chart1" style="width:100%; height:450px;"></div>
 		</div>
 	</div>
+</div>
 {% endblock %}

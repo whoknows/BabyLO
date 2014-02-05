@@ -81,7 +81,8 @@ $(document).ready(function(){
 								$('#stat-'+i).text(pdata.stats[i]);
 							}
 						}
-						$('#playerstatstable').removeClass('hide');
+						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hide');
+						$('#playerstatnotice').addClass('hide');
 					}
 
 					$('#chart1').highcharts({

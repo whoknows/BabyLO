@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} - Parties{% endblock %}
 
 {% block body %}
+<div class="container">
 	<h3>Parties</h3>
 	<form class="form-inline" role="form" id="formSearchGame" method="POST" action="{{ path('babystat_partie') }}">
 		<div class="form-group">
@@ -33,18 +34,18 @@
 			{% for game in games %}
 				{% set c1 = (game.scoreTeam1 > game.scoreTeam2) ? 'success' : 'danger' %}
 				{% set c2 = (game.scoreTeam1 < game.scoreTeam2) ? 'success' : 'danger' %}
-				<tr>
-					<td>{{ game.date|date("d/m/Y") }}</td>
-					<td class="{{ c1 }}">{{ game.player1Team1 }}</td>
-					<td class="{{ c1 }}">{{ game.player2Team1 }}</td>
-					<td class="{{ c1 }}"><strong>{{ game.scoreTeam1 }}</strong></td>
-					<td class="{{ c2 }}">{{ game.player1Team2 }}</td>
-					<td class="{{ c2 }}">{{ game.player2Team2 }}</td>
-					<td class="{{ c2 }}"><strong>{{ game.scoreTeam2 }}</strong></td>
+			<tr>
+				<td>{{ game.date|date("d/m/Y") }}</td>
+				<td class="{{ c1 }}">{{ game.player1Team1 }}</td>
+				<td class="{{ c1 }}">{{ game.player2Team1 }}</td>
+				<td class="{{ c1 }}"><strong>{{ game.scoreTeam1 }}</strong></td>
+				<td class="{{ c2 }}">{{ game.player1Team2 }}</td>
+				<td class="{{ c2 }}">{{ game.player2Team2 }}</td>
+				<td class="{{ c2 }}"><strong>{{ game.scoreTeam2 }}</strong></td>
 					{% if is_granted('ROLE_ADMIN') %}
-						<td><i class="glyphicon glyphicon-remove del-game text-danger" data-id="{{ game.id }}"></i></td>
+				<td><i class="glyphicon glyphicon-remove del-game text-danger" data-id="{{ game.id }}"></i></td>
 					{% endif %}
-				</tr>
+			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
@@ -55,5 +56,5 @@
 		<li><a href="#">4</a></li>
 		<li><a href="#">5</a></li>
 	</ul>-->
-
+</div>
 {% endblock %}

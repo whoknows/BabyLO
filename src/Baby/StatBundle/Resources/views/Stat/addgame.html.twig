@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} - Ajouter Partie{% endblock %}
 
 {% block body %}
+<div class="container">
 	<form class="form-horizontal" role="form" id="form-addgame">
 		<h2>Ajouter une partie</h2>
 		<br />
@@ -17,7 +18,7 @@
 			<div class="col-sm-10">
 				<select id="player1Team1" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.username }}</option>
+					<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -27,7 +28,7 @@
 			<div class="col-sm-10">
 				<select id="player2Team1" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.username }}</option>
+					<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -37,7 +38,7 @@
 			<div class="col-sm-10">
 				<select id="player1Team2" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.username }}</option>
+					<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -47,7 +48,7 @@
 			<div class="col-sm-10">
 				<select id="player2Team2" class="form-control">
 					{% for player in players %}
-						<option value="{{ player.id }}">{{ player.username }}</option>
+					<option value="{{ player.id }}">{{ player.username }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -57,7 +58,7 @@
 			<div class="col-sm-10">
 				<select id="score1" class="form-control">
 					{% for i in 0..10 %}
-						<option value="{{ i }}">{{ i }}</option>
+					<option value="{{ i }}">{{ i }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -67,7 +68,7 @@
 			<div class="col-sm-10">
 				<select id="score2" class="form-control">
 					{% for i in 0..10 %}
-						<option value="{{ i }}">{{ i }}</option>
+					<option value="{{ i }}">{{ i }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -79,4 +80,5 @@
 			</div>
 		</div>
 	</form>
+</div>
 {% endblock %}

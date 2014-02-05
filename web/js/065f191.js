@@ -81,7 +81,8 @@ $(document).ready(function(){
 								$('#stat-'+i).text(pdata.stats[i]);
 							}
 						}
-						$('#playerstatstable').removeClass('hide');
+						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hide');
+						$('#playerstatnotice').addClass('hide');
 					}
 
 					$('#chart1').highcharts({
@@ -165,6 +166,9 @@ $(document).ready(function(){
 					});
 				}
 			});
+		break;
+		case 'useradmin':
+			$('.role-selector').chosen();
 		break;
 		case '':
 			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata){

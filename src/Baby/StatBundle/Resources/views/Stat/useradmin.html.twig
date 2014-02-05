@@ -1,0 +1,34 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h3>Utilisateurs</h3>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Utilisateur</th>
+				<th>Roles</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				<td>{{ user.getUsername }}</td>
+				<td>
+					<select class="role-selector input-lg" multiple="multiple">
+					{% for role in roles %}
+						<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.nombre }}</option>
+					{% endfor %}
+					</select>
+				</td>
+				<td><i class="glyphicon glyphicon-remove delete-user text-danger"></i></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

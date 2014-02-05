@@ -1,3 +1,7 @@
+#main-container, #morestat {
+	margin-top:45px;
+}
+
 .nav li a i {
 	margin-right: 5px;
 }
@@ -24,17 +28,10 @@ th, td {
 	margin-top: 40px;
 }
 
-#playerstatstable td {
-	font-weight: normal;
-	text-align: right;
-}
-
-#playerstatstable tr td:first-child {
-	font-weight: 300;
-	text-align: left;
+#playerstatstable li .badge {
+	color: #222;
 }
 
 .graphme, .del-game {
 	cursor:pointer;
 }
-
