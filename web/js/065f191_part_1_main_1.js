@@ -69,9 +69,22 @@ $(document).ready(function(){
 			});
 		break;
 		case 'player':
-			$('.player').click(function(){
-				var name = $(this).text();
-				$.post('morestat', {playerId: $(this).data('id')}, function(pdata){
+			$('.player, .period-selector').click(function(){
+
+				if($(this).hasClass('period-selector')) {
+					$('.period-selector.active').removeClass('active');
+					$(this).addClass('active');
+				} else {
+					$('.player.active').removeClass('active');
+					$(this).addClass('active');
+				}
+
+				var data = {
+					playerId :$('.player.active').data('id'),
+					date:$('.period-selector.active > a').data('value')
+				};
+
+				$.post('morestat', data, function(pdata){ //last month
 
 					if(typeof pdata.stats.nbGames !== 'undefined'){
 						for(var i in pdata.stats){
@@ -83,11 +96,12 @@ $(document).ready(function(){
 						}
 						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hide');
 						$('#playerstatnotice').addClass('hide');
+						$('#playername').text($('.player.active').text());
 					}
 
 					$('#chart1').highcharts({
 						chart: { type: 'line' },
-						title: { text: 'Evolution de ' + name },
+						title: { text: '' },
 						xAxis: {
 							categories: pdata.graph.dates
 						},

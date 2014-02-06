@@ -78,10 +78,10 @@ class Stats {
 		return $data;
 	}
 
-	public static function getAllStats($id, $filter=true) {
+	public static function getAllStats($id, $filter=true, $periode = '-1 month') {
 		$where = "";
 		if($filter) {
-			$where = " AND g.date BETWEEN '".date('Y-m-01')." 00:00:00' AND '".date('Y-m-t')." 00:00:00' ";
+			$where = " AND g.date BETWEEN '".date('Y-m-01', strtotime($periode))." 00:00:00' AND '".date('Y-m-t', strtotime($periode))." 00:00:00' ";
 		}
 
 		$sql = "SELECT

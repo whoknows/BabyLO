@@ -71,7 +71,7 @@ class Player {
 		return $players;
 	}
 
-	public static function getPlayerData($id, $em) {
+	public static function getPlayerData($id, $em, $dt) {
 		$query = $em->createQuery(
 			'SELECT p.id, p.username as name, g.date,
 					SUM(
@@ -91,8 +91,8 @@ class Player {
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
 			WHERE p.id = :id AND g.date BETWEEN :start AND :end
 			GROUP BY g.date')->setParameters(array(
-				'start' => new \DateTime(date('Y-m-01')),
-				'end' => new \DateTime(date('Y-m-t')),
+				'start' => new \DateTime(date('Y-m-01', strtotime($dt))),
+				'end' => new \DateTime(date('Y-m-t', strtotime($dt))),
 				'id' => $id
 			));
 

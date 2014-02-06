@@ -24,6 +24,12 @@ th, td {
 	margin: 0 1px;
 }
 
+#chart1 {
+	margin-top: 45px;
+	height:450px;
+	width:100%;
+}
+
 #playerstatstable {
 	margin-top: 40px;
 }

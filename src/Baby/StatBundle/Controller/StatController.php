@@ -57,8 +57,10 @@ class StatController extends Controller {
 
 	public function morestatAction() {
 		$id = $this->getRequest()->get('playerId');
+		$dt = $this->getRequest()->get('date', 'now');
+
 		$em = $this->getDoctrine()->getManager();
-		$st = Toolbox\Stats::getAllStats($id, true);
+		$st = Toolbox\Stats::getAllStats($id, true, $dt);
 
 		if (sizeof($st) == 0) {
 			$st = array();
@@ -71,7 +73,7 @@ class StatController extends Controller {
 		}
 
 		$response = new Response(json_encode(array(
-					'graph' => Toolbox\Player::getPlayerData($id, $em),
+					'graph' => Toolbox\Player::getPlayerData($id, $em, $dt),
 					'stats' => $st
 		)));
 		$response->headers->set('Content-Type', 'application/json');
