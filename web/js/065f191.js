@@ -6,6 +6,7 @@ $(document).ready(function() {
 		case 'addgame':
 			$('#form-addgame').submit(function(e) {
 				e.preventDefault();
+				var $err = $('#form-addgame-error');
 
 				var error = "";
 
@@ -26,7 +27,7 @@ $(document).ready(function() {
 				}
 
 				if (error !== "") {
-					$('#form-addgame-error').text(error).show("blind").delay(3000).hide("blind");
+					$err.text(error).show("blind").delay(3000).hide("blind");
 				} else {
 					var data = {
 						date: $('#datepartie').val(),
@@ -40,12 +41,13 @@ $(document).ready(function() {
 					$.post('savegame', data, function(ret) {
 						if (ret === 'ok') {
 							$('#submitformgame').prop('disabled', true);
-							$('#form-addgame-error').removeClass('text-danger').addClass('text-success');
-							$('#form-addgame-error').text('Partie enregistrée !').show("blind").delay(2000).hide(300, function() {
-								window.location.reload();
-							});
+							$err.removeClass('text-danger').addClass('text-success');
+							$err.text('Partie enregistrée !')
+							$err.removeClass('hidden');
+							setTimeout(function(){ $err.addClass('hidden'); window.location.reload(); },1000);
 						} else {
-							$('#form-addgame-error').text('Erreur : La partie n\'a pas été enregistrée').show("blind").delay(3000).hide("blind");
+							$err.text('Erreur : La partie n\'a pas été enregistrée').removeClass("hidden");
+							setTimeout(function(){ $err.addClass('hidden'); }, 2000);
 						}
 					});
 				}
@@ -94,8 +96,8 @@ $(document).ready(function() {
 								$('#stat-' + i).text(pdata.stats[i]);
 							}
 						}
-						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hide');
-						$('#playerstatnotice').addClass('hide');
+						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hidden');
+						$('#playerstatnotice').addClass('hidden');
 						$('#playername').text($('.player.active').text());
 					}
 
@@ -139,7 +141,7 @@ $(document).ready(function() {
 				}, 'json');
 				var the_id = $(this).children('a').attr("href");
 				$('html, body').animate({
-					scrollTop: $(the_id).offset().top
+					scrollTop: $(the_id).offset().top - 45 // -45 because of bootstrap navbar
 				}, 'slow');
 				return false;
 			});
@@ -175,7 +177,9 @@ $(document).ready(function() {
 					players.push($(this).data('id'));
 				});
 				if (players.length < 4) {
-					$('#error-matchmaking').show("blind").delay(3000).hide("blind");
+					var $err = $('#error-matchmaking');
+					$err.removeClass('hidden');
+					setTimeout(function(){ $err.addClass('hidden') },3000);
 				} else {
 					$.post('matchmaking', {ids: players}, function(pdata) {
 						console.log(pdata);

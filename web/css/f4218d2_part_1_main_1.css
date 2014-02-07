@@ -1,23 +1,10 @@
-#main-container, #morestat {
+body {
 	margin-top:45px;
 }
 
-.nav li a i {
-	margin-right: 5px;
-}
-
 th, td {
-/*	background-color: white;*/
 	text-align: center;
 	vertical-align: middle!important;
-}
-
-.player a{
-	text-decoration: none;
-}
-
-#form-addgame-error, #error-matchmaking {
-	display:none;
 }
 
 #formloginnav div {
