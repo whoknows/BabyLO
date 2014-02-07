@@ -9,10 +9,10 @@
 		<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
 		{% stylesheets 'bundles/babystat/css/*' filter='cssrewrite' %}
-		<link rel="stylesheet" href="{{ asset('css/bootstrap/cupid.min.css') }}" type="text/css" />
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/bootstrap/yeti.min.css') }}" type="text/css" />
 		<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
 
@@ -31,10 +31,10 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a href="{{ path('babystat_accueil') }}"><i class="glyphicon glyphicon-home"></i>Home</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a href="{{ path('babystat_partie') }}"><i class="glyphicon glyphicon-star"></i>Parties</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a href="{{ path('babystat_joueur') }}"><i class="glyphicon glyphicon-user"></i>Joueurs</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}><a href="{{ path('babystat_matchmaker') }}"><i class="glyphicon glyphicon-cog"></i>Match Maker</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a href="{{ path('babystat_accueil') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a href="{{ path('babystat_partie') }}"><span class="glyphicon glyphicon-star"></span> Parties</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a href="{{ path('babystat_joueur') }}"><span class="glyphicon glyphicon-user"></span> Joueurs</a></li>
+						<li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}><a href="{{ path('babystat_matchmaker') }}"><span class="glyphicon glyphicon-cog"></span> Match Maker</a></li>
 					</ul>
 
 					{% if app.user != null %}
@@ -42,14 +42,14 @@
 						<li>
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ app.user.username | capitalize }} <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="{{ path('babystat_pagejoueur') }}"><i class="glyphicon glyphicon-stats"></i>Statistiques</a></li>
+								<li><a href="{{ path('babystat_pagejoueur') }}"><span class="glyphicon glyphicon-stats"></span> Statistiques</a></li>
 									{% if is_granted('ROLE_ADMIN') %}
-								<li><a href="{{ path('babystat_ajoutpartie') }}"><i class="glyphicon glyphicon-plus"></i>Ajouter une partie</a></li>
+								<li><a href="{{ path('babystat_ajoutpartie') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter une partie</a></li>
 									{% endif %}
 									{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<li><a href="{{ path('babystat_useradmin') }}"><i class="glyphicon glyphicon-list"></i>Gestion des utilisateurs</a></li>
+								<li><a href="{{ path('babystat_useradmin') }}"><span class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a></li>
 									{% endif %}
-								<li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
+								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -60,7 +60,7 @@
 						</div><div class="form-group">
 							<input type="password" placeholder="Password" class="form-control" id="password" name="_password">
 						</div><div class="form-group">
-							<button type="submit" class="btn btn-success btn-sm">Sign in</button>
+							<button type="submit" class="btn btn-success">Sign in</button>
 						</div>
 					</form>
 					{% endif %}

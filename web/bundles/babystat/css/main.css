@@ -7,16 +7,15 @@
 }
 
 th, td {
-	background-color: white;
 	text-align: center;
 	vertical-align: middle!important;
 }
 
 .player a{
-	text-decoration: none;
+	/*text-decoration: none;*/
 }
 
-#form-addgame-error{
+#form-addgame-error, #error-matchmaking {
 	display:none;
 }
 

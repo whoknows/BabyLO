@@ -7,7 +7,7 @@
 }
 
 th, td {
-	background-color: white;
+/*	background-color: white;*/
 	text-align: center;
 	vertical-align: middle!important;
 }
@@ -16,7 +16,7 @@ th, td {
 	text-decoration: none;
 }
 
-#form-addgame-error{
+#form-addgame-error, #error-matchmaking {
 	display:none;
 }
 
