@@ -139,9 +139,9 @@ $(document).ready(function() {
 						}
 					});
 				}, 'json');
-				var the_id = $(this).children('a').attr("href");
+
 				$('html, body').animate({
-					scrollTop: $(the_id).offset().top - 45 // -45 because of bootstrap navbar
+					scrollTop: $('#morestat').offset().top - 45 // -45 because of bootstrap navbar
 				}, 'slow');
 				return false;
 			});

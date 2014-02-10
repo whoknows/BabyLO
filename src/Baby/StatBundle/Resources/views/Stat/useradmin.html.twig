@@ -4,31 +4,36 @@
 
 {% block body %}
 <div class="container">
-	<h3>Utilisateurs</h3>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Utilisateur</th>
-				<th>Roles</th>
-				<th>Delete</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user in users %}
-			<tr>
-				<td>{{ user.getUsername }}</td>
-				<td>
-					<select class="role-selector input-lg" multiple="multiple">
-					{% for role in roles %}
-						<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.nombre }}</option>
+	<div class="row">
+		<h3>Utilisateurs</h3>
+		<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Utilisateur</th>
+						<th>Position</th>
+						<th>Roles</th>
+						<th>Disable</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+					<tr>
+						<td>{{ user.getUsername }}</td>
+						<td>{{ user.getPosition }}</td>
+						<td>
+							<select class="role-selector input-lg" multiple="multiple">
+							{% for role in roles %}
+								<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.nombre }}</option>
+							{% endfor %}
+							</select>
+						</td>
+						<td><span class="glyphicon glyphicon-off delete-user text-{% if user.getEnabled == 1 %}danger{% else %}success{% endif %}"></span></td>
+					</tr>
 					{% endfor %}
-					</select>
-				</td>
-				<td><span class="glyphicon glyphicon-remove delete-user text-danger"></span></td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 {% endblock %}

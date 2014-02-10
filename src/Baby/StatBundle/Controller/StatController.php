@@ -84,11 +84,13 @@ class StatController extends Controller {
 	public function gameAction() {
 		$filters = array(
 			"date" => $this->getRequest()->get('date', date('d-m-Y')),
+			"player"  => $this->getRequest()->get('joueur', NULL)
 		);
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
 					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
 					'date' => $filters['date'],
+					'player' => $filters['player']
 		));
 	}
 

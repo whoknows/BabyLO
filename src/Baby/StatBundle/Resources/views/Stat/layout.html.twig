@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/bootstrap/cupid.min.css') }}" type="text/css" />
+		<link rel="stylesheet" href="{{ asset('css/bootstrap/yeti.min.css') }}" type="text/css" />
 		<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
 
@@ -49,7 +49,7 @@
 									{% if is_granted('ROLE_SUPER_ADMIN') %}
 								<li><a href="{{ path('babystat_useradmin') }}"><span class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a></li>
 									{% endif %}
-								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -84,7 +84,7 @@
 
 		<div class="container" id="footercontainer">
 			<footer>
-				<p>&copy; Copy-raiiiight LO 3014</p>
+				<p>&copy; <b>Guillaume Coste</b> - {{ "now" | date('Y') }}</p>
 			</footer>
 		</div>
 	</body>

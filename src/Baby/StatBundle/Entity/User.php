@@ -28,7 +28,7 @@ class User
      */
     private $username;
 
-	/**
+    /**
      * @var string
      *
      * @ORM\Column(name="position", type="string", length=255, nullable=false)
@@ -48,6 +48,13 @@ class User
      * @ORM\Column(name="salt", type="string", length=255, nullable=false)
      */
     private $salt;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="enabled", type="integer", nullable=false)
+     */
+    private $enabled = '0';
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -76,7 +83,7 @@ class User
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -99,14 +106,14 @@ class User
     /**
      * Get username
      *
-     * @return string
+     * @return string 
      */
     public function getUsername()
     {
         return $this->username;
     }
 
-	/**
+    /**
      * Set position
      *
      * @param string $position
@@ -122,7 +129,7 @@ class User
     /**
      * Get position
      *
-     * @return string
+     * @return string 
      */
     public function getPosition()
     {
@@ -145,7 +152,7 @@ class User
     /**
      * Get password
      *
-     * @return string
+     * @return string 
      */
     public function getPassword()
     {
@@ -168,11 +175,34 @@ class User
     /**
      * Get salt
      *
-     * @return string
+     * @return string 
      */
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param integer $enabled
+     * @return User
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return integer 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
     }
 
     /**
@@ -201,7 +231,7 @@ class User
     /**
      * Get role
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getRole()
     {

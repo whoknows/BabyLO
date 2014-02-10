@@ -5,9 +5,17 @@ namespace Baby\StatBundle\Toolbox;
 class Game {
 
 	public static function getGameList($em, $limit = null, $filter = array()) {
-		$f = array();
+		$f = array('players' => array());
 		if (isset($filter['date']) && $filter['date'] != '') {
 			$f['date'] = new \DateTime($filter['date']);
+		}
+
+		if(isset($filter['player']) && $filter['player'] !== NULL) {
+			$f['players'] = explode(',', $filter['player']);
+
+			foreach($f['players'] as &$p){
+				$p = ucfirst(trim($p));
+			}
 		}
 
 		$query = $em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
@@ -37,12 +45,14 @@ class Game {
 			$r1 = $t1->getResult();
 			$r2 = $t2->getResult();
 
-			$games[] = array_merge($row, array(
-				"player1Team1" => $r1[0]['name'],
-				"player2Team1" => $r1[1]['name'],
-				"player1Team2" => $r2[0]['name'],
-				"player2Team2" => $r2[1]['name'],
-			));
+			if(sizeof($f['players']) == 0 || (in_array($r1[0]['name'], $f['players']) || in_array($r1[1]['name'], $f['players']) || in_array($r2[0]['name'], $f['players']) || in_array($r2[1]['name'], $f['players']))) {
+				$games[] = array_merge($row, array(
+					"player1Team1" => $r1[0]['name'],
+					"player2Team1" => $r1[1]['name'],
+					"player1Team2" => $r2[0]['name'],
+					"player2Team2" => $r2[1]['name'],
+				));
+			}
 		}
 
 		return $games;

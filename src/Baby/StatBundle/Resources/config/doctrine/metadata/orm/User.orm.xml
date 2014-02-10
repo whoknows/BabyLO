@@ -5,8 +5,10 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="username" type="string" column="username" length="255" nullable="false"/>
+    <field name="position" type="string" column="position" length="255" nullable="false"/>
     <field name="password" type="string" column="password" length="255" nullable="false"/>
     <field name="salt" type="string" column="salt" length="255" nullable="false"/>
+    <field name="enabled" type="integer" column="enabled" nullable="false"/>
     <many-to-many field="role" target-entity="Roles" inversed-by="user">
       <join-table name="user_role">
         <join-columns>

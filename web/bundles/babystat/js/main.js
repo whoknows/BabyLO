@@ -57,9 +57,9 @@ $(document).ready(function() {
 			$('#datepartie').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
 			break;
 		case 'game':
-			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'}).change(function() {
+			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});/*.change(function() {
 				$('#formSearchGame').submit();
-			});
+			});*/
 
 			$('.del-game').click(function() {
 				var tr = $(this).parent().parent();
@@ -139,9 +139,9 @@ $(document).ready(function() {
 						}
 					});
 				}, 'json');
-				var the_id = $(this).children('a').attr("href");
+
 				$('html, body').animate({
-					scrollTop: $(the_id).offset().top - 45 // -45 because of bootstrap navbar
+					scrollTop: $('#morestat').offset().top - 45 // -45 because of bootstrap navbar
 				}, 'slow');
 				return false;
 			});
