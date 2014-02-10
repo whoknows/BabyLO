@@ -179,7 +179,7 @@ $(document).ready(function() {
 				if (players.length < 4) {
 					var $err = $('#error-matchmaking');
 					$err.removeClass('hidden');
-					setTimeout(function(){ $err.addClass('hidden') },3000);
+					setTimeout(function(){ $err.addClass('hidden'); },3000);
 				} else {
 					$.post('matchmaking', {ids: players}, function(pdata) {
 						console.log(pdata);
@@ -189,10 +189,25 @@ $(document).ready(function() {
 			break;
 		case 'useradmin':
 			$('.role-selector').chosen();
-			$('.delete-user').click(function(){
-				/*$.post('', {id:1}, function(ret){
-					//
-				});*/
+			$('.save-user').click(function(){
+				var data = {
+					id : $(this).data('id'),
+					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
+					roles : $(this).parent().parent().find('select[name=roles]').val(),
+					position: $(this).parent().parent().find('select[name="position"]').val()
+				};
+				$.post('saveuser', data, function(ret){
+					var span = $('#user-msg');
+					span.removeClass('hidden text-success text-danger');
+					if(ret === 'OK') {
+						span.addClass('text-success')
+							.text('Modifications enregistrées.');
+					} else {
+						span.addClass('text-danger')
+							.text('Modifications non enregistrées.');
+					}
+					setTimeout(function(){ span.addClass('hidden'); },3000);
+				});
 			});
 			break;
 		case '':

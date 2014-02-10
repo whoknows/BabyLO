@@ -83,7 +83,7 @@ class User
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -106,7 +106,7 @@ class User
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -129,7 +129,7 @@ class User
     /**
      * Get position
      *
-     * @return string 
+     * @return string
      */
     public function getPosition()
     {
@@ -152,7 +152,7 @@ class User
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -175,7 +175,7 @@ class User
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -198,7 +198,7 @@ class User
     /**
      * Get enabled
      *
-     * @return integer 
+     * @return integer
      */
     public function getEnabled()
     {
@@ -218,6 +218,22 @@ class User
         return $this;
     }
 
+	/**
+     * Has role
+     *
+     * @param \Baby\StatBundle\Entity\Roles $role
+     * @return Bool
+     */
+    public function hasRole(\Baby\StatBundle\Entity\Roles $role)
+    {
+		foreach($this->role as $r){
+			if($r === $role){
+				return true;
+			}
+		}
+        return false;
+    }
+
     /**
      * Remove role
      *
@@ -228,10 +244,20 @@ class User
         $this->role->removeElement($role);
     }
 
+	/**
+     * Remove all roles
+     *
+     * @param \Baby\StatBundle\Entity\Roles $role
+     */
+    public function removeAllRoles()
+    {
+        $this->role->clear();
+    }
+
     /**
      * Get role
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRole()
     {

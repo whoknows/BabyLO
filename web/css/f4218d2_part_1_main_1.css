@@ -7,6 +7,14 @@ th, td {
 	vertical-align: middle!important;
 }
 
+#userTable {
+	margin-top:20px;
+}
+
+#userTable td, #userTable th {
+	text-align:left;
+}
+
 #formloginnav div {
 	margin: 0 1px;
 }
@@ -29,6 +37,6 @@ th, td {
 	color: #222;
 }
 
-.graphme, .del-game, .delete-user {
+.graphme, .del-game {
 	cursor:pointer;
 }

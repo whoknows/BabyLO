@@ -7,32 +7,42 @@
 	<div class="row">
 		<h3>Utilisateurs</h3>
 		<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-			<table class="table">
+			<table class="table" id="userTable">
 				<thead>
 					<tr>
 						<th>Utilisateur</th>
 						<th>Position</th>
 						<th>Roles</th>
-						<th>Disable</th>
+						<th>Actif</th>
+						<th>Enregistrer</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for user in users %}
 					<tr>
 						<td>{{ user.getUsername }}</td>
-						<td>{{ user.getPosition }}</td>
 						<td>
-							<select class="role-selector input-lg" multiple="multiple">
+							<select name="position" class="select">
+								<option value="Avant" {% if user.getPosition == 'Avant' %} selected="selected" {% endif %}>Avant</option>
+								<option value="Arriere" {% if user.getPosition == 'Arriere' %} selected="selected" {% endif %}>Arriere</option>
+							</select>
+						</td>
+						<td>
+							<select class="role-selector input-lg" name="roles" multiple="multiple">
 							{% for role in roles %}
 								<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.nombre }}</option>
 							{% endfor %}
 							</select>
 						</td>
-						<td><span class="glyphicon glyphicon-off delete-user text-{% if user.getEnabled == 1 %}danger{% else %}success{% endif %}"></span></td>
+						<td><input type="checkbox" name="enabled" {% if user.getEnabled == 1 %}checked="checked"{%endif%} /></td>
+						<td><button class="btn btn-success btn-sm save-user" data-id="{{ user.getId }}">Enregistrer</button></td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+			<span class="hidden" id="user-msg"></span>
 		</div>
 	</div>
 </div>

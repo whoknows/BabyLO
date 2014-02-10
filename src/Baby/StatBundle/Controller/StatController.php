@@ -65,7 +65,7 @@ class StatController extends Controller {
 		if (sizeof($st) == 0) {
 			$st = array();
 		} else {
-			if($st['nbGames'] == 0){
+			if ($st['nbGames'] == 0) {
 				$st['ratio'] = 0;
 			} else {
 				$st['ratio'] = round($st['nbWin'] / $st['nbGames'], 2);
@@ -84,7 +84,7 @@ class StatController extends Controller {
 	public function gameAction() {
 		$filters = array(
 			"date" => $this->getRequest()->get('date', date('d-m-Y')),
-			"player"  => $this->getRequest()->get('joueur', NULL)
+			"player" => $this->getRequest()->get('joueur', NULL)
 		);
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
@@ -149,7 +149,7 @@ class StatController extends Controller {
 
 		$played = $em->getRepository('BabyStatBundle:BabyPlayed')->findBy(array('idGame' => $id));
 
-		foreach($played as $p){
+		foreach ($played as $p) {
 			$em->remove($p);
 			$em->flush();
 		}
@@ -186,6 +186,42 @@ class StatController extends Controller {
 					'users' => $em->getRepository('BabyStatBundle:User')->findAll(),
 					'roles' => $em->getRepository('BabyStatBundle:Roles')->findAll()
 		));
+	}
+
+	public function saveuserAction() {
+		$userData = array(
+			'id' => $this->getRequest()->get('id', NULL),
+			'enabled' => $this->getRequest()->get('enabled', 0),
+			'position' => $this->getRequest()->get('position', 'Avant'),
+			'roles' => $this->getRequest()->get('roles', array())
+		);
+
+		$em = $this->getDoctrine()->getManager();
+
+		$pl = $em->getRepository('BabyStatBundle:User')->find($userData['id']);
+
+		if(!$pl) {
+			$pl = new \Baby\StatBundle\Entity\User();
+			$pl->setUsername($userData['username']);
+			$pl->setPassword(hash('sha512', 'secret'));
+		}
+
+		$pl->setEnabled($userData['enabled']);
+		$pl->setPosition($userData['position']);
+		$pl->removeAllRoles();
+
+		foreach ($userData['roles'] as $rid) {
+			$rl = $em->getRepository('BabyStatBundle:Roles')->find($rid);
+			$pl->addRole($rl);
+		}
+
+		if($userData['id'] === NULL) {
+			$em->persist($pl);
+		}
+
+		$em->flush();
+
+		return new Response('OK');
 	}
 
 }

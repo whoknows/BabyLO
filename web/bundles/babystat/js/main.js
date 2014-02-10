@@ -86,7 +86,7 @@ $(document).ready(function() {
 					date: $('.period-selector.active > a').data('value')
 				};
 
-				$.post('morestat', data, function(pdata) { //last month
+				$.post('morestat', data, function(pdata) {
 
 					if (typeof pdata.stats.nbGames !== 'undefined') {
 						for (var i in pdata.stats) {
@@ -179,7 +179,7 @@ $(document).ready(function() {
 				if (players.length < 4) {
 					var $err = $('#error-matchmaking');
 					$err.removeClass('hidden');
-					setTimeout(function(){ $err.addClass('hidden') },3000);
+					setTimeout(function(){ $err.addClass('hidden'); },3000);
 				} else {
 					$.post('matchmaking', {ids: players}, function(pdata) {
 						console.log(pdata);
@@ -189,6 +189,25 @@ $(document).ready(function() {
 			break;
 		case 'useradmin':
 			$('.role-selector').chosen();
+			$('.save-user').click(function(){
+				var data = {
+					id : $(this).data('id'),
+					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
+					roles : $(this).parent().parent().find('select[name=roles]').val()
+				};
+				$.post('saveuser', data, function(ret){
+					var span = $('#user-msg');
+					span.removeClass('hidden text-success text-danger');
+					if(ret === 'OK') {
+						span.addClass('text-success')
+							.text('Modifications enregistrées.');
+					} else {
+						span.addClass('text-danger')
+							.text('Modifications non enregistrées.');
+					}
+					setTimeout(function(){ span.addClass('hidden'); },3000);
+				});
+			});
 			break;
 		case '':
 			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata) {

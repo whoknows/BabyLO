@@ -49,3 +49,7 @@ babystat_delgame:
 babystat_useradmin:
     path:     /useradmin
     defaults: { _controller: BabyStatBundle:Stat:useradmin }
+
+babystat_saveuser:
+    path:     /saveuser
+    defaults: { _controller: BabyStatBundle:Stat:saveuser }
