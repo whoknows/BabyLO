@@ -193,7 +193,8 @@ $(document).ready(function() {
 				var data = {
 					id : $(this).data('id'),
 					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
-					roles : $(this).parent().parent().find('select[name=roles]').val()
+					roles : $(this).parent().parent().find('select[name=roles]').val(),
+					position: $(this).parent().parent().find('select[name="position"]').val()
 				};
 				$.post('saveuser', data, function(ret){
 					var span = $('#user-msg');

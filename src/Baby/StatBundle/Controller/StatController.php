@@ -183,7 +183,7 @@ class StatController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 
 		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
-					'users' => $em->getRepository('BabyStatBundle:User')->findAll(),
+					'users' => $em->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
 					'roles' => $em->getRepository('BabyStatBundle:Roles')->findAll()
 		));
 	}
