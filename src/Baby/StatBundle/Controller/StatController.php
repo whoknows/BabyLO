@@ -87,6 +87,10 @@ class StatController extends Controller {
 			"player" => $this->getRequest()->get('joueur', NULL)
 		);
 
+		if($filters['player'] == ""){
+			$filters['player'] = NULL;
+		}
+
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
 					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
 					'date' => $filters['date'],
@@ -107,7 +111,7 @@ class StatController extends Controller {
 		}
 
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
 		));
 	}
 
@@ -162,7 +166,7 @@ class StatController extends Controller {
 
 	public function matchmakerAction() {
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
 		));
 	}
 
