@@ -24,7 +24,7 @@ class Player {
 			FROM BabyStatBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
-			WHERE g.date BETWEEN :start AND :end
+			WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
 			GROUP BY p.id')->setParameters(array(
 				'start' => new \DateTime(date('Y-m-01')),
 				'end' => new \DateTime(date('Y-m-t'))
@@ -57,7 +57,7 @@ class Player {
 	}
 
 	public static function getBasePlayers($em) {
-		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyStatBundle:User p');
+		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyStatBundle:User p WHERE p.enabled = 1');
 
 		$players = array();
 		try {
@@ -86,7 +86,7 @@ class Player {
 							WHEN pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
 						ELSE 0 END
 					) as defaites
-			FROM BabyStatBundle:User p
+			FROM BabyUserBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
 			WHERE p.id = :id AND g.date BETWEEN :start AND :end
@@ -118,7 +118,7 @@ class Player {
 								FROM BabyStatBundle:BabyPlayed pl
 								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
 								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
-								WHERE ((pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2)) AND g.date = :date
+								WHERE ((pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2)) AND g.date = :date AND p.enabled = 1
 								GROUP BY p.id
 								ORDER BY ct DESC")->setParameter('date', new \Datetime(date('Y-m-d', strtotime('-1 day'))))->setMaxResults(1);
 
@@ -126,7 +126,7 @@ class Player {
 								FROM BabyStatBundle:BabyPlayed pl
 								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
 								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
-								WHERE ((pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2)) AND g.date = :date
+								WHERE ((pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2)) AND g.date = :date AND p.enabled = 1
 								GROUP BY p.id
 								ORDER BY ct DESC")->setParameter('date', new \Datetime(date('Y-m-d', strtotime('-1 day'))))->setMaxResults(1);
 		$q1 = $q1->getResult();

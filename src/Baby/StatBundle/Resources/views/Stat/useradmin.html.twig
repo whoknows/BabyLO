@@ -7,7 +7,7 @@
 	<div class="row">
 		<h3>Utilisateurs</h3>
 		<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-			<table class="table" id="userTable">
+			<table class="table table-hover" id="userTable">
 				<thead>
 					<tr>
 						<th>Utilisateur</th>
@@ -42,6 +42,39 @@
 			</table>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+			<h4>Créer un nouvel utilisateur</h4>
+			<form role="form" id="newUser">
+				<div class="form-group">
+					<label for="useruser">Nom d'utilisateur</label>
+					<input type="text" class="form-control" id="useruser" autocomplete="off" placeholder="Username">
+				</div>
+				<div class="form-group">
+					<label for="userpass">Mot de passe</label>
+					<input type="password" class="form-control" id="userpass" autocomplete="off" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label for="userrole">Roles</label>
+					<select class="role-selector form-control" name="roles" id="userrole" multiple="multiple">
+					{% for role in roles %}
+						<option value="{{ role.id }}">{{ role.nombre }}</option>
+					{% endfor %}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="userposition">Position</label>
+					<select class="form-control" name="position" id="userposition">
+						<option value="Avant">Avant</option>
+						<option value="Arriere">Arrière</option>
+					</select>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="enabled" id="userenabled"> Actif
+					</label>
+				</div>
+				<button type="submit" class="btn btn-primary btn-sm">Enregistrer</button>
+			</form>
+			<br />
 			<span class="hidden" id="user-msg"></span>
 		</div>
 	</div>

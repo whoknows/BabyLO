@@ -188,14 +188,7 @@ $(document).ready(function() {
 			});
 			break;
 		case 'useradmin':
-			$('.role-selector').chosen();
-			$('.save-user').click(function(){
-				var data = {
-					id : $(this).data('id'),
-					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
-					roles : $(this).parent().parent().find('select[name=roles]').val(),
-					position: $(this).parent().parent().find('select[name="position"]').val()
-				};
+			var saveUser = function(data) {
 				$.post('saveuser', data, function(ret){
 					var span = $('#user-msg');
 					span.removeClass('hidden text-success text-danger');
@@ -208,6 +201,31 @@ $(document).ready(function() {
 					}
 					setTimeout(function(){ span.addClass('hidden'); },3000);
 				});
+			};
+
+			$('.role-selector').chosen();
+			$('.save-user').click(function(){
+				var data = {
+					id : $(this).data('id'),
+					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
+					roles : $(this).parent().parent().find('select[name=roles]').val(),
+					position: $(this).parent().parent().find('select[name="position"]').val()
+				};
+
+				saveUser(data);
+			});
+
+			$('#newUser').submit(function(e){
+				e.preventDefault();
+				var data = {
+					enabled : $('#userenabled').prop('checked') ? 1 : 0,
+					roles : $('#userrole').val(),
+					position: $('#userposition').val(),
+					username: $('#useruser').val(),
+					password: $('#password').val()
+				};
+				saveUser(data);
+				return false;
 			});
 			break;
 		case '':

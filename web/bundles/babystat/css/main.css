@@ -40,3 +40,10 @@ th, td {
 .graphme, .del-game {
 	cursor:pointer;
 }
+
+.search-field input {
+	border: 1px solid #CCCCCC!important;
+	box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset!important;
+	color: #6F6F6F!important;
+	min-height:30px;
+}

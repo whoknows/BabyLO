@@ -111,7 +111,7 @@ class StatController extends Controller {
 		}
 
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
 		));
 	}
 
@@ -166,7 +166,7 @@ class StatController extends Controller {
 
 	public function matchmakerAction() {
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
 		));
 	}
 
@@ -197,17 +197,20 @@ class StatController extends Controller {
 			'id' => $this->getRequest()->get('id', NULL),
 			'enabled' => $this->getRequest()->get('enabled', 0),
 			'position' => $this->getRequest()->get('position', 'Avant'),
-			'roles' => $this->getRequest()->get('roles', array())
+			'roles' => $this->getRequest()->get('roles', array()),
+			'username' => $this->getRequest()->get('username', NULL),
+			'password' => $this->getRequest()->get('password', NULL)
 		);
 
 		$em = $this->getDoctrine()->getManager();
 
-		$pl = $em->getRepository('BabyStatBundle:User')->find($userData['id']);
-
-		if(!$pl) {
+		if($userData['id'] === NULL) {
 			$pl = new \Baby\StatBundle\Entity\User();
 			$pl->setUsername($userData['username']);
 			$pl->setPassword(hash('sha512', 'secret'));
+			$pl->setSalt('');
+		} else {
+			$pl = $em->getRepository('BabyStatBundle:User')->find($userData['id']);
 		}
 
 		$pl->setEnabled($userData['enabled']);
