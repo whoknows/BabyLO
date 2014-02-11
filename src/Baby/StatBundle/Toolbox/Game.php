@@ -53,8 +53,8 @@ class Game {
 			);
 
 			$in_array = true;
-			foreach($f['players'] as $pl) {
-				if(!in_array($pl, $tmp)){
+			foreach ($f['players'] as $pl) {
+				if (!in_array($pl, $tmp)) {
 					$in_array = false;
 				}
 			}
@@ -88,8 +88,38 @@ class Game {
 		);
 	}
 
-	public static function matchMaking($players) {
-		return array();
+	public static function matchMaking($players, $em) {
+		$pdata = array();
+		$teams = array();
+
+		foreach ($players as $p) {
+			$tmp = Player::getPlayerData($p, $em, 'now');
+			$pdata[]= array(
+				'ratio' => round(array_sum($tmp['ratio']) / sizeof($tmp['ratio']), 2),
+				'id' => $p
+			);
+		}
+
+		Player::aasort($pdata, 'ratio');
+
+		$pdata = array_values($pdata);
+
+		$size = sizeof($pdata);
+
+		$ple = $em->getRepository('BabyStatBundle:User');
+
+		if($size % 2 === 0) {
+			for($i=0;$i<$size/2;$i++) {
+				$teams[] = array(
+					$ple->findBy(array('id' => $pdata[$size - 1 - $i]['id']))[0]->getUsername(),
+					$ple->findBy(array('id' => $pdata[$i]['id']))[0]->getUsername()
+				);
+			}
+		} else {
+			// TODO
+		}
+
+		return $teams;
 	}
 
 }

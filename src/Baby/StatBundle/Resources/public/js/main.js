@@ -182,15 +182,31 @@ $(document).ready(function() {
 					setTimeout(function(){ $err.addClass('hidden'); },3000);
 				} else {
 					$.post('matchmaking', {ids: players}, function(pdata) {
-						console.log(pdata);
+						var teams = $('#teamsContainer');
+						teams.empty();
+						for(p in pdata) {
+							teams.append('<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
+								'<ul class="list-group">'+
+									'<li class="list-group-item list-group-item-info">'+pdata[p][0]+'</li>'+
+								'</ul>'+
+							'</div>'+
+							'<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align:center">'+
+							'ET'+
+							'</div>'+
+							'<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
+								'<ul class="list-group">'+
+									'<li class="list-group-item list-group-item-info">'+pdata[p][1]+'</li>'+
+								'</ul>'+
+							'</div>');
+						}
 					});
 				}
 			});
 			break;
 		case 'useradmin':
+			var span = $('#user-msg');
 			var saveUser = function(data) {
 				$.post('saveuser', data, function(ret){
-					var span = $('#user-msg');
 					span.removeClass('hidden text-success text-danger');
 					if(ret === 'OK') {
 						span.addClass('text-success')
@@ -217,6 +233,7 @@ $(document).ready(function() {
 
 			$('#newUser').submit(function(e){
 				e.preventDefault();
+
 				var data = {
 					enabled : $('#userenabled').prop('checked') ? 1 : 0,
 					roles : $('#userrole').val(),
@@ -224,6 +241,14 @@ $(document).ready(function() {
 					username: $('#useruser').val(),
 					password: $('#password').val()
 				};
+
+				if(data.username === "" || data.password === "") {
+					span.removeClass('hidden text-success text-danger');
+					span.addClass('text-danger').text('Veuillez renseigner tous les champs.');
+					setTimeout(function(){ span.addClass('hidden'); },3000);
+					return false;
+				}
+
 				saveUser(data);
 				return false;
 			});

@@ -173,7 +173,7 @@ class StatController extends Controller {
 	public function matchmakingAction() {
 		$players = $this->getRequest()->get('ids', array());
 
-		$response = new Response(json_encode(Toolbox\Game::matchMaking($players)));
+		$response = new Response(json_encode(Toolbox\Game::matchMaking($players, $this->getDoctrine()->getManager())));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;

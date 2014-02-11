@@ -141,7 +141,7 @@ class Player {
 		);
 	}
 
-	private static function aasort(&$array, $key) {
+	public static function aasort(&$array, $key) {
 		$sorter = array();
 		$ret = array();
 		reset($array);
