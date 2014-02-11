@@ -10,10 +10,10 @@ class Game {
 			$f['date'] = new \DateTime($filter['date']);
 		}
 
-		if(isset($filter['player']) && $filter['player'] !== NULL) {
+		if (isset($filter['player']) && $filter['player'] !== NULL) {
 			$f['players'] = explode(',', $filter['player']);
 
-			foreach($f['players'] as &$p){
+			foreach ($f['players'] as &$p) {
 				$p = ucfirst(trim($p));
 			}
 		}
@@ -45,13 +45,22 @@ class Game {
 			$r1 = $t1->getResult();
 			$r2 = $t2->getResult();
 
-			if(sizeof($f['players']) == 0 || (in_array($r1[0]['name'], $f['players']) || in_array($r1[1]['name'], $f['players']) || in_array($r2[0]['name'], $f['players']) || in_array($r2[1]['name'], $f['players']))) {
-				$games[] = array_merge($row, array(
-					"player1Team1" => $r1[0]['name'],
-					"player2Team1" => $r1[1]['name'],
-					"player1Team2" => $r2[0]['name'],
-					"player2Team2" => $r2[1]['name'],
-				));
+			$tmp = array(
+				"player1Team1" => $r1[0]['name'],
+				"player2Team1" => $r1[1]['name'],
+				"player1Team2" => $r2[0]['name'],
+				"player2Team2" => $r2[1]['name'],
+			);
+
+			$in_array = true;
+			foreach($f['players'] as $pl) {
+				if(!in_array($pl, $tmp)){
+					$in_array = false;
+				}
+			}
+
+			if (sizeof($f['players']) == 0 || $in_array) {
+				$games[] = array_merge($row, $tmp);
 			}
 		}
 

@@ -87,7 +87,7 @@ class StatController extends Controller {
 			"player" => $this->getRequest()->get('joueur', NULL)
 		);
 
-		if($filters['player'] == ""){
+		if ($filters['player'] == "") {
 			$filters['player'] = NULL;
 		}
 
@@ -204,7 +204,7 @@ class StatController extends Controller {
 
 		$em = $this->getDoctrine()->getManager();
 
-		if($userData['id'] === NULL) {
+		if ($userData['id'] === NULL) {
 			$pl = new \Baby\StatBundle\Entity\User();
 			$pl->setUsername($userData['username']);
 			$pl->setPassword(hash('sha512', 'secret'));
@@ -222,7 +222,7 @@ class StatController extends Controller {
 			$pl->addRole($rl);
 		}
 
-		if($userData['id'] === NULL) {
+		if ($userData['id'] === NULL) {
 			$em->persist($pl);
 		}
 
