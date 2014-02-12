@@ -10,17 +10,29 @@ use Baby\StatBundle\Toolbox;
 class StatController extends Controller {
 
 	public function indexAction() {
-		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
-					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
-					'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), 6),
-					'tops' => Toolbox\Player::getDailyTops($this->getDoctrine()->getManager()),
-		));
+		if ($this->getUser()) {
+			return $this->render('BabyStatBundle:Stat:index.html.twig', array(
+						'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
+						'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), 6),
+						'tops' => Toolbox\Player::getDailyTops($this->getDoctrine()->getManager()),
+			));
+		} else {
+			return $this->render('BabyUserBundle:Security:login.html.twig', array(
+						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
+			));
+		}
 	}
 
 	public function playerAction() {
-		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
-					'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), null, true),
-		));
+		if ($this->getUser()) {
+			return $this->render('BabyStatBundle:Stat:player.html.twig', array(
+						'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), null, true),
+			));
+		} else {
+			return $this->render('BabyUserBundle:Security:login.html.twig', array(
+						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
+			));
+		}
 	}
 
 	public function playerstatAction() {
@@ -42,7 +54,9 @@ class StatController extends Controller {
 						'stat' => $st
 			));
 		} else {
-			return $this->redirect($this->generateUrl('babystat_accueil'));
+			return $this->render('BabyUserBundle:Security:login.html.twig', array(
+						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
+			));
 		}
 	}
 
@@ -82,20 +96,26 @@ class StatController extends Controller {
 	}
 
 	public function gameAction() {
-		$filters = array(
-			"date" => $this->getRequest()->get('date', date('d-m-Y')),
-			"player" => $this->getRequest()->get('joueur', NULL)
-		);
+		if ($this->getUser()) {
+			$filters = array(
+				"date" => $this->getRequest()->get('date', date('d-m-Y')),
+				"player" => $this->getRequest()->get('joueur', NULL)
+			);
 
-		if ($filters['player'] == "") {
-			$filters['player'] = NULL;
+			if ($filters['player'] == "") {
+				$filters['player'] = NULL;
+			}
+
+			return $this->render('BabyStatBundle:Stat:game.html.twig', array(
+						'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
+						'date' => $filters['date'],
+						'player' => $filters['player']
+			));
+		} else {
+			return $this->render('BabyUserBundle:Security:login.html.twig', array(
+						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
+			));
 		}
-
-		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
-					'date' => $filters['date'],
-					'player' => $filters['player']
-		));
 	}
 
 	public function nbgameAction() {
@@ -116,6 +136,10 @@ class StatController extends Controller {
 	}
 
 	public function savegameAction() {
+		if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			throw new AccessDeniedHttpException('Accès limité aux admin');
+		}
+
 		$request = $this->getRequest();
 
 		$em = $this->getDoctrine()->getManager();
@@ -146,6 +170,10 @@ class StatController extends Controller {
 	}
 
 	public function delgameAction() {
+		if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			throw new AccessDeniedHttpException('Accès limité aux admin');
+		}
+
 		$em = $this->getDoctrine()->getManager();
 		$id = $this->getRequest()->get('id');
 
@@ -165,9 +193,15 @@ class StatController extends Controller {
 	}
 
 	public function matchmakerAction() {
-		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
-		));
+		if ($this->getUser()) {
+			return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
+						'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
+			));
+		} else {
+			return $this->render('BabyUserBundle:Security:login.html.twig', array(
+						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
+			));
+		}
 	}
 
 	public function matchmakingAction() {
@@ -193,6 +227,10 @@ class StatController extends Controller {
 	}
 
 	public function saveuserAction() {
+		if (!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+			throw new AccessDeniedHttpException('Accès limité aux supers admin.');
+		}
+
 		$userData = array(
 			'id' => $this->getRequest()->get('id', NULL),
 			'enabled' => $this->getRequest()->get('enabled', 0),

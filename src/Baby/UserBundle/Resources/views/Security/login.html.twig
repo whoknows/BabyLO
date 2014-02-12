@@ -13,8 +13,8 @@
 		dl, dt, dd, ol, ul, li,
 		fieldset, form, label, legend,
 		table, caption, tbody, tfoot, thead, tr, th, td,
-		article, aside, canvas, details, embed, 
-		figure, figcaption, footer, header, hgroup, 
+		article, aside, canvas, details, embed,
+		figure, figcaption, footer, header, hgroup,
 		menu, nav, output, ruby, section, summary,
 		time, mark, audio, video {
 			margin: 0;
@@ -25,7 +25,7 @@
 			vertical-align: baseline;
 		}
 		/* HTML5 display-role reset for older browsers */
-		article, aside, details, figcaption, figure, 
+		article, aside, details, figcaption, figure,
 		footer, header, hgroup, menu, nav, section {
 			display: block;
 		}
@@ -56,7 +56,7 @@
 		/* ---------- GENERAL ---------- */
 
 		body {
-			background: #f4f4f4;
+			background: white;/*#f4f4f4;*/
 			color: #5a5656;
 			font: 100%/1.5em 'Open Sans', sans-serif;
 			margin: 0;
@@ -97,13 +97,12 @@
 		}
 
 		form fieldset input[type="submit"] {
-			background-color: #008dde;
+			background-color: #008CBA;
 			border: none;
 			color: #f4f4f4;
 			cursor: pointer;
 			font-family: inherit;
 			height: 50px;
-			text-transform: uppercase;
 			width: 300px;
 		  -webkit-appearance:none;
 		}
@@ -127,6 +126,10 @@
 			border-color: #ea2f10;
 		}
 
+		#remember_me {
+			vertical-align:middle;
+		}
+
 		form fieldset a:hover { text-decoration: underline; }
 	</style>
 </head>
@@ -138,7 +141,8 @@
 			<fieldset>
 				<p><input type="text" required name="_username" placeholder="Username"></p>
 				<p><input type="password" required name="_password" placeholder="Password"></p>
-				<p><input type="submit" value="Login"></p>
+				<p><input type="checkbox" id="remember_me" name="_remember_me" checked /><label for="remember_me">Se souvenir de moi</label></p>
+				<p><input type="submit" value="Connexion"></p>
 			</fieldset>
 		</form>
 		{% if error %}
