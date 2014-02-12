@@ -17,6 +17,11 @@ security:
 
     firewalls:
         main:
+            remember_me:
+                key:		"babylol"
+                lifetime:	2592000
+                path:		/
+                domain:		~
             pattern:   ^/
             anonymous: true
             provider:  main

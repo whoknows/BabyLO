@@ -37,8 +37,8 @@
 						<li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}><a href="{{ path('babystat_matchmaker') }}"><span class="glyphicon glyphicon-cog"></span> Match Maker</a></li>
 					</ul>
 
-					{% if app.user != null %}
 					<ul class="nav navbar-nav navbar-right">
+						{% if app.user != null %}
 						<li>
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ app.user.username | capitalize }} <span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -52,18 +52,31 @@
 								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 							</ul>
 						</li>
-					</ul>
 					{% else %}
-					<form class="navbar-form navbar-right" id="formloginnav" method="POST" action="{{ path('login_check') }}">
-						<div class="form-group">
-							<input type="text" placeholder="Login" class="form-control" id="username" name="_username">
-						</div><div class="form-group">
-							<input type="password" placeholder="Password" class="form-control" id="password" name="_password">
-						</div><div class="form-group">
-							<button type="submit" class="btn btn-success">Sign in</button>
-						</div>
-					</form>
+						<li>
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Login <span class="caret"></span></a>
+							<div class="dropdown-menu" id="loginmenu">
+								<div class="row">
+									<form class="form" method="POST" action="{{ path('login_check') }}">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<input type="text" placeholder="Login" class="form-control" id="username" name="_username">
+										</div>
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<input type="password" placeholder="Password" class="form-control" id="password" name="_password">
+										</div>
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="cecckboxcontainer">
+											<input type="checkbox" id="remember_me" name="_remember_me" checked />
+											<label for="remember_me">Se souvenir de moi</label>
+										</div>
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<button type="submit" class="btn btn-success btn-sm">Connexion</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</li>
 					{% endif %}
+					</ul>
 				</div>
 			</div>
 		</div>

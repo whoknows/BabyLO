@@ -2,6 +2,10 @@ $(document).ready(function() {
 
 	var t = window.location.pathname.split('/');
 
+	$('#loginmenu').find('form').click(function (e) {
+		e.stopPropagation();
+	});
+
 	switch (t[t.length - 1]) {
 		case 'addgame':
 			$('#form-addgame').submit(function(e) {
