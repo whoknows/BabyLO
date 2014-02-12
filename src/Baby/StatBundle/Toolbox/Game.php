@@ -108,15 +108,24 @@ class Game {
 
 		$ple = $em->getRepository('BabyStatBundle:User');
 
-		if($size % 2 === 0) {
-			for($i=0;$i<$size/2;$i++) {
-				$teams[] = array(
-					$ple->findBy(array('id' => $pdata[$size - 1 - $i]['id']))[0]->getUsername(),
-					$ple->findBy(array('id' => $pdata[$i]['id']))[0]->getUsername()
-				);
-			}
-		} else {
-			// TODO
+		$cpt = round($size / 2, 0, PHP_ROUND_HALF_DOWN);
+
+		for($i=0;$i<$cpt;$i++) {
+			$teams[] = array(
+				$ple->findBy(array('id' => $pdata[$size - 1 - $i]['id']))[0]->getUsername(),
+				$ple->findBy(array('id' => $pdata[$i]['id']))[0]->getUsername()
+			);
+		}
+		if($size % 2 !== 0) {
+			$teams[] = array(
+				$ple->findBy(array('id' => $pdata[$cpt]['id']))[0]->getUsername(),
+				$ple->findBy(array('id' => $pdata[$cpt+1]['id']))[0]->getUsername()
+			);
+
+			$teams[] = array(
+				$ple->findBy(array('id' => $pdata[$cpt]['id']))[0]->getUsername(),
+				$ple->findBy(array('id' => $pdata[$cpt-1]['id']))[0]->getUsername()
+			);
 		}
 
 		return $teams;

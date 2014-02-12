@@ -187,7 +187,7 @@ $(document).ready(function() {
 						for(p in pdata) {
 							teams.append('<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
 								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-info">'+pdata[p][0]+'</li>'+
+									'<li class="list-group-item list-group-item-success">'+pdata[p][0]+'</li>'+
 								'</ul>'+
 							'</div>'+
 							'<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align:center">'+
@@ -195,7 +195,7 @@ $(document).ready(function() {
 							'</div>'+
 							'<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
 								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-info">'+pdata[p][1]+'</li>'+
+									'<li class="list-group-item list-group-item-success">'+pdata[p][1]+'</li>'+
 								'</ul>'+
 							'</div>');
 						}
