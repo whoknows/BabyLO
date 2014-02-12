@@ -189,9 +189,10 @@ $(document).ready(function() {
 						var teams = $('#teamsContainer');
 						teams.empty();
 						for(p in pdata) {
+							var cl = p%2===0?'success':'info';
 							teams.append('<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
 								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-success">'+pdata[p][0]+'</li>'+
+									'<li class="list-group-item list-group-item-'+cl+'">'+pdata[p][0]+'</li>'+
 								'</ul>'+
 							'</div>'+
 							'<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align:center">'+
@@ -199,7 +200,7 @@ $(document).ready(function() {
 							'</div>'+
 							'<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
 								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-success">'+pdata[p][1]+'</li>'+
+									'<li class="list-group-item list-group-item-'+cl+'">'+pdata[p][1]+'</li>'+
 								'</ul>'+
 							'</div>');
 						}
@@ -258,6 +259,7 @@ $(document).ready(function() {
 			});
 			break;
 		case '':
+			$('div[data-toggle="tooltip"]').tooltip();
 			$.post('nbgame', {playerId: $(this).data('id')}, function(pdata) {
 				$('#nbbaby').highcharts({
 					chart: {type: 'column'},

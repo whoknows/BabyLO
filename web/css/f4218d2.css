@@ -2,6 +2,10 @@ body {
 	margin-top:45px;
 }
 
+.jumbotron {
+	background:white;
+}
+
 th, td {
 	text-align: center;
 	vertical-align: middle!important;
@@ -65,4 +69,8 @@ th, td {
 	box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset!important;
 	color: #6F6F6F!important;
 	min-height:30px;
+}
+
+#teamsContainer {
+	font-weight:bold;
 }

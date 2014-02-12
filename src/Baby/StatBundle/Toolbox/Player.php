@@ -8,7 +8,7 @@ class Player {
 		$players = self::getBasePlayers($em, $limit);
 
 		$query = $em->createQuery(
-			'SELECT p.id, p.username as name,
+						'SELECT p.id, p.username as name,
 					SUM(
 						CASE
 							WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
@@ -26,16 +26,16 @@ class Player {
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
 			WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
 			GROUP BY p.id')->setParameters(array(
-				'start' => new \DateTime(date('Y-m-01')),
-				'end' => new \DateTime(date('Y-m-t'))
-			));
+			'start' => new \DateTime(date('Y-m-01')),
+			'end' => new \DateTime(date('Y-m-t'))
+		));
 
-		foreach($query->getResult() as $p) {
-			$p['ratio'] = round($p['victoires'] / ($p['victoires'] + $p['defaites']),2);
+		foreach ($query->getResult() as $p) {
+			$p['ratio'] = round($p['victoires'] / ($p['victoires'] + $p['defaites']), 2);
 			$players[$p['id']] = $p;
 		}
 
-		if($multi) {
+		if ($multi) {
 			$tmp = $players;
 			$players = array();
 			self::aasort($tmp, 'ratio');
@@ -47,7 +47,7 @@ class Player {
 		} else {
 			self::aasort($players, 'ratio');
 			$players = array_values($players);
-			if($limit !== null) {
+			if ($limit !== null) {
 				$players = array_slice($players, 0, $limit);
 			}
 		}
@@ -61,11 +61,11 @@ class Player {
 
 		$players = array();
 		try {
-			foreach($query->getResult() as $p){
+			foreach ($query->getResult() as $p) {
 				$players[$p['id']] = $p;
 				$players[$p['id']]['ratio'] = 0;
 			}
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			echo $e->getMessage();
 		}
 		return $players;
@@ -73,7 +73,7 @@ class Player {
 
 	public static function getPlayerData($id, $em, $dt) {
 		$query = $em->createQuery(
-			'SELECT p.id, p.username as name, g.date,
+						'SELECT p.id, p.username as name, g.date,
 					SUM(
 						CASE
 							WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
@@ -91,10 +91,10 @@ class Player {
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
 			WHERE p.id = :id AND g.date BETWEEN :start AND :end
 			GROUP BY g.date')->setParameters(array(
-				'start' => new \DateTime(date('Y-m-01', strtotime($dt))),
-				'end' => new \DateTime(date('Y-m-t', strtotime($dt))),
-				'id' => $id
-			));
+			'start' => new \DateTime(date('Y-m-01', strtotime($dt))),
+			'end' => new \DateTime(date('Y-m-t', strtotime($dt))),
+			'id' => $id
+		));
 
 		$data = array(
 			'dates' => array(),
@@ -103,11 +103,11 @@ class Player {
 			'defaites' => array(),
 		);
 
-		foreach($query->getResult() as $d){
+		foreach ($query->getResult() as $d) {
 			$data['dates'][] = $d['date']->format('d-m-Y');
 			$data['victoires'][] = intval($d['victoires']);
 			$data['defaites'][] = intval($d['defaites']);
-			$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])),2);
+			$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])), 2);
 		}
 
 		return $data;
@@ -129,15 +129,30 @@ class Player {
 								WHERE ((pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2)) AND g.date = :date AND p.enabled = 1
 								GROUP BY p.id
 								ORDER BY ct DESC")->setParameter('date', new \Datetime(date('Y-m-d', strtotime('-1 day'))))->setMaxResults(1);
+
+		$q3 = $em->createQuery("SELECT p.username as name, AVG(CASE WHEN pl.team = 1 THEN g.scoreTeam2 ELSE g.scoreTeam1 END) as ct
+								FROM BabyStatBundle:BabyPlayed pl
+								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
+								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
+								WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
+								GROUP BY p.id
+								ORDER BY ct DESC")
+				->setParameters(array(
+									'start' => new \DateTime(date('Y-m-01')),
+									'end' => new \DateTime(date('Y-m-t'))))
+				->setMaxResults(1);
 		$q1 = $q1->getResult();
 		$q2 = $q2->getResult();
-		$q3 = self::getPlayerList($em);
+		$q3 = $q3->getResult();
+		$q4 = self::getPlayerList($em);
+
+		$default = array('name' => 'N/A', 'ct' => 'N/A');
 
 		return array(
-			'best' => sizeof($q1) > 0 ? $q1[0]['name'] : 'N/A',
-			'worst' => sizeof($q2) > 0 ? $q2[0]['name'] : 'N/A',
-			'nextchoco' => sizeof($q3) > 0 ? $q3[sizeof($q3)-1]['name'] : 'N/A',
-			'lastchoco' => 'N/A',
+			'best' => sizeof($q1) > 0 ? $q1[0] : $default,
+			'worst' => sizeof($q2) > 0 ? $q2[0] : $default,
+			'buts' => sizeof($q3) > 0 ? $q3[0] : $default,
+			'nextchoco' => sizeof($q4) > 0 ? $q4[sizeof($q4) - 1] : $default,
 		);
 	}
 
@@ -154,4 +169,5 @@ class Player {
 		}
 		$array = $ret;
 	}
+
 }
