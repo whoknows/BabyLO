@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+		<link rel="stylesheet" href="{{ asset('css/bootstrap/cupid.min.css') }}" type="text/css" />
+
+		<title>BabyLO - Erreur : </title>
+
+		<style>
+			body {
+				margin-top:60px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="{{ path('babystat_accueil') }}">BabyLO</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="{{ path('babystat_accueil') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			{% block body %}
+			<h1>Erreur</h1>
+			{% endblock %}
+			<p><span class="text-danger">{{ status_code }} : {{ status_text }}</span></p>
+		</div>
+		<div class="container">
+			<a href="{{ path('babystat_accueil') }}">Retour à l'accueil</a>
+		</div>
+	</body>
+</html>
