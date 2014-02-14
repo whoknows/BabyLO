@@ -9,12 +9,11 @@
 			<h3>Parties</h3>
 			<form class="form-inline" role="form" id="formSearchGame" method="POST" action="{{ path('babystat_partie') }}">
 				<div class="form-group">
-					<label class="sr-only" for="gamedate">Date</label>
 					<input type="text" class="form-control" id="gamedate" data-value="{{ date }}" name="date" placeholder="Date de la partie">
 				</div>&#32;<div class="form-group">
-					<label class="sr-only" for="gamedate">Joueur</label>
 					<input type="text" class="form-control" title="Nom séparés par des virgules (jenifer, brandon)" name="joueur" value="{{ player }}" placeholder="Joueur(s)">
 				</div>&#32;<div class="form-group">
+					<input type="reset" class="form-control btn btn-info" name="reset">
 					<input type="submit" class="form-control btn btn-success" name="submit">
 				</div>
 			</form>
@@ -60,13 +59,5 @@
 			</table>
 		</div>
 	</div>
-</div>
-	<!--<ul class="pagination pull-right">
-		<li class="active"><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-	</ul>-->
 </div>
 {% endblock %}

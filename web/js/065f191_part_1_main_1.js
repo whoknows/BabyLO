@@ -1,8 +1,16 @@
+(function($) {
+	$.fn.toggleDisabled = function() {
+		return this.each(function() {
+			this.disabled = !this.disabled;
+		});
+	};
+})(jQuery);
+
 $(document).ready(function() {
 
 	var t = window.location.pathname.split('/');
 
-	$('#loginmenu').find('form').click(function (e) {
+	$('#loginmenu').find('form').click(function(e) {
 		e.stopPropagation();
 	});
 
@@ -48,10 +56,15 @@ $(document).ready(function() {
 							$err.removeClass('text-danger').addClass('text-success');
 							$err.text('Partie enregistrée !')
 							$err.removeClass('hidden');
-							setTimeout(function(){ $err.addClass('hidden'); window.location.reload(); },1000);
+							setTimeout(function() {
+								$err.addClass('hidden');
+								window.location.reload();
+							}, 1000);
 						} else {
 							$err.text('Erreur : La partie n\'a pas été enregistrée').removeClass("hidden");
-							setTimeout(function(){ $err.addClass('hidden'); }, 2000);
+							setTimeout(function() {
+								$err.addClass('hidden');
+							}, 2000);
 						}
 					});
 				}
@@ -61,9 +74,14 @@ $(document).ready(function() {
 			$('#datepartie').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
 			break;
 		case 'game':
-			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});/*.change(function() {
-				$('#formSearchGame').submit();
-			});*/
+			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
+
+			$('#advanced-search-toggle').click(function() {
+				$(this).toggleClass('dropup');
+				$('#advanced-search').find('input').toggleDisabled();
+				$('#gamejoueur').toggleDisabled();
+				$('#advanced-search').toggleClass('hidden');
+			});
 
 			$('.del-game').click(function() {
 				var tr = $(this).parent().parent();
@@ -183,26 +201,28 @@ $(document).ready(function() {
 				if (players.length < 4) {
 					var $err = $('#error-matchmaking');
 					$err.removeClass('hidden');
-					setTimeout(function(){ $err.addClass('hidden'); },3000);
+					setTimeout(function() {
+						$err.addClass('hidden');
+					}, 3000);
 				} else {
 					$.post('matchmaking', {ids: players}, function(pdata) {
 						var teams = $('#teamsContainer');
 						teams.empty();
-						for(p in pdata) {
-							var cl = p%2===0?'success':'info';
-							teams.append('<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
-								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-'+cl+'">'+pdata[p][0]+'</li>'+
-								'</ul>'+
-							'</div>'+
-							'<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align:center">'+
-							'ET'+
-							'</div>'+
-							'<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">'+
-								'<ul class="list-group">'+
-									'<li class="list-group-item list-group-item-'+cl+'">'+pdata[p][1]+'</li>'+
-								'</ul>'+
-							'</div>');
+						for (p in pdata) {
+							var cl = p % 2 === 0 ? 'success' : 'info';
+							teams.append('<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">' +
+									'<ul class="list-group">' +
+									'<li class="list-group-item list-group-item-' + cl + '">' + pdata[p][0] + '</li>' +
+									'</ul>' +
+									'</div>' +
+									'<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align:center">' +
+									'ET' +
+									'</div>' +
+									'<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">' +
+									'<ul class="list-group">' +
+									'<li class="list-group-item list-group-item-' + cl + '">' + pdata[p][1] + '</li>' +
+									'</ul>' +
+									'</div>');
 						}
 					});
 				}
@@ -211,46 +231,50 @@ $(document).ready(function() {
 		case 'useradmin':
 			var span = $('#user-msg');
 			var saveUser = function(data) {
-				$.post('saveuser', data, function(ret){
+				$.post('saveuser', data, function(ret) {
 					span.removeClass('hidden text-success text-danger');
-					if(ret === 'OK') {
+					if (ret === 'OK') {
 						span.addClass('text-success')
-							.text('Modifications enregistrées.');
+								.text('Modifications enregistrées.');
 					} else {
 						span.addClass('text-danger')
-							.text('Modifications non enregistrées.');
+								.text('Modifications non enregistrées.');
 					}
-					setTimeout(function(){ span.addClass('hidden'); },3000);
+					setTimeout(function() {
+						span.addClass('hidden');
+					}, 3000);
 				});
 			};
 
 			$('.role-selector').chosen();
-			$('.save-user').click(function(){
+			$('.save-user').click(function() {
 				var data = {
-					id : $(this).data('id'),
-					enabled : $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
-					roles : $(this).parent().parent().find('select[name=roles]').val(),
+					id: $(this).data('id'),
+					enabled: $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
+					roles: $(this).parent().parent().find('select[name=roles]').val(),
 					position: $(this).parent().parent().find('select[name="position"]').val()
 				};
 
 				saveUser(data);
 			});
 
-			$('#newUser').submit(function(e){
+			$('#newUser').submit(function(e) {
 				e.preventDefault();
 
 				var data = {
-					enabled : $('#userenabled').prop('checked') ? 1 : 0,
-					roles : $('#userrole').val(),
+					enabled: $('#userenabled').prop('checked') ? 1 : 0,
+					roles: $('#userrole').val(),
 					position: $('#userposition').val(),
 					username: $('#useruser').val(),
 					password: $('#password').val()
 				};
 
-				if(data.username === "" || data.password === "") {
+				if (data.username === "" || data.password === "") {
 					span.removeClass('hidden text-success text-danger');
 					span.addClass('text-danger').text('Veuillez renseigner tous les champs.');
-					setTimeout(function(){ span.addClass('hidden'); },3000);
+					setTimeout(function() {
+						span.addClass('hidden');
+					}, 3000);
 					return false;
 				}
 

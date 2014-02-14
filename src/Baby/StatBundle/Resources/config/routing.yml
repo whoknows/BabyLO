@@ -27,11 +27,11 @@ babystat_nbpartie:
     defaults: { _controller: BabyStatBundle:Stat:nbgame }
 
 babystat_ajoutpartie:
-    path:     /addgame
+    path:     /admin/addgame
     defaults: { _controller: BabyStatBundle:Stat:addgame }
 
 babystat_savepartie:
-    path:     /savegame
+    path:     /admin/savegame
     defaults: { _controller: BabyStatBundle:Stat:savegame }
 
 babystat_matchmaker:
@@ -43,13 +43,13 @@ babystat_matchmaking:
     defaults: { _controller: BabyStatBundle:Stat:matchmaking }
 
 babystat_delgame:
-    path:     /delgame
+    path:     /admin/delgame
     defaults: { _controller: BabyStatBundle:Stat:delgame }
 
 babystat_useradmin:
-    path:     /useradmin
+    path:     /superadmin/useradmin
     defaults: { _controller: BabyStatBundle:Stat:useradmin }
 
 babystat_saveuser:
-    path:     /saveuser
+    path:     /superadmin/saveuser
     defaults: { _controller: BabyStatBundle:Stat:saveuser }
