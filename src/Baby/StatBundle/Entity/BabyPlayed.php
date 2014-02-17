@@ -31,7 +31,7 @@ class BabyPlayed
     /**
      * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Baby\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_player", referencedColumnName="id")
      * })
@@ -53,7 +53,7 @@ class BabyPlayed
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +76,7 @@ class BabyPlayed
     /**
      * Get team
      *
-     * @return integer 
+     * @return integer
      */
     public function getTeam()
     {
@@ -86,10 +86,10 @@ class BabyPlayed
     /**
      * Set idPlayer
      *
-     * @param \Baby\StatBundle\Entity\User $idPlayer
+     * @param \Baby\UserBundle\Entity\User $idPlayer
      * @return BabyPlayed
      */
-    public function setIdPlayer(\Baby\StatBundle\Entity\User $idPlayer = null)
+    public function setIdPlayer(\Baby\UserBundle\Entity\User $idPlayer = null)
     {
         $this->idPlayer = $idPlayer;
 
@@ -99,7 +99,7 @@ class BabyPlayed
     /**
      * Get idPlayer
      *
-     * @return \Baby\StatBundle\Entity\User 
+     * @return \Baby\UserBundle\Entity\User
      */
     public function getIdPlayer()
     {
@@ -122,7 +122,7 @@ class BabyPlayed
     /**
      * Get idGame
      *
-     * @return \Baby\StatBundle\Entity\BabyGame 
+     * @return \Baby\StatBundle\Entity\BabyGame
      */
     public function getIdGame()
     {

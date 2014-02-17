@@ -4,7 +4,6 @@ namespace Baby\StatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Baby\StatBundle\Toolbox;
 
 class StatController extends Controller {
@@ -130,7 +129,7 @@ class StatController extends Controller {
 				for ($j = 1; $j <= 2; $j++) {
 					$played = new \Baby\StatBundle\Entity\BabyPlayed();
 					$played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
-					$played->setIdPlayer($em->getRepository('BabyStatBundle:User')->find($request->get('joueur' . $j . 'equipe' . $i)));
+					$played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->get('joueur' . $j . 'equipe' . $i)));
 					$played->setTeam($i);
 					$em->persist($played);
 					$em->flush();
@@ -164,7 +163,7 @@ class StatController extends Controller {
 
 	public function matchmakerAction() {
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
 		));
 	}
 
@@ -181,8 +180,8 @@ class StatController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 
 		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
-					'users' => $em->getRepository('BabyStatBundle:User')->findBy(array(), array('username' => 'ASC')),
-					'roles' => $em->getRepository('BabyStatBundle:Roles')->findAll()
+					'users' => $em->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'roles' => $em->getRepository('BabyUserBundle:Role')->findAll()
 		));
 	}
 
@@ -199,12 +198,12 @@ class StatController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 
 		if ($userData['id'] === NULL) {
-			$pl = new \Baby\StatBundle\Entity\User();
+			$pl = new \Baby\UserBundle\Entity\User();
 			$pl->setUsername($userData['username']);
 			$pl->setPassword(hash('sha512', 'secret'));
 			$pl->setSalt('');
 		} else {
-			$pl = $em->getRepository('BabyStatBundle:User')->find($userData['id']);
+			$pl = $em->getRepository('BabyUserBundle:User')->find($userData['id']);
 		}
 
 		$pl->setEnabled($userData['enabled']);
@@ -212,7 +211,7 @@ class StatController extends Controller {
 		$pl->removeAllRoles();
 
 		foreach ($userData['roles'] as $rid) {
-			$rl = $em->getRepository('BabyStatBundle:Roles')->find($rid);
+			$rl = $em->getRepository('BabyUserBundle:Role')->find($rid);
 			$pl->addRole($rl);
 		}
 

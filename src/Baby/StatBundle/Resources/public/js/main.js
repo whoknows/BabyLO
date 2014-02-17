@@ -87,7 +87,7 @@ $(document).ready(function() {
 			$('.del-game').click(function() {
 				var tr = $(this).parent().parent();
 				if (confirm('Supprimer cette partie ?')) {
-					$.post('delgame', {id: $(this).data('id')}, function() {
+					$.post('admin/delgame', {id: $(this).data('id')}, function() {
 						tr.remove();
 					});
 				}

@@ -8,198 +8,288 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  *
- * @ORM\Table()
+ * @ORM\Table(name="baby_user")
  * @ORM\Entity(repositoryClass="Baby\UserBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable
-{
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+class User implements UserInterface, \Serializable {
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255)
-     */
-    private $username;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="username", type="string", length=255)
+	 */
+	private $username;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
-    private $salt;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="position", type="string", length=255, nullable=false)
+	 */
+	private $position;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Role")
-     * @ORM\JoinTable(name="user_role",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     * )
-     */
-    private $roles;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="password", type="string", length=255)
+	 */
+	private $password;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="salt", type="string", length=255)
+	 */
+	private $salt;
 
-    /**
-     * Set username
-     *
-     * @param string $username
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="enabled", type="integer", nullable=false)
+	 */
+	private $enabled = '0';
 
-        return $this;
-    }
+	/**
+	 * @var \Doctrine\Common\Collections\Collection
+	 *
+	 * @ORM\ManyToMany(targetEntity="Role", inversedBy="user")
+	 * @ORM\JoinTable(name="baby_user_role",
+	 *   joinColumns={
+	 *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	 *   },
+	 *   inverseJoinColumns={
+	 *     @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+	 *   }
+	 * )
+	 */
+	private $role;
 
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->role = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
+	/**
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set username
+	 *
+	 * @param string $username
+	 * @return User
+	 */
+	public function setUsername($username) {
+		$this->username = $username;
 
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
+		return $this;
+	}
 
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
+	/**
+	 * Get username
+	 *
+	 * @return string
+	 */
+	public function getUsername() {
+		return $this->username;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set position
+	 *
+	 * @param string $position
+	 * @return User
+	 */
+	public function setPosition($position) {
+		$this->position = $position;
 
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
+		return $this;
+	}
 
-    /**
-     * Set roles
-     *
-     * @param string $roles
-     * @return User
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
+	/**
+	 * Get position
+	 *
+	 * @return string
+	 */
+	public function getPosition() {
+		return $this->position;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set password
+	 *
+	 * @param string $password
+	 * @return User
+	 */
+	public function setPassword($password) {
+		$this->password = $password;
 
-    /**
-     * Get roles
-     *
-     * @return array
-     */
-    public function getRoles()
-    {
-        return $this->roles->toArray();
-    }
+		return $this;
+	}
 
-    public function eraseCredentials()
-    {
-    }
+	/**
+	 * Get password
+	 *
+	 * @return string
+	 */
+	public function getPassword() {
+		return $this->password;
+	}
 
-    /**
-     * Add roles
-     *
-     * @param \Baby\UserBundle\Entity\Role $roles
-     * @return User
-     */
-    public function addRole(\Baby\UserBundle\Entity\Role $roles)
-    {
-        $this->roles[] = $roles;
+	/**
+	 * Set salt
+	 *
+	 * @param string $salt
+	 * @return User
+	 */
+	public function setSalt($salt) {
+		$this->salt = $salt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove roles
-     *
-     * @param \Baby\UserBundle\Entity\Role $roles
-     */
-    public function removeRole(\Baby\UserBundle\Entity\Role $roles)
-    {
-        $this->roles->removeElement($roles);
-    }
+	/**
+	 * Get salt
+	 *
+	 * @return string
+	 */
+	public function getSalt() {
+		return $this->salt;
+	}
 
-    /**
-     * Serializes the content of the current User object
-     * @return string
-     */
-    public function serialize()
-    {
-        return \json_encode(
-                array($this->username, $this->password, $this->salt,
-                        $this->roles, $this->id));
-    }
+	/**
+	 * Set enabled
+	 *
+	 * @param integer $enabled
+	 * @return User
+	 */
+	public function setEnabled($enabled) {
+		$this->enabled = $enabled;
 
-    /**
-     * Unserializes the given string in the current User object
-     * @param serialized
-     */
-    public function unserialize($serialized)
-    {
-        list($this->username, $this->password, $this->salt,
-                        $this->roles, $this->id) = \json_decode(
-                $serialized);
-    }
+		return $this;
+	}
+
+	/**
+	 * Get enabled
+	 *
+	 * @return integer
+	 */
+	public function getEnabled() {
+		return $this->enabled;
+	}
+
+	/**
+	 * Set roles
+	 *
+	 * @param string $roles
+	 * @return User
+	 */
+	public function setRoles($roles) {
+		$this->role = $roles;
+
+		return $this;
+	}
+
+	/**
+	 * Get roles
+	 *
+	 * @return array
+	 */
+	public function getRoles() {
+		return $this->role->toArray();
+	}
+
+	public function eraseCredentials() {
+
+	}
+
+	/**
+	 * Has role
+	 *
+	 * @param \Baby\UserBundle\Entity\Roles $role
+	 * @return Bool
+	 */
+	public function hasRole(\Baby\UserBundle\Entity\Role $role) {
+		foreach ($this->role as $r) {
+			if ($r === $role) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Remove all roles
+	 *
+	 * @param \Baby\UserBundle\Entity\Roles $role
+	 */
+	public function removeAllRoles() {
+		$this->role->clear();
+	}
+
+	/**
+	 * Get role
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getRole() {
+		return $this->role;
+	}
+
+	/**
+	 * Add roles
+	 *
+	 * @param \Baby\UserBundle\Entity\Roles $roles
+	 * @return User
+	 */
+	public function addRole(\Baby\UserBundle\Entity\Role $roles) {
+		$this->role[] = $roles;
+
+		return $this;
+	}
+
+	/**
+	 * Remove roles
+	 *
+	 * @param \Baby\UserBundle\Entity\Roles $roles
+	 */
+	public function removeRole(\Baby\UserBundle\Entity\Role $roles) {
+		$this->role->removeElement($roles);
+	}
+
+	/**
+	 * Serializes the content of the current User object
+	 * @return string
+	 */
+	public function serialize() {
+		return \json_encode(
+				array($this->username, $this->password, $this->salt,
+					$this->role, $this->id));
+	}
+
+	/**
+	 * Unserializes the given string in the current User object
+	 * @param serialized
+	 */
+	public function unserialize($serialized) {
+		list($this->username, $this->password, $this->salt,
+				$this->roles, $this->id) = \json_decode(
+				$serialized);
+	}
+
 }

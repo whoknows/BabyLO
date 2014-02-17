@@ -30,7 +30,7 @@
 						<td>
 							<select class="role-selector input-lg" name="roles" multiple="multiple">
 							{% for role in roles %}
-								<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.nombre }}</option>
+								<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.name }}</option>
 							{% endfor %}
 							</select>
 						</td>
@@ -56,7 +56,7 @@
 					<label for="userrole">Roles</label>
 					<select class="role-selector form-control" name="roles" id="userrole" multiple="multiple">
 					{% for role in roles %}
-						<option value="{{ role.id }}">{{ role.nombre }}</option>
+						<option value="{{ role.id }}">{{ role.name }}</option>
 					{% endfor %}
 					</select>
 				</div>

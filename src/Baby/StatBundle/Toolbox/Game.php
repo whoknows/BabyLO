@@ -120,7 +120,7 @@ class Game {
 
 		$size = sizeof($pdata);
 
-		$ple = $em->getRepository('BabyStatBundle:User');
+		$ple = $em->getRepository('BabyUserBundle:User');
 
 		$cpt = round($size / 2, 0, PHP_ROUND_HALF_DOWN);
 

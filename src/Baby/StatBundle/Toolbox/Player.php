@@ -21,7 +21,7 @@ class Player {
 							WHEN pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
 						ELSE 0 END
 					) as defaites
-			FROM BabyStatBundle:User p
+			FROM BabyUserBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
 			WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
@@ -57,7 +57,7 @@ class Player {
 	}
 
 	public static function getBasePlayers($em) {
-		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyStatBundle:User p WHERE p.enabled = 1');
+		$query = $em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyUserBundle:User p WHERE p.enabled = 1');
 
 		$players = array();
 		try {
@@ -116,7 +116,7 @@ class Player {
 	public static function getDailyTops($em) {
 		$q1 = $em->createQuery("SELECT p.username as name, COUNT(p.id) as ct
 								FROM BabyStatBundle:BabyPlayed pl
-								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
+								INNER JOIN BabyUserBundle:User p WITH p.id = pl.idPlayer
 								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
 								WHERE ((pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2)) AND g.date = :date AND p.enabled = 1
 								GROUP BY p.id
@@ -124,7 +124,7 @@ class Player {
 
 		$q2 = $em->createQuery("SELECT p.username as name, COUNT(p.id) as ct
 								FROM BabyStatBundle:BabyPlayed pl
-								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
+								INNER JOIN BabyUserBundle:User p WITH p.id = pl.idPlayer
 								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
 								WHERE ((pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2)) AND g.date = :date AND p.enabled = 1
 								GROUP BY p.id
@@ -132,7 +132,7 @@ class Player {
 
 		$q3 = $em->createQuery("SELECT p.username as name, AVG(CASE WHEN pl.team = 1 THEN g.scoreTeam2 ELSE g.scoreTeam1 END) as ct
 								FROM BabyStatBundle:BabyPlayed pl
-								INNER JOIN BabyStatBundle:User p WITH p.id = pl.idPlayer
+								INNER JOIN BabyUserBundle:User p WITH p.id = pl.idPlayer
 								INNER JOIN BabyStatBundle:BabyGame g WITH pl.idGame = g.id
 								WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
 								GROUP BY p.id
