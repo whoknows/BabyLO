@@ -1,23 +1,39 @@
 # BabyLO
 
-## How to install :
+BabyLO est une application web permettant de réaliser des statistiques sur des parties de baby-foot.
+L'application est basée sur Symfony2.
+Les librairies utilisées sont :
+- Bootstrap 3
+- HighCharts
+- jQuery
+- Chosen
+- Pickadate.js
+
+## Procédure d'installation :
+
+* La procédure a été testé et fonctionne sur un Ubuntu 13.10 avec une installation standard de LAMP *
 
 ```bash
-git clone https://github.com/whoknows/BabyLO.git .
+git clone https://github.com/whoknows/BabyLO.git
 ```
 
-Configure your database connexion in app/config/parameters.yml
+Configurer vos paramètres de base de données dans le fichier app/config/parameters.yml
 
 ```bash
-chmod 777 -R app/cache/
-chmod 777 -R app/logs/
+cd BabyLO/
+mkdir app/cache/ && chmod 777 -R app/cache/
+mkdir app/logs/ && chmod 777 -R app/logs/
 composer update
 php app/console doctrine:database:create
 php app/console doctrine:schema:update --force
 php app/console doctrine:fixtures:load
 ```
 
-### Admin credentials :
+### Accès à l'application :
+
+http://localhost/BabyLO/web/app.php
+
+### Identifiants admin :
 
 - login : admin
 - password : secret

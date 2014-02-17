@@ -210,7 +210,7 @@ class StatController extends Controller {
 		if ($userData['id'] === NULL) {
 			$pl = new \Baby\UserBundle\Entity\User();
 			$pl->setUsername($userData['username']);
-			$pl->setPassword(hash('sha512', 'secret'));
+			$pl->setPassword(hash('sha512', $userData['password']));
 			$pl->setSalt('');
 		} else {
 			$pl = $em->getRepository('BabyUserBundle:User')->find($userData['id']);
