@@ -4,14 +4,20 @@
 
 ```bash
 git clone https://github.com/whoknows/BabyLO.git .
+```
+
+Configure your database connexion in app/config/parameters.yml
+
+```bash
 chmod 777 -R app/cache/
 chmod 777 -R app/logs/
 composer update
+php app/console doctrine:database:create
 php app/console doctrine:schema:update --force
 php app/console doctrine:fixtures:load
 ```
 
 ### Admin credentials :
 
-login : admin
-password : secret
+- login : admin
+- password : secret
