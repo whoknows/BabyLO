@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BabyGame
  *
  * @ORM\Table(name="baby_game")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Baby\StatBundle\Entity\BabyGameRepository")
  */
 class BabyGame
 {
@@ -47,7 +47,7 @@ class BabyGame
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -70,7 +70,7 @@ class BabyGame
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -93,7 +93,7 @@ class BabyGame
     /**
      * Get scoreTeam1
      *
-     * @return integer 
+     * @return integer
      */
     public function getScoreTeam1()
     {
@@ -116,7 +116,7 @@ class BabyGame
     /**
      * Get scoreTeam2
      *
-     * @return integer 
+     * @return integer
      */
     public function getScoreTeam2()
     {

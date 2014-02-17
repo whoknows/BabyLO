@@ -9,16 +9,17 @@ use Baby\StatBundle\Toolbox;
 class StatController extends Controller {
 
 	public function indexAction() {
+		$em = $this->getDoctrine()->getManager();
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
-					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), 5),
-					'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), 6),
-					'tops' => Toolbox\Player::getDailyTops($this->getDoctrine()->getManager()),
+					'games' => $em->getRepository('BabyStatBundle:Game')->getGameList(5),
+					'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(6),
+					'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
 		));
 	}
 
 	public function playerAction() {
 		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
-					'players' => Toolbox\Player::getPlayerList($this->getDoctrine()->getManager(), null, true),
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayerList(null, true),
 		));
 	}
 
@@ -74,7 +75,7 @@ class StatController extends Controller {
 		}
 
 		$response = new Response(json_encode(array(
-					'graph' => Toolbox\Player::getPlayerData($id, $em, $dt),
+					'graph' => $em->getRepository('BabyUserBundle:User')->getPlayerData($id, $dt),
 					'stats' => $st
 		)));
 		$response->headers->set('Content-Type', 'application/json');
@@ -93,27 +94,22 @@ class StatController extends Controller {
 		}
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-					'games' => Toolbox\Game::getGameList($this->getDoctrine()->getManager(), null, $filters),
+					'games' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->getGameList(null, $filters),
 					'date' => $filters['date'],
 					'player' => $filters['player'],
 		));
 	}
 
 	public function nbgameAction() {
-		$response = new Response(json_encode(Toolbox\Game::getGameCount($this->getDoctrine()->getManager())));
+		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->getGameCount()));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
 	}
 
 	public function addgameAction() {
-		$qb = $this->getDoctrine()->getManager()->createQueryBuilder();
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $qb->select('p.id', 'p.username')
-							->from('BabyUserBundle:User', 'p')
-							->where($qb->expr()->neq('p.username', ':name'))
-							->orderBy('p.username', 'asc')
-							->getQuery()->setParameter('name', 'admin')->execute()
+					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getStandardUserList()
 		));
 	}
 
@@ -175,7 +171,7 @@ class StatController extends Controller {
 	public function matchmakingAction() {
 		$players = $this->getRequest()->get('ids', array());
 
-		$response = new Response(json_encode(Toolbox\Game::matchMaking($players, $this->getDoctrine()->getManager())));
+		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->matchMaking($players)));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -183,14 +179,9 @@ class StatController extends Controller {
 
 	public function useradminAction() {
 		$em = $this->getDoctrine()->getManager();
-		$qb = $em->createQueryBuilder();
 
 		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
-					'users' => $qb->select('p')
-							->from('BabyUserBundle:User', 'p')
-							->where($qb->expr()->neq('p.username', ':name'))
-							->orderBy('p.username', 'asc')
-							->getQuery()->setParameter('name', 'admin')->execute(),
+					'users' => $em->getRepository('BabyUserBundle:User')->getStandardUserList(),
 					'roles' => $em->getRepository('BabyUserBundle:Role')->findAll()
 		));
 	}

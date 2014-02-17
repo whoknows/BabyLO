@@ -1,0 +1,22 @@
+{
+    "name": "BabyLO",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": [
+        ".\/bttrlazyloading.js",
+        ".\/bttrlazyloading.css"
+    ],
+    "author": "Guillaume Coste <guillaume.coste@livingobjects.fr>",
+    "homepage": "https://github.com/whoknows/BabyLO",
+    "ignore": [
+        "**\/.*",
+        "bower_components",
+        "test",
+        "demo",
+        "tests"
+    ],
+    "dependencies": {
+        "jquery": ">2.0.0",
+        "bootstrap": ">=3.0.0"
+    }
+}

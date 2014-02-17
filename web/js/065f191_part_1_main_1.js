@@ -76,17 +76,18 @@ $(document).ready(function() {
 		case 'game':
 			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
 
-			$('#advanced-search-toggle').click(function() {
-				$(this).toggleClass('dropup');
-				$('#advanced-search').find('input').toggleDisabled();
-				$('#gamejoueur').toggleDisabled();
-				$('#advanced-search').toggleClass('hidden');
+			$('input[name=reset]').click(function(e){
+				e.preventDefault();
+				$('#gamedate').val('');
+				$('input[name="joueur"]').val('');
+				$('input[name="submit"]').click();
+				return false;
 			});
 
 			$('.del-game').click(function() {
 				var tr = $(this).parent().parent();
 				if (confirm('Supprimer cette partie ?')) {
-					$.post('delgame', {id: $(this).data('id')}, function() {
+					$.post('admin/delgame', {id: $(this).data('id')}, function() {
 						tr.remove();
 					});
 				}

@@ -1,13 +1,18 @@
 <?php
 
-namespace Baby\StatBundle\Toolbox;
+namespace Baby\StatBundle\Entity;
 
-class Game {
+use Doctrine\ORM\EntityRepository;
 
-	public static function getGameList($em, $limit = null, $filter = array()) {
-		$f = self::prepareFilters($filter);
+/**
+ * GameRepository
+ */
+class BabyGameRepository extends EntityRepository {
 
-		$query = $em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
+	public function getGameList($limit = null, $filter = array()) {
+		$f = $this->prepareFilters($filter);
+
+		$query = $this->_em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
 								FROM BabyStatBundle:BabyGame g
 								' . (isset($f['date']) ? 'WHERE g.date = :date' : '') . '
 								ORDER BY g.date DESC, g.id DESC');
@@ -23,12 +28,12 @@ class Game {
 		$games = array();
 		foreach ($query->getResult() as $row) {
 
-			$t1 = $em->createQuery('SELECT p.username as name
+			$t1 = $this->_em->createQuery('SELECT p.username as name
 									FROM BabyUserBundle:User p
 									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
 									WHERE pl.team = 1 AND pl.idGame = :game
 									ORDER BY pl.id ASC')->setParameter('game', $row['id']);
-			$t2 = $em->createQuery('SELECT p.username as name
+			$t2 = $this->_em->createQuery('SELECT p.username as name
 									FROM BabyUserBundle:User p
 									INNER JOIN BabyStatBundle:BabyPlayed pl WITH pl.idPlayer = p.id
 									WHERE pl.team = 2 AND pl.idGame = :game
@@ -43,7 +48,7 @@ class Game {
 				"player2Team2" => $r2[1]['name'],
 			);
 
-			if (self::filterResults($tmp, $f)) {
+			if ($this->filterResults($tmp, $f)) {
 				$games[] = array_merge($row, $tmp);
 			}
 		}
@@ -51,7 +56,7 @@ class Game {
 		return $games;
 	}
 
-	private static function prepareFilters($filter) {
+	private function prepareFilters($filter) {
 		$f = array('players' => NULL, 'team1' => array(), 'team2' => array());
 		if (isset($filter['date']) && $filter['date'] != '') {
 			$f['date'] = new \DateTime($filter['date']);
@@ -68,7 +73,7 @@ class Game {
 		return $f;
 	}
 
-	private static function filterResults($data, $f) {
+	private function filterResults($data, $f) {
 		if ($f['players'] !== NULL) {
 			$in_array = true;
 			foreach ($f['players'] as $pl) {
@@ -81,8 +86,8 @@ class Game {
 		return true;
 	}
 
-	public static function getGameCount($em) {
-		$gr = $em->getRepository('BabyStatBundle:BabyGame');
+	public function getGameCount() {
+		$gr = $this->_em->getRepository('BabyStatBundle:BabyGame');
 		$data = array(
 			'date' => array(),
 			'nb' => array(),
@@ -102,25 +107,25 @@ class Game {
 		);
 	}
 
-	public static function matchMaking($players, $em) {
+	public function matchMaking($players) {
 		$pdata = array();
 		$teams = array();
 
+		$ple = $this->_em->getRepository('BabyUserBundle:User');
+
 		foreach ($players as $p) {
-			$tmp = Player::getPlayerData($p, $em, 'now');
+			$tmp = $ple->getPlayerData($p, 'now');
 			$pdata[] = array(
 				'ratio' => round(array_sum($tmp['ratio']) / sizeof($tmp['ratio']), 2),
 				'id' => $p
 			);
 		}
 
-		Player::aasort($pdata, 'ratio');
+		$ple::aasort($pdata, 'ratio');
 
 		$pdata = array_values($pdata);
 
 		$size = sizeof($pdata);
-
-		$ple = $em->getRepository('BabyUserBundle:User');
 
 		$cpt = round($size / 2, 0, PHP_ROUND_HALF_DOWN);
 
