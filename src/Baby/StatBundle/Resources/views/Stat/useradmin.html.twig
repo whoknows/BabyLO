@@ -20,11 +20,11 @@
 				<tbody>
 					{% for user in users %}
 					<tr>
-						<td>{{ user.getUsername }}</td>
+						<td>{{ user.username }}</td>
 						<td>
 							<select name="position" class="select">
-								<option value="Avant" {% if user.getPosition == 'Avant' %} selected="selected" {% endif %}>Avant</option>
-								<option value="Arriere" {% if user.getPosition == 'Arriere' %} selected="selected" {% endif %}>Arriere</option>
+								<option value="Avant" {% if user.position == 'Avant' %} selected="selected" {% endif %}>Avant</option>
+								<option value="Arriere" {% if user.position == 'Arriere' %} selected="selected" {% endif %}>Arriere</option>
 							</select>
 						</td>
 						<td>
@@ -34,8 +34,8 @@
 							{% endfor %}
 							</select>
 						</td>
-						<td><input type="checkbox" name="enabled" {% if user.getEnabled == 1 %}checked="checked"{%endif%} /></td>
-						<td><button class="btn btn-success btn-sm save-user" data-id="{{ user.getId }}">Enregistrer</button></td>
+						<td><input type="checkbox" name="enabled" {% if user.enabled == 1 %}checked="checked"{%endif%} /></td>
+						<td><button class="btn btn-success btn-sm save-user" data-id="{{ user.id }}">Enregistrer</button></td>
 					</tr>
 					{% endfor %}
 				</tbody>

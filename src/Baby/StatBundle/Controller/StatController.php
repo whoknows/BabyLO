@@ -33,7 +33,7 @@ class StatController extends Controller {
 			if (sizeof($st) == 0) {
 				$st = array();
 			} else {
-				$st['ratio'] = round($st['nbWin'] / $st['nbGames'], 2);
+				$st['ratio'] = $st['nbGames'] == 0 ? 0 : round($st['nbWin'] / $st['nbGames'], 2);
 			}
 
 			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
@@ -88,7 +88,7 @@ class StatController extends Controller {
 			"player" => $this->getRequest()->get('joueur', NULL),
 		);
 
-		if($filters["player"] == "") {
+		if ($filters["player"] == "") {
 			$filters["player"] = NULL;
 		}
 
@@ -107,8 +107,13 @@ class StatController extends Controller {
 	}
 
 	public function addgameAction() {
+		$qb = $this->getDoctrine()->getManager()->createQueryBuilder();
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'players' => $qb->select('p.id', 'p.username')
+							->from('BabyUserBundle:User', 'p')
+							->where($qb->expr()->neq('p.username', ':name'))
+							->orderBy('p.username', 'asc')
+							->getQuery()->setParameter('name', 'admin')->execute()
 		));
 	}
 
@@ -178,9 +183,14 @@ class StatController extends Controller {
 
 	public function useradminAction() {
 		$em = $this->getDoctrine()->getManager();
+		$qb = $em->createQueryBuilder();
 
 		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
-					'users' => $em->getRepository('BabyUserBundle:User')->findBy(array(), array('username' => 'ASC')),
+					'users' => $qb->select('p')
+							->from('BabyUserBundle:User', 'p')
+							->where($qb->expr()->neq('p.username', ':name'))
+							->orderBy('p.username', 'asc')
+							->getQuery()->setParameter('name', 'admin')->execute(),
 					'roles' => $em->getRepository('BabyUserBundle:Role')->findAll()
 		));
 	}

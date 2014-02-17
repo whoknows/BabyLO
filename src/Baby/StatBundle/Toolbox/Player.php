@@ -24,10 +24,12 @@ class Player {
 			FROM BabyUserBundle:User p
 			INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
 			INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
-			WHERE g.date BETWEEN :start AND :end AND p.enabled = 1
-			GROUP BY p.id')->setParameters(array(
+			WHERE p.username != :name AND g.date BETWEEN :start AND :end AND p.enabled = 1
+			GROUP BY p.id')
+				->setParameters(array(
 			'start' => new \DateTime(date('Y-m-01')),
-			'end' => new \DateTime(date('Y-m-t'))
+			'end' => new \DateTime(date('Y-m-t')),
+			'name' => 'admin'
 		));
 
 		foreach ($query->getResult() as $p) {
@@ -138,8 +140,8 @@ class Player {
 								GROUP BY p.id
 								ORDER BY ct DESC")
 				->setParameters(array(
-									'start' => new \DateTime(date('Y-m-01')),
-									'end' => new \DateTime(date('Y-m-t'))))
+					'start' => new \DateTime(date('Y-m-01')),
+					'end' => new \DateTime(date('Y-m-t'))))
 				->setMaxResults(1);
 		$q1 = $q1->getResult();
 		$q2 = $q2->getResult();
@@ -148,11 +150,14 @@ class Player {
 
 		$default = array('name' => 'N/A', 'ct' => 'N/A');
 
+		$q4 = sizeof($q4) > 0 ? $q4[sizeof($q4) - 1] : $default;
+		$q4['ratio'] = isset($q4['ratio']) ? $q4['ratio'] : $q4['ct'];
+
 		return array(
 			'best' => sizeof($q1) > 0 ? $q1[0] : $default,
 			'worst' => sizeof($q2) > 0 ? $q2[0] : $default,
 			'buts' => sizeof($q3) > 0 ? $q3[0] : $default,
-			'nextchoco' => sizeof($q4) > 0 ? $q4[sizeof($q4) - 1] : $default,
+			'nextchoco' => $q4,
 		);
 	}
 
