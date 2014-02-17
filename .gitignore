@@ -1,6 +1,7 @@
-/app/logs
-/app/cache
+/app/logs/*
+/app/cache/*
 /vendor
 composer.lock
+/web/bower_components/*
 .htaccess
 /nbproject
