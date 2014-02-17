@@ -11,7 +11,7 @@ Les librairies utilisées sont :
 
 ## Procédure d'installation :
 
-* La procédure a été testé et fonctionne sur un Ubuntu 13.10 avec une installation standard de LAMP *
+La procédure a été testé et fonctionne sur un Ubuntu 13.10 avec une installation standard de LAMP.
 
 ```bash
 git clone https://github.com/whoknows/BabyLO.git
