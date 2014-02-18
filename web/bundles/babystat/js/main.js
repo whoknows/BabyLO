@@ -85,7 +85,7 @@ $(document).ready(function() {
 			});
 
 			$('#game-table').on('click', '.del-game-confirm', function() {
-				var tr = $(this).parent().parent();
+				var tr = $(this).parent().parent().parent();
 				$.post('admin/delgame', {id: $(this).data('id')}, function() {
 					tr.remove();
 				});
