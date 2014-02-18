@@ -19,7 +19,7 @@
 			</form>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<table class="table table-bordered">
+			<table class="table table-bordered" id="game-table">
 				<thead>
 					<tr>
 						<th rowspan="2">Date</th>
@@ -51,7 +51,7 @@
 						<td class="{{ c2 }}">{{ game.player2Team2 }}</td>
 						<td class="{{ c2 }}"><strong>{{ game.scoreTeam2 }}</strong></td>
 							{% if is_granted('ROLE_ADMIN') %}
-						<td><span class="glyphicon glyphicon-remove del-game text-danger" data-id="{{ game.id }}"></span></td>
+						<td><button class="btn btn-danger btn-xs del-game" data-id="{{ game.id }}"><span class="glyphicon glyphicon-remove"></span></button></td>
 							{% endif %}
 					</tr>
 					{% endfor %}

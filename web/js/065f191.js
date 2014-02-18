@@ -76,7 +76,7 @@ $(document).ready(function() {
 		case 'game':
 			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
 
-			$('input[name=reset]').click(function(e){
+			$('input[name=reset]').click(function(e) {
 				e.preventDefault();
 				$('#gamedate').val('');
 				$('input[name="joueur"]').val('');
@@ -84,13 +84,16 @@ $(document).ready(function() {
 				return false;
 			});
 
-			$('.del-game').click(function() {
+			$('#game-table').on('click', '.del-game-confirm', function() {
 				var tr = $(this).parent().parent();
-				if (confirm('Supprimer cette partie ?')) {
-					$.post('admin/delgame', {id: $(this).data('id')}, function() {
-						tr.remove();
-					});
-				}
+				$.post('admin/delgame', {id: $(this).data('id')}, function() {
+					tr.remove();
+				});
+			}).on('click', '.del-game-cancel', function() {
+				$(this).parent().parent().html('<button class="btn btn-danger btn-xs del-game" data-id="' + $(this).prev().data('id') + '"><span class="glyphicon glyphicon-remove"></span></button>');
+			}).on('click', '.del-game', function() {
+				var html = '<div class="btn-group"><button type="button" class="btn btn-success btn-xs del-game-confirm" data-id="' + $(this).data('id') + '"><span class="glyphicon glyphicon-ok"></span></button><button type="button" class="btn btn-danger btn-xs del-game-cancel"><span class="glyphicon glyphicon-remove"></span></button></div>';
+				$(this).parent().html(html);
 			});
 			break;
 		case 'player':

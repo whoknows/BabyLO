@@ -60,7 +60,7 @@ th, td {
 	color: #222;
 }
 
-.graphme, .del-game {
+.graphme {
 	cursor:pointer;
 }
 
@@ -73,4 +73,8 @@ th, td {
 
 #advanced-search {
 	margin: 5px 0;
+}
+
+.del-game {
+	padding: 4px 23px!important;
 }

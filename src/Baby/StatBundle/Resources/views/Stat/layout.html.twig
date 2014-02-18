@@ -49,6 +49,7 @@
 									{% if is_granted('ROLE_SUPER_ADMIN') %}
 								<li><a href="{{ path('babystat_useradmin') }}"><span class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a></li>
 									{% endif %}
+								<li><a href="#" data-toggle="modal" data-target="#babyloModal"><span class="glyphicon glyphicon-edit"></span> Changer de mot de passe</a></li>
 								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 							</ul>
 						</li>
@@ -85,6 +86,43 @@
 			{% endblock %}
 		</div>
 
+		<div class="modal fade" id="babyloModal" tabindex="-1" role="dialog" aria-labelledby="babyloModalTitle" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="babyloModalTitle">Changer de mot de passe</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label for="oldPassword">Ancien mot de passe</label>
+								<input type="password" class="form-control" id="oldPassword" placeholder="Password">
+							</div>
+							<div class="form-group">
+								<label for="newPassword">Nouveau mot de passe</label>
+								<input type="password" class="form-control" id="newPassword" placeholder="Password">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputPassword1">Confirmer</label>
+								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" id="footercontainer">
+			<footer>
+				<p>&copy; <b>Guillaume Coste</b> - {{ "now" | date('Y') }}</p>
+			</footer>
+		</div>
+
 		{% javascripts '@BabyStatBundle/Resources/public/js/*' %}
 		<script type="text/javascript" src="{{ asset('js/vendor/jquery-1.10.1.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
@@ -94,11 +132,5 @@
 		<script type="text/javascript" src="{{ asset('js/vendor/chosen.jquery.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
-
-		<div class="container" id="footercontainer">
-			<footer>
-				<p>&copy; <b>Guillaume Coste</b> - {{ "now" | date('Y') }}</p>
-			</footer>
-		</div>
 	</body>
 </html>

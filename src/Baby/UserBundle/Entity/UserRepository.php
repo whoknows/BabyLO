@@ -10,12 +10,12 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
-	public function getStandardUserList()
+	public function getStandardUserList($enabled = 0)
 	{
 		$qb = $this->_em->createQueryBuilder();
 		$query = $qb->select('p')
 						->from('BabyUserBundle:User', 'p')
-						->where($qb->expr()->neq('p.username', ':name'))
+						->where($qb->expr()->neq('p.username', ':name'), $qb->expr()->neq('p.enabled', $enabled))
 						->orderBy('p.username', 'asc')
 						->getQuery()->setParameter('name', 'admin');
 		return $query->execute();
@@ -23,7 +23,17 @@ class UserRepository extends EntityRepository
 
 	public function getPlayerList($limit = null, $multi = false)
 	{
-		$players = $this->getBasePlayers($limit);
+		$players = array();
+
+		foreach ($this->getStandardUserList() as $p) {
+			$players[$p->getId()] = array(
+				'id' => $p->getId(),
+				'name' => $p->getUsername(),
+				'victoires' => 0,
+				'defaites' => 0
+			);
+			$players[$p->getId()]['ratio'] = 0;
+		}
 
 		$query = $this->_em->createQuery(
 						'SELECT p.id, p.username as name,
@@ -73,23 +83,6 @@ class UserRepository extends EntityRepository
 			}
 		}
 
-
-		return $players;
-	}
-
-	public function getBasePlayers()
-	{
-		$query = $this->_em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyUserBundle:User p WHERE p.enabled = 1');
-
-		$players = array();
-		try {
-			foreach ($query->getResult() as $p) {
-				$players[$p['id']] = $p;
-				$players[$p['id']]['ratio'] = 0;
-			}
-		} catch (\Exception $e) {
-			echo $e->getMessage();
-		}
 		return $players;
 	}
 
