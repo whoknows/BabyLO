@@ -36,4 +36,5 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/superadmin/.*, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin/.*, roles: [ROLE_ADMIN] }
-        - { path: ^/.*, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] }
+        - { path: ^/playerstat, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] }
+        - { path: ^/.*, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] } #comment this line for public mode
