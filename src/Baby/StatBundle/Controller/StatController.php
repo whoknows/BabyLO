@@ -11,7 +11,7 @@ class StatController extends Controller {
 	public function indexAction() {
 		$em = $this->getDoctrine()->getManager();
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
-					'games' => $em->getRepository('BabyStatBundle:Game')->getGameList(5),
+					'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
 					'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(6),
 					'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
 		));
@@ -94,14 +94,14 @@ class StatController extends Controller {
 		}
 
 		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-					'games' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->getGameList(null, $filters),
+					'games' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameList(null, $filters),
 					'date' => $filters['date'],
 					'player' => $filters['player'],
 		));
 	}
 
 	public function nbgameAction() {
-		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->getGameCount()));
+		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameCount()));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -171,7 +171,7 @@ class StatController extends Controller {
 	public function matchmakingAction() {
 		$players = $this->getRequest()->get('ids', array());
 
-		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:Game')->matchMaking($players)));
+		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->matchMaking($players)));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
