@@ -7,12 +7,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Baby\UserBundle\Entity\User;
 use Baby\UserBundle\Entity\Role;
 
-class SuperAdmin implements FixtureInterface {
+class SuperAdmin implements FixtureInterface
+{
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function load(ObjectManager $manager) {
+	public function load(ObjectManager $manager)
+	{
 		$noms = array('ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN');
 		$roles = array();
 

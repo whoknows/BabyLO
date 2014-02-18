@@ -6,9 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Baby\StatBundle\Toolbox;
 
-class StatController extends Controller {
+class StatController extends Controller
+{
 
-	public function indexAction() {
+	public function indexAction()
+	{
 		$em = $this->getDoctrine()->getManager();
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 					'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
@@ -17,38 +19,31 @@ class StatController extends Controller {
 		));
 	}
 
-	public function playerAction() {
+	public function playerAction()
+	{
 		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
 					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayerList(null, true),
 		));
 	}
 
-	public function playerstatAction() {
-		$usr = $this->getUser();
-		if ($usr) {
+	public function playerstatAction()
+	{
+		$st = Toolbox\Stats::getAllStats($this->getUser()->getId(), false);
 
-			$id = $usr->getId();
-
-			$st = Toolbox\Stats::getAllStats($id, false);
-
-			if (sizeof($st) == 0) {
-				$st = array();
-			} else {
-				$st['ratio'] = $st['nbGames'] == 0 ? 0 : round($st['nbWin'] / $st['nbGames'], 2);
-			}
-
-			return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
-						'user' => $this->getUser()->getUsername(),
-						'stat' => $st
-			));
+		if (sizeof($st) == 0) {
+			$st = array();
 		} else {
-			return $this->render('BabyUserBundle:Security:login.html.twig', array(
-						'error' => array('message' => 'Vous devez vous connecter pour accéder à cette page.'),
-			));
+			$st['ratio'] = $st['nbGames'] == 0 ? 0 : round($st['nbWin'] / $st['nbGames'], 2);
 		}
+
+		return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
+					'user' => $this->getUser()->getUsername(),
+					'stat' => $st
+		));
 	}
 
-	public function playerstatgraphAction() {
+	public function playerstatgraphAction()
+	{
 		$function = 'get' . strtoupper($this->getRequest()->get('action'));
 
 		$response = new Response(json_encode(Toolbox\Stats::$function($this->getUser()->getId())));
@@ -57,7 +52,8 @@ class StatController extends Controller {
 		return $response;
 	}
 
-	public function morestatAction() {
+	public function morestatAction()
+	{
 		$id = $this->getRequest()->get('playerId');
 		$dt = $this->getRequest()->get('date', 'now');
 
@@ -83,7 +79,8 @@ class StatController extends Controller {
 		return $response;
 	}
 
-	public function gameAction() {
+	public function gameAction()
+	{
 		$filters = array(
 			"date" => $this->getRequest()->get('date', date('d-m-Y')),
 			"player" => $this->getRequest()->get('joueur', NULL),
@@ -100,20 +97,23 @@ class StatController extends Controller {
 		));
 	}
 
-	public function nbgameAction() {
+	public function nbgameAction()
+	{
 		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameCount()));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
 	}
 
-	public function addgameAction() {
+	public function addgameAction()
+	{
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
 					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getStandardUserList()
 		));
 	}
 
-	public function savegameAction() {
+	public function savegameAction()
+	{
 		$request = $this->getRequest();
 
 		$em = $this->getDoctrine()->getManager();
@@ -143,7 +143,8 @@ class StatController extends Controller {
 		return new Response('ok');
 	}
 
-	public function delgameAction() {
+	public function delgameAction()
+	{
 		$em = $this->getDoctrine()->getManager();
 		$id = $this->getRequest()->get('id');
 
@@ -162,13 +163,15 @@ class StatController extends Controller {
 		return new Response('ok');
 	}
 
-	public function matchmakerAction() {
+	public function matchmakerAction()
+	{
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
 					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
 		));
 	}
 
-	public function matchmakingAction() {
+	public function matchmakingAction()
+	{
 		$players = $this->getRequest()->get('ids', array());
 
 		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->matchMaking($players)));
@@ -177,7 +180,8 @@ class StatController extends Controller {
 		return $response;
 	}
 
-	public function useradminAction() {
+	public function useradminAction()
+	{
 		$em = $this->getDoctrine()->getManager();
 
 		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
@@ -186,7 +190,8 @@ class StatController extends Controller {
 		));
 	}
 
-	public function saveuserAction() {
+	public function saveuserAction()
+	{
 		$userData = array(
 			'id' => $this->getRequest()->get('id', NULL),
 			'enabled' => $this->getRequest()->get('enabled', 0),

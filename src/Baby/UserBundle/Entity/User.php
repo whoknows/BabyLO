@@ -11,7 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="baby_user")
  * @ORM\Entity(repositoryClass="Baby\UserBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable {
+class User implements UserInterface, \Serializable
+{
 
 	/**
 	 * @var integer
@@ -75,7 +76,8 @@ class User implements UserInterface, \Serializable {
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->role = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -84,7 +86,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return integer
 	 */
-	public function getId() {
+	public function getId()
+	{
 		return $this->id;
 	}
 
@@ -94,7 +97,8 @@ class User implements UserInterface, \Serializable {
 	 * @param string $username
 	 * @return User
 	 */
-	public function setUsername($username) {
+	public function setUsername($username)
+	{
 		$this->username = $username;
 
 		return $this;
@@ -105,7 +109,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return string
 	 */
-	public function getUsername() {
+	public function getUsername()
+	{
 		return $this->username;
 	}
 
@@ -115,7 +120,8 @@ class User implements UserInterface, \Serializable {
 	 * @param string $position
 	 * @return User
 	 */
-	public function setPosition($position) {
+	public function setPosition($position)
+	{
 		$this->position = $position;
 
 		return $this;
@@ -126,7 +132,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return string
 	 */
-	public function getPosition() {
+	public function getPosition()
+	{
 		return $this->position;
 	}
 
@@ -136,7 +143,8 @@ class User implements UserInterface, \Serializable {
 	 * @param string $password
 	 * @return User
 	 */
-	public function setPassword($password) {
+	public function setPassword($password)
+	{
 		$this->password = $password;
 
 		return $this;
@@ -147,7 +155,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return string
 	 */
-	public function getPassword() {
+	public function getPassword()
+	{
 		return $this->password;
 	}
 
@@ -157,7 +166,8 @@ class User implements UserInterface, \Serializable {
 	 * @param string $salt
 	 * @return User
 	 */
-	public function setSalt($salt) {
+	public function setSalt($salt)
+	{
 		$this->salt = $salt;
 
 		return $this;
@@ -168,7 +178,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return string
 	 */
-	public function getSalt() {
+	public function getSalt()
+	{
 		return $this->salt;
 	}
 
@@ -178,7 +189,8 @@ class User implements UserInterface, \Serializable {
 	 * @param integer $enabled
 	 * @return User
 	 */
-	public function setEnabled($enabled) {
+	public function setEnabled($enabled)
+	{
 		$this->enabled = $enabled;
 
 		return $this;
@@ -189,7 +201,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return integer
 	 */
-	public function getEnabled() {
+	public function getEnabled()
+	{
 		return $this->enabled;
 	}
 
@@ -199,7 +212,8 @@ class User implements UserInterface, \Serializable {
 	 * @param string $roles
 	 * @return User
 	 */
-	public function setRoles($roles) {
+	public function setRoles($roles)
+	{
 		$this->role = $roles;
 
 		return $this;
@@ -210,11 +224,13 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return array
 	 */
-	public function getRoles() {
+	public function getRoles()
+	{
 		return $this->role->toArray();
 	}
 
-	public function eraseCredentials() {
+	public function eraseCredentials()
+	{
 
 	}
 
@@ -224,7 +240,8 @@ class User implements UserInterface, \Serializable {
 	 * @param \Baby\UserBundle\Entity\Roles $role
 	 * @return Bool
 	 */
-	public function hasRole(\Baby\UserBundle\Entity\Role $role) {
+	public function hasRole(\Baby\UserBundle\Entity\Role $role)
+	{
 		foreach ($this->role as $r) {
 			if ($r === $role) {
 				return true;
@@ -238,7 +255,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @param \Baby\UserBundle\Entity\Roles $role
 	 */
-	public function removeAllRoles() {
+	public function removeAllRoles()
+	{
 		$this->role->clear();
 	}
 
@@ -247,7 +265,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @return \Doctrine\Common\Collections\Collection
 	 */
-	public function getRole() {
+	public function getRole()
+	{
 		return $this->role;
 	}
 
@@ -257,7 +276,8 @@ class User implements UserInterface, \Serializable {
 	 * @param \Baby\UserBundle\Entity\Roles $roles
 	 * @return User
 	 */
-	public function addRole(\Baby\UserBundle\Entity\Role $roles) {
+	public function addRole(\Baby\UserBundle\Entity\Role $roles)
+	{
 		$this->role[] = $roles;
 
 		return $this;
@@ -268,7 +288,8 @@ class User implements UserInterface, \Serializable {
 	 *
 	 * @param \Baby\UserBundle\Entity\Roles $roles
 	 */
-	public function removeRole(\Baby\UserBundle\Entity\Role $roles) {
+	public function removeRole(\Baby\UserBundle\Entity\Role $roles)
+	{
 		$this->role->removeElement($roles);
 	}
 
@@ -276,7 +297,8 @@ class User implements UserInterface, \Serializable {
 	 * Serializes the content of the current User object
 	 * @return string
 	 */
-	public function serialize() {
+	public function serialize()
+	{
 		return \json_encode(
 				array($this->username, $this->password, $this->salt,
 					$this->role, $this->id));
@@ -286,7 +308,8 @@ class User implements UserInterface, \Serializable {
 	 * Unserializes the given string in the current User object
 	 * @param serialized
 	 */
-	public function unserialize($serialized) {
+	public function unserialize($serialized)
+	{
 		list($this->username, $this->password, $this->salt,
 				$this->roles, $this->id) = \json_decode(
 				$serialized);

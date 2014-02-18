@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends Controller
 {
+
 	public function loginAction()
 	{
 		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -24,8 +25,9 @@ class SecurityController extends Controller
 		}
 
 		return $this->render('BabyUserBundle:Security:login.html.twig', array(
-			'last_username' => $session->get(SecurityContext::LAST_USERNAME),
-			'error'         => $error,
+					'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+					'error' => $error,
 		));
 	}
+
 }

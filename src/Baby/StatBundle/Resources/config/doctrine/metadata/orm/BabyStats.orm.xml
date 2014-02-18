@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="BabyStats" table="baby_stats">
-    <indexes>
-      <index name="player_id" columns="player_id"/>
-    </indexes>
-    <id name="id" type="integer" column="id">
-      <generator strategy="IDENTITY"/>
-    </id>
-    <field name="nbGames" type="integer" column="nb_games" nullable="false"/>
-    <field name="nbWin" type="integer" column="nb_win" nullable="false"/>
-    <field name="nbLose" type="integer" column="nb_lose" nullable="false"/>
-    <field name="nbWinFanny" type="integer" column="nb_win_fanny" nullable="false"/>
-    <field name="nbLoseFanny" type="integer" column="nb_lose_fanny" nullable="false"/>
-    <field name="nbButScored" type="integer" column="nb_but_scored" nullable="false"/>
-    <field name="nbButTaken" type="integer" column="nb_but_taken" nullable="false"/>
-    <field name="bestOponent" type="string" column="best_oponent" length="50" nullable="false"/>
-    <field name="worstOponent" type="string" column="worst_oponent" length="50" nullable="false"/>
-    <field name="bestMate" type="string" column="best_mate" length="50" nullable="false"/>
-    <field name="worstMate" type="string" column="worst_mate" length="50" nullable="false"/>
-    <many-to-one field="player" target-entity="User">
-      <join-columns>
-        <join-column name="player_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-  </entity>
+	<entity name="BabyStats" table="baby_stats">
+		<indexes>
+			<index name="player_id" columns="player_id"/>
+		</indexes>
+		<id name="id" type="integer" column="id">
+			<generator strategy="IDENTITY"/>
+		</id>
+		<field name="nbGames" type="integer" column="nb_games" nullable="false"/>
+		<field name="nbWin" type="integer" column="nb_win" nullable="false"/>
+		<field name="nbLose" type="integer" column="nb_lose" nullable="false"/>
+		<field name="nbWinFanny" type="integer" column="nb_win_fanny" nullable="false"/>
+		<field name="nbLoseFanny" type="integer" column="nb_lose_fanny" nullable="false"/>
+		<field name="nbButScored" type="integer" column="nb_but_scored" nullable="false"/>
+		<field name="nbButTaken" type="integer" column="nb_but_taken" nullable="false"/>
+		<field name="bestOponent" type="string" column="best_oponent" length="50" nullable="false"/>
+		<field name="worstOponent" type="string" column="worst_oponent" length="50" nullable="false"/>
+		<field name="bestMate" type="string" column="best_mate" length="50" nullable="false"/>
+		<field name="worstMate" type="string" column="worst_mate" length="50" nullable="false"/>
+		<many-to-one field="player" target-entity="User">
+			<join-columns>
+				<join-column name="player_id" referenced-column-name="id"/>
+			</join-columns>
+		</many-to-one>
+	</entity>
 </doctrine-mapping>

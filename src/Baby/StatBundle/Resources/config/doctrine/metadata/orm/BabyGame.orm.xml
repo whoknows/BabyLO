@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="BabyGame" table="baby_game">
-    <id name="id" type="integer" column="id">
-      <generator strategy="IDENTITY"/>
-    </id>
-    <field name="date" type="datetime" column="date" nullable="false"/>
-    <field name="scoreTeam1" type="integer" column="score_team1" nullable="false"/>
-    <field name="scoreTeam2" type="integer" column="score_team2" nullable="false"/>
-  </entity>
+	<entity name="BabyGame" table="baby_game">
+		<id name="id" type="integer" column="id">
+			<generator strategy="IDENTITY"/>
+		</id>
+		<field name="date" type="datetime" column="date" nullable="false"/>
+		<field name="scoreTeam1" type="integer" column="score_team1" nullable="false"/>
+		<field name="scoreTeam2" type="integer" column="score_team2" nullable="false"/>
+	</entity>
 </doctrine-mapping>

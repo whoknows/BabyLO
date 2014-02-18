@@ -76,7 +76,7 @@ $(document).ready(function() {
 		case 'game':
 			$('#gamedate').pickadate({format: 'dd-mm-yyyy', formatSubmit: 'dd-mm-yyyy'});
 
-			$('input[name=reset]').click(function(e){
+			$('input[name=reset]').click(function(e) {
 				e.preventDefault();
 				$('#gamedate').val('');
 				$('input[name="joueur"]').val('');

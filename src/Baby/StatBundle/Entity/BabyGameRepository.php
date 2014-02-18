@@ -7,9 +7,11 @@ use Doctrine\ORM\EntityRepository;
 /**
  * GameRepository
  */
-class BabyGameRepository extends EntityRepository {
+class BabyGameRepository extends EntityRepository
+{
 
-	public function getGameList($limit = null, $filter = array()) {
+	public function getGameList($limit = null, $filter = array())
+	{
 		$f = $this->prepareFilters($filter);
 
 		$query = $this->_em->createQuery('SELECT g.id, g.date, g.scoreTeam1, g.scoreTeam2
@@ -56,7 +58,8 @@ class BabyGameRepository extends EntityRepository {
 		return $games;
 	}
 
-	private function prepareFilters($filter) {
+	private function prepareFilters($filter)
+	{
 		$f = array('players' => NULL, 'team1' => array(), 'team2' => array());
 		if (isset($filter['date']) && $filter['date'] != '') {
 			$f['date'] = new \DateTime($filter['date']);
@@ -73,7 +76,8 @@ class BabyGameRepository extends EntityRepository {
 		return $f;
 	}
 
-	private function filterResults($data, $f) {
+	private function filterResults($data, $f)
+	{
 		if ($f['players'] !== NULL) {
 			$in_array = true;
 			foreach ($f['players'] as $pl) {
@@ -86,7 +90,8 @@ class BabyGameRepository extends EntityRepository {
 		return true;
 	}
 
-	public function getGameCount() {
+	public function getGameCount()
+	{
 		$gr = $this->_em->getRepository('BabyStatBundle:BabyGame');
 		$data = array(
 			'date' => array(),
@@ -107,7 +112,8 @@ class BabyGameRepository extends EntityRepository {
 		);
 	}
 
-	public function matchMaking($players) {
+	public function matchMaking($players)
+	{
 		$pdata = array();
 		$teams = array();
 

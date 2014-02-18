@@ -7,9 +7,11 @@ use Doctrine\ORM\EntityRepository;
 /**
  * UserRepository
  */
-class UserRepository extends EntityRepository {
+class UserRepository extends EntityRepository
+{
 
-	public function getStandardUserList() {
+	public function getStandardUserList()
+	{
 		$qb = $this->_em->createQueryBuilder();
 		$query = $qb->select('p')
 						->from('BabyUserBundle:User', 'p')
@@ -19,7 +21,8 @@ class UserRepository extends EntityRepository {
 		return $query->execute();
 	}
 
-	public function getPlayerList($limit = null, $multi = false) {
+	public function getPlayerList($limit = null, $multi = false)
+	{
 		$players = $this->getBasePlayers($limit);
 
 		$query = $this->_em->createQuery(
@@ -74,7 +77,8 @@ class UserRepository extends EntityRepository {
 		return $players;
 	}
 
-	public function getBasePlayers() {
+	public function getBasePlayers()
+	{
 		$query = $this->_em->createQuery('SELECT p.id, p.username as name, 0 as victoires, 0 as defaites FROM BabyUserBundle:User p WHERE p.enabled = 1');
 
 		$players = array();
@@ -89,7 +93,8 @@ class UserRepository extends EntityRepository {
 		return $players;
 	}
 
-	public function getPlayerData($id, $dt) {
+	public function getPlayerData($id, $dt)
+	{
 		$query = $this->_em->createQuery(
 						'SELECT p.id, p.username as name, g.date,
 					SUM(
@@ -131,7 +136,8 @@ class UserRepository extends EntityRepository {
 		return $data;
 	}
 
-	public function getDailyTops() {
+	public function getDailyTops()
+	{
 		$q1 = $this->_em->createQuery("SELECT p.username as name, COUNT(p.id) as ct
 								FROM BabyStatBundle:BabyPlayed pl
 								INNER JOIN BabyUserBundle:User p WITH p.id = pl.idPlayer
@@ -177,7 +183,8 @@ class UserRepository extends EntityRepository {
 		);
 	}
 
-	public static function aasort(&$array, $key) {
+	public static function aasort(&$array, $key)
+	{
 		$sorter = array();
 		$ret = array();
 		reset($array);
