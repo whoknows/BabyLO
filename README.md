@@ -9,7 +9,7 @@ Les librairies utilisées sont :
 - Chosen
 - Pickadate.js
 
-## Procédure d'installation :
+## Procédure d'installation
 
 La procédure a été testé et fonctionne sur un Ubuntu 13.10 avec une installation standard de LAMP.
 
@@ -29,11 +29,16 @@ php app/console doctrine:schema:update --force
 php app/console doctrine:fixtures:load
 ```
 
-### Accès à l'application :
+### Accès à l'application
 
 http://localhost/BabyLO/web/app.php
 
-### Identifiants admin :
+### Identifiants admin
 
 - login : admin
 - password : secret
+
+### Mode public / privé
+
+Par défaut l'application est en mode privé, c'est à dire qu'il faut obligatoirement être authentifié pour y accéder.
+Il est possible de la rendre publique (hors parties admin) en commentant la ligne 40 du fichier app/config/security.yml
