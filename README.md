@@ -41,4 +41,8 @@ http://localhost/BabyLO/web/app.php
 ### Mode public / privé
 
 Par défaut l'application est en mode privé, c'est à dire qu'il faut obligatoirement être authentifié pour y accéder.
-Il est possible de la rendre publique (hors parties admin) en commentant la ligne 40 du fichier app/config/security.yml
+Il est possible de la rendre publique (hors parties admin) en commentant la ligne 40 du fichier app/config/security.yml :
+
+```bash
+- { path: ^/.*, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] }
+```
