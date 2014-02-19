@@ -176,6 +176,173 @@ class UserRepository extends EntityRepository
 		);
 	}
 
+	public function getNbGames($id)
+	{
+		$dql = "SELECT COUNT(p.id) as ct, g.date
+				FROM BabyStatBundle:BabyPlayed p
+				INNER JOIN BabyStatBundle:BabyGame g WITH g.id = p.idGame
+				WHERE p.idPlayer = :id
+				GROUP BY g.date
+				ORDER BY g.date ASC";
+		return $this->_em->createQuery($dql)->setParameter('id', $id)->getResult();
+	}
+
+	public function getNbWin($id)
+	{
+		$dql = "SELECT COUNT(p.id) as ct, g.date
+				FROM BabyStatBundle:BabyPlayed p
+				INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+				WHERE p.idPlayer = :id AND ((p.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (p.team = 2 AND g.scoreTeam1 < g.scoreTeam2))
+				GROUP BY g.date
+				ORDER BY g.date ASC";
+		return $this->_em->createQuery($dql)->setParameter('id', $id)->getResult();
+	}
+
+	public function getNbLose($id)
+	{
+		$dql = "SELECT COUNT(p.id) as ct, g.date
+				FROM BabyStatBundle:BabyPlayed p
+				INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+				WHERE p.idPlayer = :id AND ((p.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (p.team = 2 AND g.scoreTeam1 > g.scoreTeam2))
+				GROUP BY g.date
+				ORDER BY g.date ASC";
+		return $this->_em->createQuery($dql)->setParameter('id', $id)->getResult();
+	}
+
+	public function getNbButScored($id)
+	{
+		$dql = "SELECT SUM(CASE
+							WHEN p.team = 1 THEN g.scoreTeam1
+							WHEN p.team = 2 THEN g.scoreTeam2
+						ELSE 0 END) as ct, g.date
+				FROM BabyStatBundle:BabyPlayed p
+				INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+				WHERE p.idPlayer = :id
+				GROUP BY g.date
+				ORDER BY g.date ASC";
+		return $this->_em->createQuery($dql)->setParameter('id', $id)->getResult();
+	}
+
+	public function getNbButTaken($id)
+	{
+		$dql = "SELECT SUM(CASE
+							WHEN p.team = 1 THEN g.scoreTeam2
+							WHEN p.team = 2 THEN g.scoreTeam1
+						ELSE 0 END) as ct, g.date
+				FROM BabyStatBundle:BabyPlayed p
+				INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+				WHERE p.idPlayer = :id
+				GROUP BY g.date
+				ORDER BY g.date ASC";
+		return $this->_em->createQuery($dql)->setParameter('id', $id)->getResult();
+	}
+
+	public function getAllStats($id, $filter = true, $periode = '-1 month')
+	{
+		$where = "";
+		if ($filter) {
+			$where = " AND g.date BETWEEN :date_start AND :date_end ";
+		}
+
+		$dql = "SELECT
+				(SELECT u.position FROM BabyUserBundle:User u WHERE u.id = :id) as position,
+				(
+					SELECT COUNT(p.id) FROM BabyStatBundle:BabyPlayed p INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id WHERE idPlayer = " . $id . $where . "
+				) as nbGames,
+				(
+					SELECT COUNT(p.id)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id AND ((p.team = 1 AND g.scoreTeam1 > g.scoreTeam2) OR (p.team = 2 AND g.scoreTeam1 < g.scoreTeam2))" . $where . "
+				) as nbWin,
+				(
+					SELECT COUNT(p.id)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id AND ((p.team = 1 AND g.scoreTeam1 < g.scoreTeam2) OR (p.team = 2 AND g.scoreTeam1 > g.scoreTeam2))" . $where . "
+				) as nbLose,
+				(
+					SELECT COUNT(p.id)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id AND ((p.team = 1 AND g.scoreTeam2 = 0) OR (p.team = 2 AND g.scoreTeam1 = 0))" . $where . "
+				) as nbWinFanny,
+				(
+					SELECT COUNT(p.id)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id AND ((p.team = 1 AND g.scoreTeam1 = 0) OR (p.team = 2 AND g.scoreTeam2 = 0))" . $where . "
+				) as nbLoseFanny,
+				(
+					SELECT SUM(CASE
+							WHEN p.team = 1 THEN g.scoreTeam1
+							WHEN p.team = 2 THEN g.scoreTeam2
+						ELSE 0 END)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id" . $where . "
+				) as nbButScored,
+				(
+					SELECT SUM(CASE
+							WHEN p.team = 1 THEN g.scoreTeam2
+							WHEN p.team = 2 THEN g.scoreTeam1
+						ELSE 0 END)
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					WHERE idPlayer = :id" . $where . "
+				) as nbButTaken,
+				(
+					SELECT pl.username
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					INNER JOIN BabyStatBundle:BabyPlayed p2 WITH p2.idGame = g.id AND p2.idPlayer != p.idPlayer
+					INNER JOIN BabyUserBundle:User pl WITH pl.id = p2.idPlayer
+					WHERE p.idPlayer = :id AND IF(p.team = 1, p2.team = 2 AND score_team1 < score_team2, p2.team = 1 AND score_team1 > score_team2)" . $where . "
+					GROUP BY p2.idPlayer
+					ORDER BY COUNT(p.id) DESC
+					LIMIT 0,1
+				) as bestOponent,
+				(
+					SELECT pl.username
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					INNER JOIN BabyStatBundle:BabyPlayed p2 WITH p2.idGame = g.id AND p2.idPlayer != p.idPlayer
+					INNER JOIN BabyUserBundle:User pl WITH pl.id = p2.idPlayer
+					WHERE p.idPlayer = :id AND IF(p.team = 1, p2.team = 2 AND score_team1 > score_team2, p2.team = 1 AND score_team1 < score_team2)" . $where . "
+					GROUP BY p2.idPlayer
+					ORDER BY COUNT(p.id) DESC
+					LIMIT 0,1
+				) as worstOponent,
+				(
+					SELECT pl.username
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					INNER JOIN BabyStatBundle:BabyPlayed p2 WITH p2.idGame = g.id AND p2.idPlayer != p.idPlayer
+					INNER JOIN BabyUserBundle:User pl WITH pl.id = p2.idPlayer
+					WHERE p.idPlayer = :id AND IF(p.team = 1, p2.team = 1 AND score_team1 > score_team2, p2.team = 2  AND score_team1 < score_team2)" . $where . "
+					GROUP BY p2.idPlayer
+					ORDER BY COUNT(p.id) DESC
+					LIMIT 0,1
+				) as bestMate,
+				(
+					SELECT pl.username
+					FROM BabyStatBundle:BabyPlayed p
+					INNER JOIN BabyStatBundle:BabyGame g WITH p.idGame = g.id
+					INNER JOIN BabyStatBundle:BabyPlayed p2 WITH p2.idGame = g.id AND p2.idPlayer != p.idPlayer
+					INNER JOIN BabyUserBundle:User pl WITH pl.id = p2.idPlayer
+					WHERE p.idPlayer = :id AND IF(p.team = 1, p2.team = 1 AND score_team1 < score_team2, p2.team = 2  AND score_team1 > score_team2)" . $where . "
+					GROUP BY p2.idPlayer
+					ORDER BY COUNT(p.id) DESC
+					LIMIT 0,1
+				) as worstMate";
+
+		return $this->_em->createQuery($dql)->setParameters(array(
+					'id' => $id,
+					'date_start' => new \DateTime(date('Y-m-01', strtotime($periode))),
+					'date_end' => new \DateTime(date('Y-m-t', strtotime($periode)))
+				))->getResult();
+	}
+
 	public static function aasort(&$array, $key)
 	{
 		$sorter = array();
