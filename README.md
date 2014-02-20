@@ -14,11 +14,27 @@ Les librairies utilisées sont :
 La procédure a été testé et fonctionne sur un Ubuntu 13.10 avec une installation standard de LAMP.
 
 ```bash
+sudo apt-get install apache2 php5 mysql-server libapache2-mod-php5 php5-mysql
+```
+
+Récupération du code
+```bash
 git clone https://github.com/whoknows/BabyLO.git
 ```
 
 Configurer vos paramètres de base de données dans le fichier app/config/parameters.yml
 
+```bash
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: '3306'
+    database_name: baby
+    database_user: root
+    database_password: secret
+```
+
+Installation du projet
 ```bash
 cd BabyLO/
 mkdir app/cache/ && chmod 777 -R app/cache/
