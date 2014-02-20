@@ -4,7 +4,6 @@ namespace Baby\StatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Baby\StatBundle\Toolbox;
 
 class StatController extends Controller
 {
@@ -68,7 +67,7 @@ class StatController extends Controller
 		$dt = $this->getRequest()->get('date', 'now');
 
 		$em = $this->getDoctrine()->getManager();
-		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt);
+		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt)[0];
 
 		if (sizeof($st) == 0) {
 			$st = array();
