@@ -4,7 +4,6 @@ namespace Baby\StatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Baby\StatBundle\Toolbox;
 
 class StatController extends Controller
 {
@@ -28,7 +27,7 @@ class StatController extends Controller
 
 	public function playerstatAction()
 	{
-		$st = Toolbox\Stats::getAllStats($this->getUser()->getId(), false);
+		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($this->getUser()->getId(), false);
 
 		if (sizeof($st) == 0) {
 			$st = array();
@@ -46,7 +45,17 @@ class StatController extends Controller
 	{
 		$function = 'get' . strtoupper($this->getRequest()->get('action'));
 
-		$response = new Response(json_encode(Toolbox\Stats::$function($this->getUser()->getId())));
+		$data = array(
+			'date' => array(),
+			'data' => array()
+		);
+
+		foreach ($this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->$function($this->getUser()->getId()) as $row) {
+			$data['data'][] = intval($row['ct']);
+			$data['date'][] = $row['date']->format('d-m-Y');
+		}
+
+		$response = new Response(json_encode($data));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -58,7 +67,7 @@ class StatController extends Controller
 		$dt = $this->getRequest()->get('date', 'now');
 
 		$em = $this->getDoctrine()->getManager();
-		$st = Toolbox\Stats::getAllStats($id, true, $dt);
+		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt);
 
 		if (sizeof($st) == 0) {
 			$st = array();
