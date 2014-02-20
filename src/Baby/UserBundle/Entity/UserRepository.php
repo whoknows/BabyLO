@@ -331,7 +331,7 @@ class UserRepository extends EntityRepository
 				) as worstMate";
 
 		$q = $this->_em->getConnection();
-		return $q->fetchAll($sql);
+		return $q->fetchAll($sql)[0];
 	}
 
 	public static function aasort(&$array, $key)

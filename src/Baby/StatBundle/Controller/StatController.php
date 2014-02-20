@@ -67,7 +67,7 @@ class StatController extends Controller
 		$dt = $this->getRequest()->get('date', 'now');
 
 		$em = $this->getDoctrine()->getManager();
-		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt)[0];
+		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt);
 
 		if (sizeof($st) == 0) {
 			$st = array();
