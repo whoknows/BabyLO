@@ -97,10 +97,13 @@ $(document).ready(function() {
 			});
 			break;
 		case 'player':
-			$('.player, .period-selector').click(function() {
+			$('.player, .period-selector, .aggregate-data').click(function() {
 
 				if ($(this).hasClass('period-selector')) {
 					$('.period-selector.active').removeClass('active');
+					$(this).addClass('active');
+				} else if ($(this).hasClass('aggregate-data')) {
+					$('.aggregate-data.active').removeClass('active');
 					$(this).addClass('active');
 				} else {
 					$('.player.active').removeClass('active');
@@ -109,7 +112,8 @@ $(document).ready(function() {
 
 				var data = {
 					playerId: $('.player.active').data('id'),
-					date: $('.period-selector.active > a').data('value')
+					date: $('.period-selector.active > a').data('value'),
+					aggregate: $('.aggregate-data.active > a').data('value')
 				};
 
 				$.post('morestat', data, function(pdata) {

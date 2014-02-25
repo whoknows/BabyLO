@@ -97,10 +97,13 @@ $(document).ready(function() {
 			});
 			break;
 		case 'player':
-			$('.player, .period-selector').click(function() {
+			$('.player, .period-selector, .aggregate-data').click(function() {
 
 				if ($(this).hasClass('period-selector')) {
 					$('.period-selector.active').removeClass('active');
+					$(this).addClass('active');
+				} else if ($(this).hasClass('aggregate-data')) {
+					$('.aggregate-data.active').removeClass('active');
 					$(this).addClass('active');
 				} else {
 					$('.player.active').removeClass('active');
@@ -109,7 +112,8 @@ $(document).ready(function() {
 
 				var data = {
 					playerId: $('.player.active').data('id'),
-					date: $('.period-selector.active > a').data('value')
+					date: $('.period-selector.active > a').data('value'),
+					aggregate: $('.aggregate-data.active > a').data('value')
 				};
 
 				$.post('morestat', data, function(pdata) {
@@ -128,9 +132,14 @@ $(document).ready(function() {
 					}
 
 					$('#chart1').highcharts({
-						chart: {type: 'line'},
+						chart: {zoomType: 'xy'},
 						credits: {enabled: false},
 						title: {text: ''},
+						plotOptions: {
+							column: {
+								stacking: 'normal',
+							}
+						},
 						xAxis: {
 							categories: pdata.graph.dates
 						},
@@ -147,16 +156,19 @@ $(document).ready(function() {
 								yAxis: 0,
 								name: 'Victoires',
 								data: pdata.graph.victoires,
+								type: 'column',
 								color: '#77b300'
 							}, {
 								yAxis: 0,
 								name: 'Défaites',
 								data: pdata.graph.defaites,
+								type: 'column',
 								color: '#f04124'
 							}, {
 								yAxis: 1,
 								name: 'Ratio',
 								data: pdata.graph.ratio,
+								type: 'spline',
 								color: '#2a9fd6'
 							}],
 						tooltip: {
