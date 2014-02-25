@@ -78,3 +78,7 @@ th, td {
 .del-game {
 	padding: 4px 23px!important;
 }
+
+#cumule-container {
+	text-align:right;
+}
