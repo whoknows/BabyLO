@@ -86,7 +86,7 @@ class UserRepository extends EntityRepository
 		return $players;
 	}
 
-	public function getPlayerData($id, $dt)
+	public function getPlayerData($id, $dt, $ag)
 	{
 		$query = $this->_em->createQuery(
 						'SELECT p.id, p.username as name, g.date,
@@ -121,9 +121,18 @@ class UserRepository extends EntityRepository
 
 		foreach ($query->getResult() as $d) {
 			$data['dates'][] = $d['date']->format('d-m-Y');
-			$data['victoires'][] = intval($d['victoires']);
-			$data['defaites'][] = intval($d['defaites']);
-			$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])), 2);
+			if ($ag == 1) {
+				$prevVic = isset($data['victoires'][sizeof($data['victoires'])-1]) ? $data['victoires'][sizeof($data['victoires'])-1] : 0;
+				$prevDef = isset($data['defaites'][sizeof($data['defaites'])-1]) ? $data['defaites'][sizeof($data['defaites'])-1] : 0;
+
+				$data['victoires'][] = $prevVic + intval($d['victoires']);
+				$data['defaites'][] = $prevDef + intval($d['defaites']);
+				$data['ratio'][] = round(intval($data['victoires'][sizeof($data['victoires'])-1]) / (intval($data['victoires'][sizeof($data['victoires'])-1]) + intval($data['defaites'][sizeof($data['defaites'])-1])), 2);
+			} else {
+				$data['victoires'][] = intval($d['victoires']);
+				$data['defaites'][] = intval($d['defaites']);
+				$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])), 2);
+			}
 		}
 
 		return $data;

@@ -65,6 +65,7 @@ class StatController extends Controller
 	{
 		$id = $this->getRequest()->get('playerId');
 		$dt = $this->getRequest()->get('date', 'now');
+		$ag = $this->getRequest()->get('aggregate', 0);
 
 		$em = $this->getDoctrine()->getManager();
 		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt);
@@ -80,7 +81,7 @@ class StatController extends Controller
 		}
 
 		$response = new Response(json_encode(array(
-					'graph' => $em->getRepository('BabyUserBundle:User')->getPlayerData($id, $dt),
+					'graph' => $em->getRepository('BabyUserBundle:User')->getPlayerData($id, $dt, $ag),
 					'stats' => $st
 		)));
 		$response->headers->set('Content-Type', 'application/json');
