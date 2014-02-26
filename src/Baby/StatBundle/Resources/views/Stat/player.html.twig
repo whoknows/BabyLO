@@ -22,7 +22,7 @@
 					{% for player in players.ratio %}
 					<tr>
 						<td>{{ loop.index }}</td>
-						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
 						<td class="success">{{ player.victoires }}</td>
 						<td class="danger">{{ player.defaites }}</td>
 						<td><strong>{{ player.ratio }}</strong></td>
@@ -47,7 +47,7 @@
 					{% for player in players.victoires %}
 					<tr>
 						<td>{{ loop.index }}</td>
-						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
 						<td class="success"><strong>{{ player.victoires }}</strong></td>
 						<td class="danger">{{ player.defaites }}</td>
 						<td>{{ player.ratio }}</td>
@@ -72,7 +72,7 @@
 					{% for player in players.defaites %}
 					<tr>
 						<td>{{ loop.index }}</td>
-						<td class="player" data-id="{{player.id}}"><a href="#morestat">{{ player.name }}</a></td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
 						<td class="success">{{ player.victoires }}</td>
 						<td class="danger"><strong>{{ player.defaites }}</strong></td>
 						<td>{{ player.ratio }}</td>
@@ -149,7 +149,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="col-md-7 col-xs-12 col-lg-7 col-sm-12">
+		<div class="col-md-7 col-xs-12 col-lg-7 col-sm-12 hidden" id="chartContainer">
 			<div id="chart1"></div>
 			<ul class="nav nav-pills pull-right">
 				<li class="aggregate-data"><a href="javascript:void(0)" data-value="1">Cumulé</a></li>

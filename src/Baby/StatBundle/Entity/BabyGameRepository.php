@@ -120,7 +120,7 @@ class BabyGameRepository extends EntityRepository
 		$ple = $this->_em->getRepository('BabyUserBundle:User');
 
 		foreach ($players as $p) {
-			$tmp = $ple->getPlayerData($p, 'now');
+			$tmp = $ple->getPlayerData($p, 'now', 0);
 			$pdata[] = array(
 				'ratio' => round(array_sum($tmp['ratio']) / sizeof($tmp['ratio']), 2),
 				'id' => $p

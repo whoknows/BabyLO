@@ -11,6 +11,10 @@ th, td {
 	vertical-align: middle!important;
 }
 
+td.player {
+	text-align: left;
+}
+
 #userTable {
 	margin-top:20px;
 }
@@ -77,4 +81,34 @@ th, td {
 
 .del-game {
 	padding: 4px 23px!important;
+}
+
+#cumule-container {
+	text-align:right;
+}
+
+.select2 {
+	margin:10px 0;
+}
+
+.select2-container .select2-choice {
+	background-image:none!important;
+	height:48px!important;
+	line-height: 48px!important;
+}
+
+.select2-container .select2-choice .select2-arrow {
+	background:white!important;
+}
+
+.select2-chosen .media h4 {
+	margin-top: 12px;
+}
+
+.select2-chosen .media a {
+	margin-top: 4px;
+}
+
+.isWinner {
+	margin-top: 10px;
 }

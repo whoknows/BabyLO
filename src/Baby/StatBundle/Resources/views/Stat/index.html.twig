@@ -88,15 +88,17 @@
 							<th>Nom</th>
 							<th>Victoires</th>
 							<th>Défaites</th>
+							<th>Ratio</th>
 						</tr>
 					</thead>
 					<tbody>
 					{% for player in players %}
 						<tr>
 							<td>{{ loop.index }}</td>
-							<td>{{ player.name }}</td>
+							<td class="player"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</td>
 							<td class="success">{{ player.victoires }}</td>
 							<td class="danger">{{ player.defaites }}</td>
+							<td><strong>{{ player.ratio }}</strong></td>
 						</tr>
 					{% endfor %}
 					</tbody>

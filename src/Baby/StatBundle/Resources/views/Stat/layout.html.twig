@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/bootstrap/yeti.min.css') }}" type="text/css" />
 		<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
@@ -49,7 +51,7 @@
 									{% if is_granted('ROLE_SUPER_ADMIN') %}
 								<li><a href="{{ path('babystat_useradmin') }}"><span class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a></li>
 									{% endif %}
-								<li><a href="#" data-toggle="modal" data-target="#babyloModal"><span class="glyphicon glyphicon-edit"></span> Changer de mot de passe</a></li>
+								<li><a href="#" data-toggle="modal" data-target="#babyloModal"><span class="glyphicon glyphicon-edit"></span> Modifier mon profil</a></li>
 								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 							</ul>
 						</li>
@@ -86,36 +88,49 @@
 			{% endblock %}
 		</div>
 
+		{% if app.user != null %}
 		<div class="modal fade" id="babyloModal" tabindex="-1" role="dialog" aria-labelledby="babyloModalTitle" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="babyloModalTitle">Changer de mot de passe</h4>
+						<h4 class="modal-title" id="babyloModalTitle">Mettez votre profil à jour</h4>
 					</div>
-					<div class="modal-body">
-						<form role="form">
+					<form role="form" id="updateUser">
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="email">Adresse mail (utilisée pour Gravatar)</label>
+								<input type="email" class="form-control" id="email" placeholder="Email" value="{{ app.user.email }}">
+							</div>
 							<div class="form-group">
 								<label for="oldPassword">Ancien mot de passe</label>
-								<input type="password" class="form-control" id="oldPassword" placeholder="Password">
+								<input type="password" class="form-control" id="oldPassword" placeholder="Old password">
 							</div>
 							<div class="form-group">
 								<label for="newPassword">Nouveau mot de passe</label>
-								<input type="password" class="form-control" id="newPassword" placeholder="Password">
+								<input type="password" class="form-control" id="newPassword" placeholder="New password">
 							</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">Confirmer</label>
-								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Repeat password">
 							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
+							<div class="form-group">
+								<label for="gobalposition">Position</label>
+								<select type="text" class="form-control" id="gobalposition">
+									<option value="Avant" {% if app.user.position == 'Avant' %} selected="selected" {% endif %}>Avant</option>
+									<option value="Arriere" {% if app.user.position == 'Arriere' %} selected="selected" {% endif %}>Arrière</option>
+								</select>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+							<input type="submit" class="btn btn-primary" />
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
+		{% endif %}
 
 		<div class="container" id="footercontainer">
 			<footer>
@@ -130,6 +145,8 @@
 		<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/vendor/chosen.jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/vendor/select2.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/vendor/select2_locale_fr.js') }}"></script>
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 	</body>

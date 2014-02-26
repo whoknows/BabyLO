@@ -13,6 +13,7 @@
 						<th>Utilisateur</th>
 						<th>Position</th>
 						<th>Roles</th>
+						<th>Email</th>
 						<th>Actif</th>
 						<th>Enregistrer</th>
 					</tr>
@@ -28,12 +29,13 @@
 							</select>
 						</td>
 						<td>
-							<select class="role-selector input-lg" name="roles" multiple="multiple">
+							<select class="role-selector input-sm" name="roles" multiple="multiple">
 							{% for role in roles %}
 								<option value="{{ role.id }}" {% if role in user.role %} selected="selected" {% endif %}>{{ role.name }}</option>
 							{% endfor %}
 							</select>
 						</td>
+						<td><input type="email" class="form-control" name="email" value="{{ user.email }}" /></td>
 						<td><input type="checkbox" name="enabled" {% if user.enabled == 1 %}checked="checked"{%endif%} /></td>
 						<td><button class="btn btn-success btn-sm save-user" data-id="{{ user.id }}">Enregistrer</button></td>
 					</tr>
@@ -51,6 +53,10 @@
 				<div class="form-group">
 					<label for="userpass">Mot de passe</label>
 					<input type="password" class="form-control" id="userpass" autocomplete="off" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label for="usermail">Email</label>
+					<input type="email" class="form-control" id="usermail" placeholder="Email">
 				</div>
 				<div class="form-group">
 					<label for="userrole">Roles</label>
