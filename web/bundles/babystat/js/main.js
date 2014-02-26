@@ -268,7 +268,7 @@ $(document).ready(function() {
 					id: $(this).data('id'),
 					enabled: $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
 					roles: $(this).parent().parent().find('select[name=roles]').val(),
-					position: $(this).parent().parent().find('select[name="position"]').val()
+					position: $(this).parent().parent().find('select[name="position"]').val(),
 				};
 
 				saveUser(data);
@@ -282,7 +282,7 @@ $(document).ready(function() {
 					roles: $('#userrole').val(),
 					position: $('#userposition').val(),
 					username: $('#useruser').val(),
-					password: $('#password').val()
+					password: $('#userpass').val()
 				};
 
 				if (data.username === "" || data.password === "") {
