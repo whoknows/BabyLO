@@ -25,14 +25,6 @@
 					<span class="badge">{{ stat.ratio }}</span>
 					Ratio
 				</li>
-				<li class="list-group-item">
-					<span class="badge">{{ stat.nbWinFanny }}</span>
-					Nombre de parties perdues fanny
-				</li>
-				<li class="list-group-item">
-					<span class="badge">{{ stat.nbLoseFanny }}</span>
-					Nombre de parties gagnées fanny
-				</li>
 				<li class="list-group-item text-primary graphme" data-action="nbButScored">
 					<span class="badge">{{ stat.nbButScored }}</span>
 					Nombre de buts marqués
@@ -40,6 +32,14 @@
 				<li class="list-group-item text-primary graphme" data-action="nbButTaken">
 					<span class="badge">{{ stat.nbButTaken }}</span>
 					Nombre de buts pris
+				</li>
+				<li class="list-group-item">
+					<span class="badge">{{ stat.nbButScoredAvg }}</span>
+					Nombre moyen de buts marqués par parties
+				</li>
+				<li class="list-group-item">
+					<span class="badge">{{ stat.nbButTakenAvg }}</span>
+					Nombre moyen de buts pris par parties
 				</li>
 				<li class="list-group-item">
 					<span class="badge">{{ stat.bestOponent }}</span>
