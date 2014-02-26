@@ -27,17 +27,9 @@ class StatController extends Controller
 
 	public function playerstatAction()
 	{
-		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($this->getUser()->getId(), false);
-
-		if (sizeof($st) == 0) {
-			$st = array();
-		} else {
-			$st['ratio'] = $st['nbGames'] == 0 ? 0 : round($st['nbWin'] / $st['nbGames'], 2);
-		}
-
 		return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
 					'user' => $this->getUser()->getUsername(),
-					'stat' => $st
+					'stat' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($this->getUser()->getId(), false)
 		));
 	}
 
@@ -67,23 +59,13 @@ class StatController extends Controller
 		$dt = $this->getRequest()->get('date', 'now');
 		$ag = $this->getRequest()->get('aggregate', 0);
 
-		$em = $this->getDoctrine()->getManager();
-		$st = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($id, true, $dt);
-
-		if (sizeof($st) == 0) {
-			$st = array();
-		} else {
-			if ($st['nbGames'] == 0) {
-				$st['ratio'] = 0;
-			} else {
-				$st['ratio'] = round($st['nbWin'] / $st['nbGames'], 2);
-			}
-		}
+		$usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
 		$response = new Response(json_encode(array(
-					'graph' => $em->getRepository('BabyUserBundle:User')->getPlayerData($id, $dt, $ag),
-					'stats' => $st
+					'graph' => $usr->getPlayerData($id, $dt, $ag),
+					'stats' => $usr->getAllStats($id, true, $dt)
 		)));
+
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
@@ -208,7 +190,7 @@ class StatController extends Controller
 			'position' => $this->getRequest()->get('position', 'Avant'),
 			'roles' => $this->getRequest()->get('roles', array()),
 			'username' => $this->getRequest()->get('username', NULL),
-			'password' => $this->getRequest()->get('password', NULL)
+			'password' => $this->getRequest()->get('password', 'secret')
 		);
 
 		$em = $this->getDoctrine()->getManager();

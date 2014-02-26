@@ -271,18 +271,6 @@ class UserRepository extends EntityRepository
 					WHERE id_player = " . $id . " AND IF(team = 1, score_team1 < score_team2, score_team1 > score_team2)" . $where . "
 				) as nbLose,
 				(
-					SELECT COUNT(p.id)
-					FROM baby_played p
-					INNER JOIN baby_game g ON p.id_game = g.id
-					WHERE id_player = " . $id . " AND IF(team = 1, score_team2 = 0, score_team1 = 0)" . $where . "
-				) as nbWinFanny,
-				(
-					SELECT COUNT(p.id)
-					FROM baby_played p
-					INNER JOIN baby_game g ON p.id_game = g.id
-					WHERE id_player = " . $id . " AND IF(team = 1, score_team1 = 0, score_team2 = 0)" . $where . "
-				) as nbLoseFanny,
-				(
 					SELECT SUM(IF(team = 1, score_team1, score_team2))
 					FROM baby_played p
 					INNER JOIN baby_game g ON p.id_game = g.id
@@ -339,8 +327,24 @@ class UserRepository extends EntityRepository
 					LIMIT 0,1
 				) as worstMate";
 
-		$q = $this->_em->getConnection();
-		return $q->fetchAll($sql)[0];
+		$query = $this->_em->getConnection();
+		$data = $query->fetchAll($sql)[0];
+
+		if (sizeof($data) == 0) {
+			$data = array();
+		} else {
+			if ($data['nbGames'] == 0) {
+				$data['ratio'] = 0;
+				$data['nbButTakenAvg'] = 0;
+				$data['nbButScoredAvg'] = 0;
+			} else {
+				$data['ratio'] = round($data['nbWin'] / $data['nbGames'], 2);
+				$data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
+				$data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
+			}
+		}
+
+		return $data;
 	}
 
 	public static function aasort(&$array, $key)
