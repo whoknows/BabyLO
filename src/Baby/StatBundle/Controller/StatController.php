@@ -36,7 +36,7 @@ class StatController extends Controller
 	public function playerstatgraphAction()
 	{
 		$function = 'get' . strtoupper($this->getRequest()->get('action'));
-		$agregate = $this->getRequest()->get('agregate', 1);
+		$agregate = $this->getRequest()->get('agregate', 0);
 
 		$data = array(
 			'date' => array(),
