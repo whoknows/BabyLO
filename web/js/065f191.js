@@ -40,23 +40,22 @@ $(document).ready(function() {
 
 				return html;
 			};
-			var formatSelection = function(player) {
-				return player.text;
-			};
+
 			$(".select2").select2({
 				placeholder: "Sélectionner un joueur",
 				formatResult: formatResult,
 				formatSelection: formatResult,
 				dropdownCssClass: "bigdrop",
-				 minimumResultsForSearch: -1
+				minimumResultsForSearch: -1
 			});
 
 			$('#score2, #score1').select2({ minimumResultsForSearch: -1});
+			$(".select2-search, .select2-focusser").remove();
 
 			$('.isWinner').click(function(e){
 				e.preventDefault();
 
-				$('#score'+$(this).data('team')).val('10');
+				$('#score'+$(this).data('team')).select2('val','10');
 
 				return false;
 			});
