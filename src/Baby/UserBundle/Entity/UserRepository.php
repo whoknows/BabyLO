@@ -29,6 +29,7 @@ class UserRepository extends EntityRepository
 			$players[$p->getId()] = array(
 				'id' => $p->getId(),
 				'name' => $p->getUsername(),
+				'img' => '',
 				'victoires' => 0,
 				'defaites' => 0
 			);
@@ -36,7 +37,7 @@ class UserRepository extends EntityRepository
 		}
 
 		$query = $this->_em->createQuery(
-						'SELECT p.id, p.username as name,
+						'SELECT p.id, p.username as name,p.email,
 					SUM(
 						CASE
 							WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
@@ -64,6 +65,7 @@ class UserRepository extends EntityRepository
 			$nb = $p['victoires'] + $p['defaites'];
 			$p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
 			$players[$p['id']] = $p;
+			$players[$p['id']]['img'] = self::getGravatar($p['email'], 35);
 		}
 
 		if ($multi) {
@@ -345,6 +347,21 @@ class UserRepository extends EntityRepository
 		}
 
 		return $data;
+	}
+
+	public static function getGravatar( $email, $s = 40, $d = 'mm', $r = 'x', $img = false, $atts = array() )
+	{
+		$url = 'http://www.gravatar.com/avatar/';
+		$url .= md5( strtolower( trim( $email ) ) );
+		$url .= "?s=$s&d=$d&r=$r";
+		if ( $img ) {
+			$url = '<img src="' . $url . '"';
+			foreach ( $atts as $key => $val ) {
+				$url .= ' ' . $key . '="' . $val . '"';
+			}
+			$url .= ' />';
+		}
+		return $url;
 	}
 
 	public static function aasort(&$array, $key)

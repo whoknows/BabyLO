@@ -13,7 +13,7 @@ class StatController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
 					'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
-					'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(6),
+					'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(4),
 					'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
 		));
 	}
@@ -36,6 +36,7 @@ class StatController extends Controller
 	public function playerstatgraphAction()
 	{
 		$function = 'get' . strtoupper($this->getRequest()->get('action'));
+		$agregate = $this->getRequest()->get('agregate', 0);
 
 		$data = array(
 			'date' => array(),
@@ -43,8 +44,13 @@ class StatController extends Controller
 		);
 
 		foreach ($this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->$function($this->getUser()->getId()) as $row) {
-			$data['data'][] = intval($row['ct']);
 			$data['date'][] = $row['date']->format('d-m-Y');
+			if($agregate == 1){
+				$prevVal = isset($data['data'][sizeof($data['data'])-1]) ? $data['data'][sizeof($data['data'])-1] : 0;
+				$data['data'][] = $prevVal + intval($row['ct']);
+			} else {
+				$data['data'][] = intval($row['ct']);
+			}
 		}
 
 		$response = new Response(json_encode($data));
@@ -99,8 +105,20 @@ class StatController extends Controller
 
 	public function addgameAction()
 	{
+		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+		$players = array();
+
+		foreach($userEnt->getStandardUserList() as &$player) {
+			$players[] = array(
+				'id' => $player->getId(),
+				'img' => $userEnt::getGravatar($player->getEmail()),
+				'name' => $player->getUsername(),
+				'position' => $player->getPosition()
+			);
+		}
+
 		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getStandardUserList()
+					'players' => $players
 		));
 	}
 
@@ -157,8 +175,19 @@ class StatController extends Controller
 
 	public function matchmakerAction()
 	{
+		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+		$players = array();
+
+		foreach($userEnt->getStandardUserList() as &$player) {
+			$players[] = array(
+				'id' => $player->getId(),
+				'img' => $userEnt::getGravatar($player->getEmail()),
+				'username' => $player->getUsername(),
+			);
+		}
+
 		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->findBy(array('enabled' => 1), array('username' => 'ASC')),
+					'players' => $players,
 		));
 	}
 
@@ -190,7 +219,8 @@ class StatController extends Controller
 			'position' => $this->getRequest()->get('position', 'Avant'),
 			'roles' => $this->getRequest()->get('roles', array()),
 			'username' => $this->getRequest()->get('username', NULL),
-			'password' => $this->getRequest()->get('password', 'secret')
+			'password' => $this->getRequest()->get('password', 'secret'),
+			'email' => $this->getRequest()->get('email', NULL),
 		);
 
 		$em = $this->getDoctrine()->getManager();
@@ -206,6 +236,7 @@ class StatController extends Controller
 
 		$pl->setEnabled($userData['enabled']);
 		$pl->setPosition($userData['position']);
+		$pl->setEmail($userData['email']);
 		$pl->removeAllRoles();
 
 		foreach ($userData['roles'] as $rid) {

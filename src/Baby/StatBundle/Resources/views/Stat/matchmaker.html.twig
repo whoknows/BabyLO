@@ -11,7 +11,7 @@
 			<h4>Joueurs disponibles</h4>
 			<div class="list-group">
 				{% for player in players %}
-				<a href="javascript:void(0)" data-id="{{ player.id }}" class="list-group-item clickme-player">{{ player.username | capitalize }}</a>
+				<a href="javascript:void(0)" data-id="{{ player.id }}" class="list-group-item clickme-player"><img src="{{ player.img }}" alt="gravatar" /> {{ player.username | capitalize }}</a>
 				{% endfor %}
 			</div>
 		</div>

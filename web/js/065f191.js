@@ -1,11 +1,3 @@
-(function($) {
-	$.fn.toggleDisabled = function() {
-		return this.each(function() {
-			this.disabled = !this.disabled;
-		});
-	};
-})(jQuery);
-
 $(document).ready(function() {
 
 	var t = window.location.pathname.split('/');
@@ -14,8 +6,61 @@ $(document).ready(function() {
 		e.stopPropagation();
 	});
 
+	$('#updateUser').submit(function(e){
+		e.preventDefault();
+
+		var data = {
+			id: $('').data('id'),
+			email: $('#email').val(),
+			position: $('#gobalposition').val(),
+			oldPassword: $('#oldPassword').val(),
+			newPassword: $('#newPassword').val(),
+			repeatPassword: $('#repeatPassword').val()
+		};
+
+		$.post('saveuser', data, function(ret) {
+			if (ret == 'OK') {
+				//
+			}
+		});
+
+		return false;
+	});
+
 	switch (t[t.length - 1]) {
 		case 'addgame':
+			var formatResult = function(player) {
+				var img = player.element[0].attributes[0].nodeValue;
+
+				var html = '<div class="media"><a class="pull-left" href="#"><img class="media-object" src="'+
+					img
+				+'" alt="Gravatar"></a><div class="media-body"><h4>'+
+					player.text
+				+'</h4></div></div>';
+
+				return html;
+			};
+			var formatSelection = function(player) {
+				return player.text;
+			};
+			$(".select2").select2({
+				placeholder: "Sélectionner un joueur",
+				formatResult: formatResult,
+				formatSelection: formatResult,
+				dropdownCssClass: "bigdrop",
+				 minimumResultsForSearch: -1
+			});
+
+			$('#score2, #score1').select2({ minimumResultsForSearch: -1});
+
+			$('.isWinner').click(function(e){
+				e.preventDefault();
+
+				$('#score'+$(this).data('team')).val('10');
+
+				return false;
+			});
+
 			$('#form-addgame').submit(function(e) {
 				e.preventDefault();
 				var $err = $('#form-addgame-error');
@@ -39,7 +84,7 @@ $(document).ready(function() {
 				}
 
 				if (error !== "") {
-					$err.text(error).show("blind").delay(3000).hide("blind");
+					$err.text(error).removeClass('hidden');
 				} else {
 					var data = {
 						date: $('#datepartie').val(),
@@ -52,13 +97,11 @@ $(document).ready(function() {
 					};
 					$.post('savegame', data, function(ret) {
 						if (ret === 'ok') {
-							$('#submitformgame').prop('disabled', true);
 							$err.removeClass('text-danger').addClass('text-success');
 							$err.text('Partie enregistrée !')
 							$err.removeClass('hidden');
 							setTimeout(function() {
 								$err.addClass('hidden');
-								window.location.reload();
 							}, 1000);
 						} else {
 							$err.text('Erreur : La partie n\'a pas été enregistrée').removeClass("hidden");
@@ -126,7 +169,7 @@ $(document).ready(function() {
 								$('#stat-' + i).text(pdata.stats[i]);
 							}
 						}
-						$('#playerstatstable, #playerstatperiod, #playerstattitle').removeClass('hidden');
+						$('#playerstatstable, #playerstatperiod, #playerstattitle, #chartContainer').removeClass('hidden');
 						$('#playerstatnotice').addClass('hidden');
 						$('#playername').text($('.player.active').text());
 					}
@@ -269,6 +312,7 @@ $(document).ready(function() {
 					enabled: $(this).parent().parent().find('input[name=enabled]').prop('checked') ? 1 : 0,
 					roles: $(this).parent().parent().find('select[name=roles]').val(),
 					position: $(this).parent().parent().find('select[name="position"]').val(),
+					email: $(this).parent().parent().find('input[name="email"]').val(),
 				};
 
 				saveUser(data);
@@ -282,7 +326,8 @@ $(document).ready(function() {
 					roles: $('#userrole').val(),
 					position: $('#userposition').val(),
 					username: $('#useruser').val(),
-					password: $('#userpass').val()
+					password: $('#userpass').val(),
+					email: $('#usermail').val()
 				};
 
 				if (data.username === "" || data.password === "") {
