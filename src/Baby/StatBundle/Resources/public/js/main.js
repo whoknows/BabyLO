@@ -56,7 +56,7 @@ $(document).ready(function() {
 			$('.isWinner').click(function(e){
 				e.preventDefault();
 
-				$('#score'+$(this).data('team')).val('10');
+				$('#score'+$(this).data('team')).select2('val','10');
 
 				return false;
 			});
