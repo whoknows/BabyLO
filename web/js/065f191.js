@@ -13,6 +13,9 @@ $(document).ready(function() {
 			id: $('').data('id'),
 			email: $('#email').val(),
 			position: $('#gobalposition').val(),
+			oldPassword: $('#oldPassword').val(),
+			newPassword: $('#newPassword').val(),
+			repeatPassword: $('#repeatPassword').val()
 		};
 
 		$.post('saveuser', data, function(ret) {
