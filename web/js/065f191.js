@@ -30,15 +30,12 @@ $(document).ready(function() {
 	switch (t[t.length - 1]) {
 		case 'addgame':
 			var formatResult = function(player) {
-				var img = player.element[0].attributes[0].nodeValue;
-
-				var html = '<div class="media"><a class="pull-left" href="#"><img class="media-object" src="'+
-					img
+				return '<div class="media"><a class="pull-left" href="#"><img class="media-object" src="'+
+					$(player.element).data('img')
 				+'" alt="Gravatar"></a><div class="media-body"><h4>'+
 					player.text
 				+'</h4></div></div>';
 
-				return html;
 			};
 
 			$(".select2").select2({
@@ -55,7 +52,7 @@ $(document).ready(function() {
 			$('.isWinner').click(function(e){
 				e.preventDefault();
 
-				$('#score'+$(this).data('team')).select2('val','10');
+				$('#score'+$(this).data('team')+'').select2('val','10');
 
 				return false;
 			});
