@@ -29,7 +29,7 @@ class UserRepository extends EntityRepository
 			$players[$p->getId()] = array(
 				'id' => $p->getId(),
 				'name' => $p->getUsername(),
-				'img' => '',
+				'img' => self::getGravatar($p->getEmail(), 35),
 				'victoires' => 0,
 				'defaites' => 0
 			);
@@ -65,7 +65,6 @@ class UserRepository extends EntityRepository
 			$nb = $p['victoires'] + $p['defaites'];
 			$p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
 			$players[$p['id']] = $p;
-			$players[$p['id']]['img'] = self::getGravatar($p['email'], 35);
 		}
 
 		if ($multi) {
