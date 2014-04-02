@@ -9,10 +9,15 @@ Les librairies utilisées sont :
 - Chosen
 - Pickadate.js
 
+## Screenshots
+
+Accueil
 ![alt tag](http://i.imgur.com/W1fjD1il.png)
 
+Statistiques avancées
 ![alt tag](http://i.imgur.com/Ya76QHHl.png)
 
+Formulaire d'ajout de partie
 ![alt tag](http://i.imgur.com/Io23umVl.png)
 
 ## Procédure d'installation
