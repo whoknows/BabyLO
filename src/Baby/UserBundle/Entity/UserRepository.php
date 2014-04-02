@@ -64,7 +64,7 @@ class UserRepository extends EntityRepository
 		foreach ($query->getResult() as $p) {
 			$nb = $p['victoires'] + $p['defaites'];
 			$p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
-			$players[$p['id']] = $p;
+			$players[$p['id']] = array_merge($players[$p['id']], $p);
 		}
 
 		if ($multi) {
