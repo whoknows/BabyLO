@@ -345,8 +345,10 @@ $(document).ready(function() {
 				$('#nbbaby').highcharts({
 					chart: {type: 'column'},
 					title: {text: 'Nombre de parties jouées par jours'},
+					legend: {enabled:false},
 					xAxis: {
-						categories: pdata.date
+						categories: pdata.date,
+						labels: {enabled:false}
 					},
 					yAxis: {
 						min: 0,
