@@ -74,8 +74,8 @@ class UserRepository extends EntityRepository
 			$players['ratio'] = array_values($tmp);
 			self::aasort($tmp, 'victoires');
 			$players['victoires'] = array_values($tmp);
-			self::aasort($tmp, 'defaites');
-			$players['defaites'] = array_values($tmp);
+			//self::aasort($tmp, 'defaites');
+			$players['defaites'] = array_values($this->getPlayersAllTime());
 		} else {
 			self::aasort($players, 'ratio');
 			$players = array_values($players);
@@ -86,6 +86,52 @@ class UserRepository extends EntityRepository
 
 		return $players;
 	}
+
+    public function getPlayersAllTime()
+    {
+        $players = array();
+
+        foreach ($this->getStandardUserList() as $p) {
+            $players[$p->getId()] = array(
+                'id' => $p->getId(),
+                'name' => $p->getUsername(),
+                'img' => self::getGravatar($p->getEmail(), 35),
+                'victoires' => 0,
+                'defaites' => 0
+            );
+            $players[$p->getId()]['ratio'] = 0;
+        }
+
+        $query = $this->_em->createQuery(
+            'SELECT p.id, p.username as name,p.email,
+                    SUM(
+                        CASE
+                            WHEN pl.team = 1 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+                            WHEN pl.team = 2 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+                        ELSE 0 END
+                    ) as victoires,
+                    SUM(
+                        CASE
+                            WHEN pl.team = 1 AND g.scoreTeam1 < g.scoreTeam2 THEN 1
+                            WHEN pl.team = 2 AND g.scoreTeam1 > g.scoreTeam2 THEN 1
+                        ELSE 0 END
+                    ) as defaites
+            FROM BabyUserBundle:User p
+            INNER JOIN BabyStatBundle:BabyPlayed pl WITH p.id = pl.idPlayer
+            INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
+            WHERE p.username != :name AND p.enabled = 1
+            GROUP BY p.id')->setParameters(array('name' => 'admin'));
+
+        foreach ($query->getResult() as $p) {
+            $nb = $p['victoires'] + $p['defaites'];
+            $p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
+            $players[$p['id']] = array_merge($players[$p['id']], $p);
+        }
+
+        self::aasort($players, 'ratio');
+
+        return $players;
+    }
 
 	public function getPlayerData($id, $dt, $ag)
 	{
