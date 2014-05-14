@@ -74,8 +74,8 @@
 						<td>{{ loop.index }}</td>
 						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
 						<td class="success">{{ player.victoires }}</td>
-						<td class="danger"><strong>{{ player.defaites }}</strong></td>
-						<td>{{ player.ratio }}</td>
+						<td class="danger">{{ player.defaites }}</td>
+						<td><strong>{{ player.ratio }}</strong></td>
 					</tr>
 					{% endfor %}
 				</tbody>
