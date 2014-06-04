@@ -95,6 +95,18 @@ class StatController extends Controller
 		));
 	}
 
+	public function scheduleAction()
+	{
+		// TODO : Créer la database id|date|player_id|creneau[14,15,16,17][00,15,30,45]
+		// TODO : Binder les boutons sur les actions INSERT / DELETE
+		// TODO : Afficher ou masquer les boutons en fonction de la participation du joueur
+		// TODO : Fonction de récupération des joueurs participant à un créneau
+
+		return $this->render('BabyStatBundle:Stat:schedule.html.twig', array(
+					//'user' => $this->getUser()->getUsername(),
+		));
+	}
+
 	public function nbgameAction()
 	{
 		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameCount()));

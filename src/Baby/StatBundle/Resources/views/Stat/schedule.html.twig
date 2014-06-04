@@ -1,0 +1,28 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Planification{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3>Planification des parties</h3>
+    </div>
+    {% for i in 14..17 %}
+        {% for j in 0..3 %}
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                <div class="game-title">
+                    <h4>{{ i }}h{% if j == 0 %}00{% else %}{{ j * 15 }}{% endif %}</h4>
+                </div>
+                <div class="game-players">
+                </div>
+                <div class="game-actions">
+                    <button class="btn btn-sm btn-success">Je participe</button>
+                    <button class="btn btn-sm btn-danger">Je ne participe plus</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

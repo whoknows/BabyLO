@@ -22,6 +22,10 @@ babystat_partie:
     path:     /game
     defaults: { _controller: BabyStatBundle:Stat:game }
 
+babystat_schedule:
+    path:     /schedule
+    defaults: { _controller: BabyStatBundle:Stat:schedule }
+
 babystat_nbpartie:
     path:     /nbgame
     defaults: { _controller: BabyStatBundle:Stat:nbgame }
