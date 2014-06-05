@@ -283,6 +283,49 @@ $(document).ready(function() {
 				}
 			});
 			break;
+		case 'schedule':
+			var toggleButtons = function($this) {
+				var $listGroup = $this.parent().prev();
+				if($listGroup.children('.list-group-item').length === 4) {
+					$this.parent().children('button').addClass('hidden');
+					$this.parent().children('i').removeClass('hidden');
+				} else {
+					if($this.hasClass('btn-danger')) {
+						$this.parent().children('.btn-success').removeClass('hidden');
+						$this.addClass('hidden');
+						$this.parent().children('i').addClass('hidden');
+					} else {
+						$this.parent().children('.btn-danger').removeClass('hidden');
+						$this.addClass('hidden');
+						$this.parent().children('i').addClass('hidden');
+					}
+				}
+			};
+
+			$('.do-action-schedule').click(function(){
+				var id = $(this).data('id');
+				var creneau = $(this).data('creneau');
+
+				if(typeof id === 'undefined') {
+					var $listGroup = $(this).parent().prev();
+					if($listGroup.children('.list-group-item').length === 0) {
+						$listGroup.children('i').addClass('invisible');
+					}
+					$.post('changeSchedule', {'creneau':creneau}, function(postData){
+						$listGroup.parent().next().children('.btn-danger').data('id', postData.id);
+						$listGroup.prepend('<li class="list-group-item" data-id="'+postData.id+'"><img src="'+postData.img+'" alt="gravatar" /> '+postData.username+'</li>');
+					});
+				} else if(typeof creneau === 'undefined') {
+					var $item = $('.list-group-item[data-id='+id+']');
+					if($item.parent('.list-group').children('.list-group-item').length === 1) {
+						$item.parent('.list-group').children('i').removeClass('invisible');
+					}
+					$item.remove();
+					$.post('changeSchedule', {'id':id});
+				}
+				toggleButtons($(this));
+			});
+			break;
 		case 'useradmin':
 			var span = $('#user-msg');
 			var saveUser = function(data) {

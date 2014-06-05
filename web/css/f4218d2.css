@@ -112,3 +112,21 @@ td.player {
 .isWinner {
 	margin-top: 10px;
 }
+
+.game-players {
+	min-height:170px;
+}
+
+.game-players .list-group-item {
+	font-size: 1.5em;
+	padding: 0;
+}
+
+.game-actions {
+	height: 36px;
+	margin-bottom: 15px;
+}
+
+.creneau {
+	border: 1px solid #CCC;
+}

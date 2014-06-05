@@ -97,14 +97,66 @@ class StatController extends Controller
 
 	public function scheduleAction()
 	{
-		// TODO : Créer la database id|date|player_id|creneau[14,15,16,17][00,15,30,45]
-		// TODO : Binder les boutons sur les actions INSERT / DELETE
-		// TODO : Afficher ou masquer les boutons en fonction de la participation du joueur
-		// TODO : Fonction de récupération des joueurs participant à un créneau
+		$em = $this->getDoctrine()->getManager();
+
+		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+
+		$tmp = $em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
+
+		$data = array();
+
+		foreach ($tmp as $osef) {
+			$data[] = array(
+				'id' => $osef->getId(),
+				'creneau' => $osef->getCreneau(),
+				'player' => array(
+					'id' => $osef->getIdPlayer()->getId(),
+					'username' => $osef->getIdPlayer()->getUsername(),
+					'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
+				)
+			);
+		}
 
 		return $this->render('BabyStatBundle:Stat:schedule.html.twig', array(
-					//'user' => $this->getUser()->getUsername(),
+					'data' => $data,
 		));
+	}
+
+	public function changeScheduleAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$data = array();
+
+		$request = $this->getRequest();
+
+		$id = $request->get('id');
+
+		if($id === null) {
+			$schedule = new \Baby\StatBundle\Entity\BabySchedule();
+			$schedule->setDate(new \DateTime(date('Y-m-d')));
+			$schedule->setCreneau($request->get('creneau'));
+			$schedule->setIdPlayer($this->getUser());
+			$em->persist($schedule);
+			$em->flush();
+
+			$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+
+			$data = array(
+				'id' => $schedule->getId(),
+				'img' => $userEnt::getGravatar($this->getUser()->getEmail()),
+				'username' => $this->getUser()->getUsername()
+			);
+		} else {
+			$schedule = $em->getRepository('BabyStatBundle:BabySchedule')->find($id);
+			$em->remove($schedule);
+			$em->flush();
+		}
+
+		$response = new Response(json_encode($data));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
 	}
 
 	public function nbgameAction()
