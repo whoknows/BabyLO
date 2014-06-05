@@ -312,7 +312,7 @@ $(document).ready(function() {
 						$listGroup.children('i').addClass('invisible');
 					}
 					$.post('changeSchedule', {'creneau':creneau}, function(postData){
-						$listGroup.parent().next().children('.btn-danger').data('id', postData.id);
+						$listGroup.next().children('.btn-danger').data('id', postData.id);
 						$listGroup.prepend('<li class="list-group-item" data-id="'+postData.id+'"><img src="'+postData.img+'" alt="gravatar" /> '+postData.username+'</li>');
 					});
 				} else if(typeof creneau === 'undefined') {
