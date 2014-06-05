@@ -35,9 +35,9 @@
                                 <i {% if cpt != 0 %} class="invisible" {% endif %}>Aucun joueur pour ce créneau.</i>
                             </div>
                             <div class="game-actions">
-                                <button class="btn btn-sm btn-danger do-action-schedule{% if me == false %} hidden {% else %} {% endif %}" data-id="{{ me }}">Je ne participe plus</button>
-                                <button class="btn btn-sm btn-success do-action-schedule{% if me != false and cpt < 4 %} hidden {% else %} {% endif %}" data-creneau="{{ creneau }}">Je participe</button>
-                                <i {% if cpt < 4 %} class="hidden" {% else %} {% endif %}>Le créneau est déjà complet.</i>
+                                <button class="btn btn-sm btn-danger do-action-schedule{% if me != false  %} {% else %} hidden {% endif %}" data-id="{{ me }}">Je ne participe plus</button>
+                                <button class="btn btn-sm btn-success do-action-schedule{% if me == false and cpt < 4 %} {% else %} hidden {% endif %}" data-creneau="{{ creneau }}">Je participe</button>
+                                <i {% if cpt == 4 and me == false %} {% else %} class="hidden" {% endif %}>Le créneau est déjà complet.</i>
                             </div>
                         </div>
                     {% endfor %}
