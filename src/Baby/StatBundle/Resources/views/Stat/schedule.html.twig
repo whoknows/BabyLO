@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} - Planification{% endblock %}
 
 {% block body %}
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -12,7 +13,7 @@
             <div class="row-fluid">
                 {% for i in 15..16 %}
                     {% for j in 0..3 %}
-                        {% set creneau = i ~ (j == 0 ? '00' : j ) %}
+                        {% set creneau = i ~ j ~ '0' %}
                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 creneau">
                             <div class="game-title">
                                 <h3>{{ i }}h{% if j == 0 %}00{% else %}{{ j * 15 }}{% endif %}</h3>
@@ -35,9 +36,13 @@
                                 <i {% if cpt != 0 %} class="invisible" {% endif %}>Aucun joueur pour ce créneau.</i>
                             </div>
                             <div class="game-actions">
-                                <button class="btn btn-sm btn-danger do-action-schedule{% if me != false  %} {% else %} hidden {% endif %}" data-id="{{ me }}">Je ne participe plus</button>
-                                <button class="btn btn-sm btn-success do-action-schedule{% if me == false and cpt < 4 %} {% else %} hidden {% endif %}" data-creneau="{{ creneau }}">Je participe</button>
-                                <i {% if cpt == 4 and me == false %} {% else %} class="hidden" {% endif %}>Le créneau est déjà complet.</i>
+                                {% if creneau < "now"|date("Hi") %}
+                                    <i>Le créneau est déjà passé</i>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger do-action-schedule{% if me != false  %} {% else %} hidden {% endif %}" data-id="{{ me }}">Je ne participe plus</button>
+                                    <button class="btn btn-sm btn-success do-action-schedule{% if me == false and cpt < 4 %} {% else %} hidden {% endif %}" data-creneau="{{ creneau }}">Je participe</button>
+                                    <i {% if cpt == 4 and me == false %} {% else %} class="hidden" {% endif %}>Le créneau est déjà complet.</i>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
