@@ -22,7 +22,7 @@
                                 {% set cpt = 0 %}
                                 {% set me = false %}
                                 {% for d in data %}
-                                    {% if d.creneau ~ '0' == creneau  %}
+                                    {% if d.creneau ~ '0' == creneau or d.creneau == creneau  %}
                                         {% set cpt = cpt + 1 %}
                                         {% if app.user.id == d.player.id %}
                                             {% set me = d.id %}
