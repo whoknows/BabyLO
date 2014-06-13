@@ -63,7 +63,7 @@ class UserRepository extends EntityRepository
 
 		foreach ($query->getResult() as $p) {
 			$nb = $p['victoires'] + $p['defaites'];
-			$p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
+			$p['ratio'] = $this->calculRatio($nb, $p['victoires']);
 			$players[$p['id']] = array_merge($players[$p['id']], $p);
 		}
 
@@ -124,7 +124,7 @@ class UserRepository extends EntityRepository
 
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
-            $p['ratio'] = $nb != 0 ? round($p['victoires'] / ($nb), 2, PHP_ROUND_HALF_DOWN) : 0;
+            $p['ratio'] = $this->calculRatio($nb, $p['victoires'], false);
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
 
@@ -174,11 +174,11 @@ class UserRepository extends EntityRepository
 
 				$data['victoires'][] = $prevVic + intval($d['victoires']);
 				$data['defaites'][] = $prevDef + intval($d['defaites']);
-				$data['ratio'][] = round(intval($data['victoires'][sizeof($data['victoires'])-1]) / (intval($data['victoires'][sizeof($data['victoires'])-1]) + intval($data['defaites'][sizeof($data['defaites'])-1])), 2);
+				$data['ratio'][] = $this->calculRatio(intval($data['victoires'][sizeof($data['victoires'])-1]) + intval($data['defaites'][sizeof($data['defaites'])-1]), intval($data['victoires'][sizeof($data['victoires'])-1]));
 			} else {
 				$data['victoires'][] = intval($d['victoires']);
 				$data['defaites'][] = intval($d['defaites']);
-				$data['ratio'][] = round(intval($d['victoires']) / (intval($d['victoires']) + intval($d['defaites'])), 2);
+				$data['ratio'][] = $this->calculRatio(intval($d['victoires']) + intval($d['defaites']), intval($d['victoires']));
 			}
 		}
 
@@ -385,13 +385,36 @@ class UserRepository extends EntityRepository
 				$data['nbButTakenAvg'] = 0;
 				$data['nbButScoredAvg'] = 0;
 			} else {
-				$data['ratio'] = round($data['nbWin'] / $data['nbGames'], 2);
+				$data['ratio'] = $this->calculRatio($data['nbGames'], $data['nbWin'], false);
 				$data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
 				$data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
 			}
 		}
 
 		return $data;
+	}
+
+	public function calculRatio($parties, $victoires, $currentMonth = true)
+	{
+		$dql = "SELECT COUNT(g.id) as total FROM BabyStatBundle:BabyGame g";
+		if($currentMonth) {
+			$dql.= " WHERE g.date >= :date";
+		}
+
+		$query = $this->_em->createQuery($dql);
+
+		if($currentMonth) {
+			$query->setParameter('date', new \Datetime(date('Y-m-01')));
+		}
+
+		$total = $query->getResult();
+		$total = intval($total[0]['total']);
+		$poids = $parties / $total;
+		$ratio = $parties != 0 ? round($victoires / ($parties), 2, PHP_ROUND_HALF_DOWN) : 0;
+
+		$classement = round(($ratio * 0.55) + ($poids * 0.45), 2);
+
+		return $classement;
 	}
 
 	public static function getGravatar( $email, $s = 40, $d = 'mm', $r = 'x', $img = false, $atts = array() )
