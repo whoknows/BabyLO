@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
+	private static $POIDS_RATIO = 0.65;
+
 	public function getStandardUserList($enabled = 0)
 	{
 		$qb = $this->_em->createQueryBuilder();
@@ -412,7 +414,7 @@ class UserRepository extends EntityRepository
 		$poids = $parties / $total;
 		$ratio = $parties != 0 ? round($victoires / ($parties), 2, PHP_ROUND_HALF_DOWN) : 0;
 
-		$classement = round(($ratio * 0.55) + ($poids * 0.45), 2);
+		$classement = round(($ratio * self::$POIDS_RATIO) + ($poids * (1-self::$POIDS_RATIO)), 2);
 
 		return $classement;
 	}
