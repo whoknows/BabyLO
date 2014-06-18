@@ -131,12 +131,11 @@ class UserRepository extends EntityRepository
 
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
-            $p['ratio'] = $this->calculRatio($nb, $p['victoires'], false);
             $p['score'] = $this->calculRatio($nb, $p['victoires'], false, true);
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
 
-        self::aasort($players, 'ratio');
+        self::aasort($players, 'score');
 
         return $players;
     }
