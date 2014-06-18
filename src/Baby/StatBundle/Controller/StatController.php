@@ -284,14 +284,16 @@ class StatController extends Controller
 
     public function saveuserAction()
     {
+        $request = Request::createFromGlobals()->request;
+
         $userData = array(
-            'id' => $this->getRequest()->get('id', null),
-            'enabled' => $this->getRequest()->get('enabled', 0),
-            'position' => $this->getRequest()->get('position', 'Avant'),
-            'roles' => $this->getRequest()->get('roles', array()),
-            'username' => $this->getRequest()->get('username', null),
-            'password' => $this->getRequest()->get('password', 'secret'),
-            'email' => $this->getRequest()->get('email', null),
+            'id' => $request->get('id', null),
+            'enabled' => $request->get('enabled', 0),
+            'position' => $request->get('position', 'Avant'),
+            'roles' => $request->get('roles', array()),
+            'username' => $request->get('username', null),
+            'password' => $request->get('password', 'secret'),
+            'email' => $request->get('email', null),
         );
 
         $em = $this->getDoctrine()->getManager();
