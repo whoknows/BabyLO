@@ -83,7 +83,7 @@ class UserRepository extends EntityRepository
 
 			$players['scorealltime'] = array_values($this->getPlayersAllTime());
 		} else {
-			self::aasort($players, 'ratio');
+			self::aasort($players, 'score');
 			$players = array_values($players);
 			if ($limit !== null) {
 				$players = array_slice($players, 0, $limit);
