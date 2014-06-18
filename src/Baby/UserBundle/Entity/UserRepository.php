@@ -36,6 +36,7 @@ class UserRepository extends EntityRepository
 				'defaites' => 0
 			);
 			$players[$p->getId()]['ratio'] = 0;
+			$players[$p->getId()]['score'] = 0;
 		}
 
 		$query = $this->_em->createQuery(
@@ -65,19 +66,22 @@ class UserRepository extends EntityRepository
 
 		foreach ($query->getResult() as $p) {
 			$nb = $p['victoires'] + $p['defaites'];
-			$p['ratio'] = $this->calculRatio($nb, $p['victoires']);
+			$p['ratio'] = $this->calculRatio($nb, $p['victoires'], true, true);
+			$p['score'] = $this->calculRatio($nb, $p['victoires']);
 			$players[$p['id']] = array_merge($players[$p['id']], $p);
 		}
 
 		if ($multi) {
 			$tmp = $players;
 			$players = array();
+
+			self::aasort($tmp, 'score');
+			$players['score'] = array_values($tmp);
+
 			self::aasort($tmp, 'ratio');
 			$players['ratio'] = array_values($tmp);
-			self::aasort($tmp, 'victoires');
-			$players['victoires'] = array_values($tmp);
-			//self::aasort($tmp, 'defaites');
-			$players['defaites'] = array_values($this->getPlayersAllTime());
+
+			$players['scorealltime'] = array_values($this->getPlayersAllTime());
 		} else {
 			self::aasort($players, 'ratio');
 			$players = array_values($players);
@@ -102,6 +106,7 @@ class UserRepository extends EntityRepository
                 'defaites' => 0
             );
             $players[$p->getId()]['ratio'] = 0;
+            $players[$p->getId()]['score'] = 0;
         }
 
         $query = $this->_em->createQuery(
@@ -127,6 +132,7 @@ class UserRepository extends EntityRepository
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
             $p['ratio'] = $this->calculRatio($nb, $p['victoires'], false);
+            $p['score'] = $this->calculRatio($nb, $p['victoires'], false, true);
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
 
@@ -396,7 +402,7 @@ class UserRepository extends EntityRepository
 		return $data;
 	}
 
-	public function calculRatio($parties, $victoires, $currentMonth = true)
+	public function calculRatio($parties, $victoires, $currentMonth = true, $onlyRatio = false)
 	{
 		$dql = "SELECT COUNT(g.id) as total FROM BabyStatBundle:BabyGame g";
 		if($currentMonth) {
@@ -413,6 +419,10 @@ class UserRepository extends EntityRepository
 		$total = intval($total[0]['total']);
 		$poids = $parties / $total;
 		$ratio = $parties != 0 ? round($victoires / ($parties), 2, PHP_ROUND_HALF_DOWN) : 0;
+
+		if ($onlyRatio) {
+			return $ratio;
+		}
 
 		$classement = round(($ratio * self::$POIDS_RATIO) + ($poids * (1-self::$POIDS_RATIO)), 2);
 

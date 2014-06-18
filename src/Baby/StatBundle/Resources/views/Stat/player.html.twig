@@ -7,6 +7,31 @@
 	<h3>Joueurs</h3>
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+			<h4>Classement par score</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Victoires</th>
+						<th>Défaites</th>
+						<th class="text-primary">Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players.score %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
+						<td class="success">{{ player.victoires }}</td>
+						<td class="danger">{{ player.defaites }}</td>
+						<td><strong>{{ player.score }}</strong></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
 			<h4>Classement par ratio</h4>
 			<table class="table table-bordered">
 				<thead>
@@ -32,32 +57,7 @@
 			</table>
 		</div>
 		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-			<h4>Classement par victoires</h4>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Nom</th>
-						<th class="text-primary">Victoires</th>
-						<th>Défaites</th>
-						<th>Ratio</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for player in players.victoires %}
-					<tr>
-						<td>{{ loop.index }}</td>
-						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
-						<td class="success"><strong>{{ player.victoires }}</strong></td>
-						<td class="danger">{{ player.defaites }}</td>
-						<td>{{ player.ratio }}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-			<h4>Classement par ratio (depuis toujours)</h4>
+			<h4>Classement par score (depuis toujours)</h4>
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -65,17 +65,17 @@
 						<th>Nom</th>
 						<th>Victoires</th>
 						<th>Défaites</th>
-						<th class="text-primary">Ratio</th>
+						<th class="text-primary">Score</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for player in players.defaites %}
+					{% for player in players.scorealltime %}
 					<tr>
 						<td>{{ loop.index }}</td>
 						<td class="player" data-id="{{player.id}}"><a href="#morestat"><img src="{{ player.img }}" alt="gravatar" /> {{ player.name }}</a></td>
 						<td class="success">{{ player.victoires }}</td>
 						<td class="danger">{{ player.defaites }}</td>
-						<td><strong>{{ player.ratio }}</strong></td>
+						<td><strong>{{ player.score }}</strong></td>
 					</tr>
 					{% endfor %}
 				</tbody>
