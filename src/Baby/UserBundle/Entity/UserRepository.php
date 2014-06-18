@@ -131,7 +131,7 @@ class UserRepository extends EntityRepository
 
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
-            $p['score'] = $this->calculRatio($nb, $p['victoires'], false, true);
+            $p['score'] = $this->calculRatio($nb, $p['victoires'], false);
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
 
