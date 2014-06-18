@@ -191,7 +191,7 @@ $(document).ready(function () {
                             {
                                 min: 0,
                                 max: 1,
-                                title: {text: 'Ratio'},
+                                title: {text: 'Score'},
                                 opposite: true
                             }
                         ],
@@ -212,8 +212,8 @@ $(document).ready(function () {
                             },
                             {
                                 yAxis: 1,
-                                name: 'Ratio',
-                                data: pdata.graph.ratio,
+                                name: 'Score',
+                                data: pdata.graph.score,
                                 type: 'spline',
                                 color: '#2a9fd6'
                             }

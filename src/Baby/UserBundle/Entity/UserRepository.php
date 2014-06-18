@@ -177,7 +177,7 @@ class UserRepository extends EntityRepository
 
         $data = array(
             'dates' => array(),
-            'ratio' => array(),
+            'score' => array(),
             'victoires' => array(),
             'defaites' => array(),
         );
@@ -190,7 +190,7 @@ class UserRepository extends EntityRepository
 
                 $data['victoires'][] = $prevVic + intval($d['victoires']);
                 $data['defaites'][] = $prevDef + intval($d['defaites']);
-                $data['ratio'][] = $this->calculRatio(
+                $data['score'][] = $this->calculRatio(
                     intval($data['victoires'][sizeof($data['victoires']) - 1]) + intval($data['defaites'][sizeof($data['defaites']) - 1]),
                     intval($data['victoires'][sizeof($data['victoires']) - 1]),
                     $dt != 'all'
@@ -198,10 +198,10 @@ class UserRepository extends EntityRepository
             } else {
                 $data['victoires'][] = intval($d['victoires']);
                 $data['defaites'][] = intval($d['defaites']);
-                $data['ratio'][] = $this->calculRatio(
+                $data['score'][] = $this->calculRatio(
                     intval($d['victoires']) + intval($d['defaites']),
                     intval($d['victoires']),
-                    $dt != 'all'
+                    false
                 );
             }
         }
@@ -415,11 +415,11 @@ class UserRepository extends EntityRepository
             $data = array();
         } else {
             if ($data['nbGames'] == 0) {
-                $data['ratio'] = 0;
+                $data['score'] = 0;
                 $data['nbButTakenAvg'] = 0;
                 $data['nbButScoredAvg'] = 0;
             } else {
-                $data['ratio'] = $this->calculRatio($data['nbGames'], $data['nbWin']);
+                $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], $periode != 'all');
                 $data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
                 $data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
             }
