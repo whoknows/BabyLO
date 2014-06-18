@@ -1,4 +1,4 @@
-* Page comparatif :
+* Page comparatif
     - Comparer les stats de deux joueurs, avec coloration rouge/vert en fonction du meilleur
     - Nombre de parties jouées ensemble, et contre
     - Taux de victoires/defaites
@@ -12,3 +12,5 @@
 * "Widget" planification sur la page d'accueil
     - Affichage des parties à venir dans un tableau
 
+* Système de recherche avancée des parties
+    - Pouvoir rechercher une partie en fonction des équipes
