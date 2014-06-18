@@ -4,82 +4,85 @@
 
 {% block body %}
 
-{% set select %}
-	{% for player in players %}
-	<option value="{{ player.id }}" data-img="{{ player.img }}">{{ player.name }}</option>
-	{% endfor %}
-{% endset %}
+    {% set select %}
+    {% for player in players %}
+        <option value="{{ player.id }}" data-img="{{ player.img }}">{{ player.name }}</option>
+    {% endfor %}
+    {% endset %}
 
-<div class="container">
-	<h3>Ajouter une partie</h3>
-	<form class="form-horizontal" role="form" id="form-addgame">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<h4>Date</h4>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-					<input type="text" data-value="{{ "now"|date("d-m-Y") }}" class="form-control input-lg" id="datepartie" placeholder="Date de la partie">
-				</div>
-			</div>
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<h4>Equipe 1</h4>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="player1Team1" class="select2 form-control">
-						{{ select }}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="player2Team1" class="select2 form-control">
-						{{ select }}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="score1" class="form-control input-lg">
-						{% for i in 0..10 %}
-						<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<button class="btn btn-success isWinner" data-team="1">Gagnant</button>
-				</div>
-			</div>
+    <div class="container">
+        <h3>Ajouter une partie</h3>
 
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<h4>Equipe 2</h4>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="player1Team2" class="select2 form-control">
-						{{ select }}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="player2Team2" class="select2 form-control">
-						{{ select }}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<select id="score2" class="form-control input-lg">
-						{% for i in 0..10 %}
-						<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<button class="btn btn-success isWinner" data-team="2">Gagnant</button>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<br />
-				<div id="form-addgame-error" class="text-danger hidden">Error :</div>
-				<br />
-				<button type="submit" class="btn btn-primary">Enregistrer</button>
-			</div>
-		</div>
-	</form>
-</div>
+        <form class="form-horizontal" role="form" id="form-addgame">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h4>Date</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <input type="text" data-value="{{ "now"|date("d-m-Y") }}" class="form-control input-lg"
+                               id="datepartie" placeholder="Date de la partie">
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h4>Equipe 1</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="player1Team1" class="select2 form-control">
+                            {{ select }}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="player2Team1" class="select2 form-control">
+                            {{ select }}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="score1" class="form-control input-lg">
+                            {% for i in 0..10 %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button class="btn btn-success isWinner" data-team="1">Gagnant</button>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h4>Equipe 2</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="player1Team2" class="select2 form-control">
+                            {{ select }}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="player2Team2" class="select2 form-control">
+                            {{ select }}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <select id="score2" class="form-control input-lg">
+                            {% for i in 0..10 %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button class="btn btn-success isWinner" data-team="2">Gagnant</button>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <br/>
+
+                    <div id="form-addgame-error" class="text-danger hidden">Error :</div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

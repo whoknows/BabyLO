@@ -62,9 +62,10 @@ class StatController extends Controller
 
     public function morestatAction()
     {
-        $id = $this->getRequest()->get('playerId');
-        $dt = $this->getRequest()->get('date', 'now');
-        $ag = $this->getRequest()->get('aggregate', 0);
+        $request = $this->getRequest();
+        $id = $request->get('playerId');
+        $dt = $request->get('date', 'now');
+        $ag = $request->get('aggregate', 0);
 
         $usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 

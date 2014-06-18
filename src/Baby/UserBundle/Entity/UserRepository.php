@@ -143,6 +143,14 @@ class UserRepository extends EntityRepository
 
     public function getPlayerData($id, $dt, $ag)
     {
+        if ($dt == 'all') {
+            $dateStart = '10 years ago';
+            $dateStop = 'now';
+        } else {
+            $dateStart = $dt;
+            $dateStop = $dt;
+        }
+
         $query = $this->_em->createQuery(
             'SELECT p.id, p.username as name, g.date,
                     SUM(
@@ -162,8 +170,8 @@ class UserRepository extends EntityRepository
             INNER JOIN BabyStatBundle:BabyGame g WITH g.id = pl.idGame
             WHERE p.id = :id AND g.date BETWEEN :start AND :end
             GROUP BY g.date')->setParameters(array(
-                'start' => new \DateTime(date('Y-m-01', strtotime($dt))),
-                'end' => new \DateTime(date('Y-m-t', strtotime($dt))),
+                'start' => new \DateTime(date('Y-m-01', strtotime($dateStart))),
+                'end' => new \DateTime(date('Y-m-t', strtotime($dateStop))),
                 'id' => $id
             ));
 
@@ -182,11 +190,19 @@ class UserRepository extends EntityRepository
 
                 $data['victoires'][] = $prevVic + intval($d['victoires']);
                 $data['defaites'][] = $prevDef + intval($d['defaites']);
-                $data['ratio'][] = $this->calculRatio(intval($data['victoires'][sizeof($data['victoires']) - 1]) + intval($data['defaites'][sizeof($data['defaites']) - 1]), intval($data['victoires'][sizeof($data['victoires']) - 1]));
+                $data['ratio'][] = $this->calculRatio(
+                    intval($data['victoires'][sizeof($data['victoires']) - 1]) + intval($data['defaites'][sizeof($data['defaites']) - 1]),
+                    intval($data['victoires'][sizeof($data['victoires']) - 1]),
+                    $dt != 'all'
+                );
             } else {
                 $data['victoires'][] = intval($d['victoires']);
                 $data['defaites'][] = intval($d['defaites']);
-                $data['ratio'][] = $this->calculRatio(intval($d['victoires']) + intval($d['defaites']), intval($d['victoires']));
+                $data['ratio'][] = $this->calculRatio(
+                    intval($d['victoires']) + intval($d['defaites']),
+                    intval($d['victoires']),
+                    $dt != 'all'
+                );
             }
         }
 
@@ -313,7 +329,9 @@ class UserRepository extends EntityRepository
     {
         $where = "";
         if ($filter) {
-            $where = " AND g.date BETWEEN '" . date('Y-m-01', strtotime($periode)) . " 00:00:00' AND '" . date('Y-m-t', strtotime($periode)) . " 00:00:00' ";
+            if ($periode != 'all') {
+                $where = " AND g.date BETWEEN '" . date('Y-m-01', strtotime($periode)) . " 00:00:00' AND '" . date('Y-m-t', strtotime($periode)) . " 00:00:00' ";
+            }
         }
 
         $sql = "SELECT

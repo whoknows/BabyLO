@@ -1,154 +1,177 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-		<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
-		{% stylesheets 'bundles/babystat/css/*' filter='cssrewrite' %}
-		<link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/select2.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/bootstrap/yeti.min.css') }}" type="text/css" /> <!-- amelia, boostrap, cosmo, cupid, flatly, journal, lumen, yeti -->
-		<link rel="stylesheet" href="{{ asset_url }}" />
-		{% endstylesheets %}
+    {% stylesheets 'bundles/babystat/css/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset('css/pickadate/default.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pickadate/default.date.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap/yeti.min.css') }}" type="text/css"/>
+    <!-- amelia, boostrap, cosmo, cupid, flatly, journal, lumen, yeti -->
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 
-		<title>{% block title %}BabyLO{% endblock %}</title>
-	</head>
-	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="{{ path('babystat_accueil') }}">BabyLO</a>
-				</div>
-				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a href="{{ path('babystat_accueil') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a href="{{ path('babystat_partie') }}"><span class="glyphicon glyphicon-star"></span> Parties</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a href="{{ path('babystat_joueur') }}"><span class="glyphicon glyphicon-user"></span> Joueurs</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}><a href="{{ path('babystat_matchmaker') }}"><span class="glyphicon glyphicon-cog"></span> Match Maker</a></li>
-						<li {% if app.request.attributes.get('_route') ==  'babystat_schedule' %} class="active" {% endif %}><a href="{{ path('babystat_schedule') }}"><span class="glyphicon glyphicon-list-alt"></span> Planification</a></li>
-					</ul>
+    <title>{% block title %}BabyLO{% endblock %}</title>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('babystat_accueil') }}">BabyLO</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li {% if app.request.attributes.get('_route') ==  'babystat_accueil' %} class="active" {% endif %} ><a
+                            href="{{ path('babystat_accueil') }}"><span
+                                class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li {% if app.request.attributes.get('_route') ==  'babystat_partie' %} class="active" {% endif %}><a
+                            href="{{ path('babystat_partie') }}"><span class="glyphicon glyphicon-star"></span> Parties</a>
+                </li>
+                <li {% if app.request.attributes.get('_route') ==  'babystat_joueur' %} class="active" {% endif %}><a
+                            href="{{ path('babystat_joueur') }}"><span class="glyphicon glyphicon-user"></span> Joueurs</a>
+                </li>
+                <li {% if app.request.attributes.get('_route') ==  'babystat_matchmaker' %} class="active" {% endif %}>
+                    <a href="{{ path('babystat_matchmaker') }}"><span
+                                class="glyphicon glyphicon-cog"></span> Match Maker</a></li>
+                <li {% if app.request.attributes.get('_route') ==  'babystat_schedule' %} class="active" {% endif %}><a
+                            href="{{ path('babystat_schedule') }}"><span
+                                class="glyphicon glyphicon-list-alt"></span> Planification</a></li>
+            </ul>
 
-					<ul class="nav navbar-nav navbar-right">
-						{% if app.user != null %}
-						<li>
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonjour {{ app.user.username | capitalize }} <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ path('babystat_pagejoueur') }}"><span class="glyphicon glyphicon-stats"></span> Statistiques</a></li>
-							<!--<li><a href="#" data-toggle="modal" data-target="#babyloModal"><span class="glyphicon glyphicon-edit"></span> Modifier mon profil</a></li>-->
-							{% if is_granted('ROLE_ADMIN') %}
-								<li><a href="{{ path('babystat_ajoutpartie') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter une partie</a></li>
-							{% endif %}
-							{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<li><a href="{{ path('babystat_useradmin') }}"><span class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a></li>
-							{% endif %}
-								<li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
-							</ul>
-						</li>
-					{% else %}
-						<li>
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Login <span class="caret"></span></a>
-							<div class="dropdown-menu" id="loginmenu">
-								<div class="row">
-									<form class="form" method="POST" action="{{ path('login_check') }}">
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-											<input type="text" placeholder="Login" class="form-control" id="username" name="_username">
-										</div>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-											<input type="password" placeholder="Password" class="form-control" id="password" name="_password">
-										</div>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="cecckboxcontainer">
-											<input type="checkbox" id="remember_me" name="_remember_me" checked />
-											<label for="remember_me">Se souvenir de moi</label>
-										</div>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-											<button type="submit" class="btn btn-success btn-sm">Connexion</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</li>
-					{% endif %}
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div id="main-container">
-			{% block body %}
-			{% endblock %}
-		</div>
+            <ul class="nav navbar-nav navbar-right">
+                {% if app.user != null %}
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown"
+                           href="#">Bonjour {{ app.user.username | capitalize }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('babystat_pagejoueur') }}"><span
+                                            class="glyphicon glyphicon-stats"></span> Statistiques</a></li>
+                            <!--<li><a href="#" data-toggle="modal" data-target="#babyloModal"><span class="glyphicon glyphicon-edit"></span> Modifier mon profil</a></li>-->
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('babystat_ajoutpartie') }}"><span
+                                                class="glyphicon glyphicon-plus"></span> Ajouter une partie</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li><a href="{{ path('babystat_useradmin') }}"><span
+                                                class="glyphicon glyphicon-list"></span> Gestion des utilisateurs</a>
+                                </li>
+                            {% endif %}
+                            <li><a href="{{ path('logout') }}"><span
+                                            class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Login <span class="caret"></span></a>
 
-		{% if app.user != null %}
-		<div class="modal fade" id="babyloModal" tabindex="-1" role="dialog" aria-labelledby="babyloModalTitle" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="babyloModalTitle">Mettez votre profil à jour</h4>
-					</div>
-					<form role="form" id="updateUser">
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="email">Adresse mail (utilisée pour Gravatar)</label>
-								<input type="email" class="form-control" id="email" placeholder="Email" value="{{ app.user.email }}">
-							</div>
-							<div class="form-group">
-								<label for="oldPassword">Ancien mot de passe</label>
-								<input type="password" class="form-control" id="oldPassword" placeholder="Old password">
-							</div>
-							<div class="form-group">
-								<label for="newPassword">Nouveau mot de passe</label>
-								<input type="password" class="form-control" id="newPassword" placeholder="New password">
-							</div>
-							<div class="form-group">
-								<label for="repeatPassword">Confirmer</label>
-								<input type="password" class="form-control" id="repeatPassword" placeholder="Repeat password">
-							</div>
-							<div class="form-group">
-								<label for="gobalposition">Position</label>
-								<select type="text" class="form-control" id="gobalposition">
-									<option value="Avant" {% if app.user.position == 'Avant' %} selected="selected" {% endif %}>Avant</option>
-									<option value="Arriere" {% if app.user.position == 'Arriere' %} selected="selected" {% endif %}>Arrière</option>
-								</select>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-							<input type="submit" class="btn btn-primary" />
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		{% endif %}
+                        <div class="dropdown-menu" id="loginmenu">
+                            <div class="row">
+                                <form class="form" method="POST" action="{{ path('login_check') }}">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <input type="text" placeholder="Login" class="form-control" id="username"
+                                               name="_username">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <input type="password" placeholder="Password" class="form-control" id="password"
+                                               name="_password">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="cecckboxcontainer">
+                                        <input type="checkbox" id="remember_me" name="_remember_me" checked/>
+                                        <label for="remember_me">Se souvenir de moi</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <button type="submit" class="btn btn-success btn-sm">Connexion</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="main-container">
+    {% block body %}
+    {% endblock %}
+</div>
 
-		<div class="container" id="footercontainer">
-			<footer>
-				<p>&copy; <b>Guillaume Coste</b> - {{ "now" | date('Y') }}</p>
-			</footer>
-		</div>
+{% if app.user != null %}
+    <div class="modal fade" id="babyloModal" tabindex="-1" role="dialog" aria-labelledby="babyloModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="babyloModalTitle">Mettez votre profil à jour</h4>
+                </div>
+                <form role="form" id="updateUser">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="email">Adresse mail (utilisée pour Gravatar)</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email"
+                                   value="{{ app.user.email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="oldPassword">Ancien mot de passe</label>
+                            <input type="password" class="form-control" id="oldPassword" placeholder="Old password">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Nouveau mot de passe</label>
+                            <input type="password" class="form-control" id="newPassword" placeholder="New password">
+                        </div>
+                        <div class="form-group">
+                            <label for="repeatPassword">Confirmer</label>
+                            <input type="password" class="form-control" id="repeatPassword"
+                                   placeholder="Repeat password">
+                        </div>
+                        <div class="form-group">
+                            <label for="gobalposition">Position</label>
+                            <select type="text" class="form-control" id="gobalposition">
+                                <option value="Avant" {% if app.user.position == 'Avant' %} selected="selected" {% endif %}>Avant</option>
+                                <option value="Arriere" {% if app.user.position == 'Arriere' %} selected="selected" {% endif %}>Arrière</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                        <input type="submit" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
 
-		{% javascripts '@BabyStatBundle/Resources/public/js/*' %}
-		<script type="text/javascript" src="{{ asset('js/vendor/jquery-1.10.1.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/highcharts.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/chosen.jquery.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/select2.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/vendor/select2_locale_fr.js') }}"></script>
-		<script type="text/javascript" src="{{ asset_url }}"></script>
-		{% endjavascripts %}
-	</body>
+<div class="container" id="footercontainer">
+    <footer>
+        <p>&copy; <b>Guillaume Coste</b> - {{ "now" | date('Y') }}</p>
+    </footer>
+</div>
+
+{% javascripts '@BabyStatBundle/Resources/public/js/*' %}
+<script type="text/javascript" src="{{ asset('js/vendor/jquery-1.10.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/highcharts.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/picker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/picker.date.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/chosen.jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor/select2_locale_fr.js') }}"></script>
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+</body>
 </html>
