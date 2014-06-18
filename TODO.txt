@@ -1,0 +1,14 @@
+* Page comparatif :
+    - Comparer les stats de deux joueurs, avec coloration rouge/vert en fonction du meilleur
+    - Nombre de parties jouées ensemble, et contre
+    - Taux de victoires/defaites
+
+* Intégrer matchmaker dans planification
+    - Tri des joueurs par équipe si nombre = 4
+
+* Renseignement de partie depuis la planification
+    - Via un bouton, accéder au formulaire d'ajout de partie avec les champs pré-remplis
+
+* "Widget" planification sur la page d'accueil
+    - Affichage des parties à venir dans un tableau
+
