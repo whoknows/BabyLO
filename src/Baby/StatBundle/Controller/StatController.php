@@ -8,313 +8,313 @@ use Symfony\Component\HttpFoundation\Response;
 class StatController extends Controller
 {
 
-	public function indexAction()
-	{
-		$em = $this->getDoctrine()->getManager();
-		return $this->render('BabyStatBundle:Stat:index.html.twig', array(
-					'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
-					'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(4),
-					'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
-		));
-	}
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
-	public function playerAction()
-	{
-		return $this->render('BabyStatBundle:Stat:player.html.twig', array(
-					'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayerList(null, true),
-		));
-	}
+        return $this->render('BabyStatBundle:Stat:index.html.twig', array(
+            'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
+            'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(4),
+            'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
+        ));
+    }
 
-	public function playerstatAction()
-	{
-		return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
-					'user' => $this->getUser()->getUsername(),
-					'stat' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($this->getUser()->getId(), false)
-		));
-	}
+    public function playerAction()
+    {
+        return $this->render('BabyStatBundle:Stat:player.html.twig', array(
+            'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayerList(null, true),
+        ));
+    }
 
-	public function playerstatgraphAction()
-	{
-		$function = 'get' . strtoupper($this->getRequest()->get('action'));
-		$agregate = $this->getRequest()->get('agregate', 0);
+    public function playerstatAction()
+    {
+        return $this->render('BabyStatBundle:Stat:playerstat.html.twig', array(
+            'user' => $this->getUser()->getUsername(),
+            'stat' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getAllStats($this->getUser()->getId(), false)
+        ));
+    }
 
-		$data = array(
-			'date' => array(),
-			'data' => array()
-		);
+    public function playerstatgraphAction()
+    {
+        $function = 'get' . strtoupper($this->getRequest()->get('action'));
+        $agregate = $this->getRequest()->get('agregate', 0);
 
-		foreach ($this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->$function($this->getUser()->getId()) as $row) {
-			$data['date'][] = $row['date']->format('d-m-Y');
-			if($agregate == 1){
-				$prevVal = isset($data['data'][sizeof($data['data'])-1]) ? $data['data'][sizeof($data['data'])-1] : 0;
-				$data['data'][] = $prevVal + intval($row['ct']);
-			} else {
-				$data['data'][] = intval($row['ct']);
-			}
-		}
+        $data = array(
+            'date' => array(),
+            'data' => array()
+        );
 
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');
+        foreach ($this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->$function($this->getUser()->getId()) as $row) {
+            $data['date'][] = $row['date']->format('d-m-Y');
+            if ($agregate == 1) {
+                $prevVal = isset($data['data'][sizeof($data['data']) - 1]) ? $data['data'][sizeof($data['data']) - 1] : 0;
+                $data['data'][] = $prevVal + intval($row['ct']);
+            } else {
+                $data['data'][] = intval($row['ct']);
+            }
+        }
 
-		return $response;
-	}
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
 
-	public function morestatAction()
-	{
-		$id = $this->getRequest()->get('playerId');
-		$dt = $this->getRequest()->get('date', 'now');
-		$ag = $this->getRequest()->get('aggregate', 0);
+        return $response;
+    }
 
-		$usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+    public function morestatAction()
+    {
+        $id = $this->getRequest()->get('playerId');
+        $dt = $this->getRequest()->get('date', 'now');
+        $ag = $this->getRequest()->get('aggregate', 0);
 
-		$response = new Response(json_encode(array(
-					'graph' => $usr->getPlayerData($id, $dt, $ag),
-					'stats' => $usr->getAllStats($id, true, $dt)
-		)));
+        $usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
-		$response->headers->set('Content-Type', 'application/json');
+        $response = new Response(json_encode(array(
+            'graph' => $usr->getPlayerData($id, $dt, $ag),
+            'stats' => $usr->getAllStats($id, true, $dt)
+        )));
 
-		return $response;
-	}
+        $response->headers->set('Content-Type', 'application/json');
 
-	public function gameAction()
-	{
-		$filters = array(
-			"date" => $this->getRequest()->get('date', date('d-m-Y')),
-			"player" => $this->getRequest()->get('joueur', NULL),
-		);
+        return $response;
+    }
 
-		if ($filters["player"] == "") {
-			$filters["player"] = NULL;
-		}
+    public function gameAction()
+    {
+        $filters = array(
+            "date" => $this->getRequest()->get('date', date('d-m-Y')),
+            "player" => $this->getRequest()->get('joueur', null),
+        );
 
-		return $this->render('BabyStatBundle:Stat:game.html.twig', array(
-					'games' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameList(null, $filters),
-					'date' => $filters['date'],
-					'player' => $filters['player'],
-		));
-	}
+        if ($filters["player"] == "") {
+            $filters["player"] = null;
+        }
 
-	public function scheduleAction()
-	{
-		$em = $this->getDoctrine()->getManager();
+        return $this->render('BabyStatBundle:Stat:game.html.twig', array(
+            'games' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameList(null, $filters),
+            'date' => $filters['date'],
+            'player' => $filters['player'],
+        ));
+    }
 
-		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+    public function scheduleAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
-		$tmp = $em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
+        $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
-		$data = array();
+        $tmp = $em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
 
-		foreach ($tmp as $osef) {
-			$data[] = array(
-				'id' => $osef->getId(),
-				'creneau' => $osef->getCreneau(),
-				'player' => array(
-					'id' => $osef->getIdPlayer()->getId(),
-					'username' => $osef->getIdPlayer()->getUsername(),
-					'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
-				)
-			);
-		}
+        $data = array();
 
-		return $this->render('BabyStatBundle:Stat:schedule.html.twig', array(
-					'data' => $data,
-		));
-	}
+        foreach ($tmp as $osef) {
+            $data[] = array(
+                'id' => $osef->getId(),
+                'creneau' => $osef->getCreneau(),
+                'player' => array(
+                    'id' => $osef->getIdPlayer()->getId(),
+                    'username' => $osef->getIdPlayer()->getUsername(),
+                    'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
+                )
+            );
+        }
 
-	public function changeScheduleAction()
-	{
-		$em = $this->getDoctrine()->getManager();
+        return $this->render('BabyStatBundle:Stat:schedule.html.twig', array(
+            'data' => $data,
+        ));
+    }
 
-		$data = array();
+    public function changeScheduleAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
-		$request = $this->getRequest();
+        $data = array();
 
-		$id = $request->get('id');
+        $request = $this->getRequest();
 
-		if($id === null) {
-			$schedule = new \Baby\StatBundle\Entity\BabySchedule();
-			$schedule->setDate(new \DateTime(date('Y-m-d')));
-			$schedule->setCreneau($request->get('creneau'));
-			$schedule->setIdPlayer($this->getUser());
-			$em->persist($schedule);
-			$em->flush();
+        $id = $request->get('id');
 
-			$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+        if ($id === null) {
+            $schedule = new \Baby\StatBundle\Entity\BabySchedule();
+            $schedule->setDate(new \DateTime(date('Y-m-d')));
+            $schedule->setCreneau($request->get('creneau'));
+            $schedule->setIdPlayer($this->getUser());
+            $em->persist($schedule);
+            $em->flush();
 
-			$data = array(
-				'id' => $schedule->getId(),
-				'img' => $userEnt::getGravatar($this->getUser()->getEmail()),
-				'username' => $this->getUser()->getUsername()
-			);
-		} else {
-			$schedule = $em->getRepository('BabyStatBundle:BabySchedule')->find($id);
-			$em->remove($schedule);
-			$em->flush();
-		}
+            $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');
+            $data = array(
+                'id' => $schedule->getId(),
+                'img' => $userEnt::getGravatar($this->getUser()->getEmail()),
+                'username' => $this->getUser()->getUsername()
+            );
+        } else {
+            $schedule = $em->getRepository('BabyStatBundle:BabySchedule')->find($id);
+            $em->remove($schedule);
+            $em->flush();
+        }
 
-		return $response;
-	}
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
 
-	public function nbgameAction()
-	{
-		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameCount()));
-		$response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
-		return $response;
-	}
+    public function nbgameAction()
+    {
+        $response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->getGameCount()));
+        $response->headers->set('Content-Type', 'application/json');
 
-	public function addgameAction()
-	{
-		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
-		$players = array();
+        return $response;
+    }
 
-		foreach($userEnt->getStandardUserList() as &$player) {
-			$players[] = array(
-				'id' => $player->getId(),
-				'img' => $userEnt::getGravatar($player->getEmail()),
-				'name' => $player->getUsername(),
-				'position' => $player->getPosition()
-			);
-		}
+    public function addgameAction()
+    {
+        $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+        $players = array();
 
-		return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-					'players' => $players
-		));
-	}
+        foreach ($userEnt->getStandardUserList() as &$player) {
+            $players[] = array(
+                'id' => $player->getId(),
+                'img' => $userEnt::getGravatar($player->getEmail()),
+                'name' => $player->getUsername(),
+                'position' => $player->getPosition()
+            );
+        }
 
-	public function savegameAction()
-	{
-		$request = $this->getRequest();
+        return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
+            'players' => $players
+        ));
+    }
 
-		$em = $this->getDoctrine()->getManager();
+    public function savegameAction()
+    {
+        $request = $this->getRequest();
 
-		try {
-			$game = new \Baby\StatBundle\Entity\BabyGame();
-			$game->setDate(new \DateTime($request->get('date')));
-			$game->setScoreTeam1($request->get('score1'));
-			$game->setScoreTeam2($request->get('score2'));
+        $em = $this->getDoctrine()->getManager();
 
-			$em->persist($game);
-			$em->flush();
-			for ($i = 1; $i <= 2; $i++) {
-				for ($j = 1; $j <= 2; $j++) {
-					$played = new \Baby\StatBundle\Entity\BabyPlayed();
-					$played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
-					$played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->get('joueur' . $j . 'equipe' . $i)));
-					$played->setTeam($i);
-					$em->persist($played);
-					$em->flush();
-				}
-			}
-		} catch (\Exception $e) {
-			return new Response($e->getMessage());
-		}
+        try {
+            $game = new \Baby\StatBundle\Entity\BabyGame();
+            $game->setDate(new \DateTime($request->get('date')));
+            $game->setScoreTeam1($request->get('score1'));
+            $game->setScoreTeam2($request->get('score2'));
 
-		return new Response('ok');
-	}
+            $em->persist($game);
+            $em->flush();
+            for ($i = 1; $i <= 2; $i++) {
+                for ($j = 1; $j <= 2; $j++) {
+                    $played = new \Baby\StatBundle\Entity\BabyPlayed();
+                    $played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
+                    $played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->get('joueur' . $j . 'equipe' . $i)));
+                    $played->setTeam($i);
+                    $em->persist($played);
+                    $em->flush();
+                }
+            }
+        } catch (\Exception $e) {
+            return new Response($e->getMessage());
+        }
 
-	public function delgameAction()
-	{
-		$em = $this->getDoctrine()->getManager();
-		$id = $this->getRequest()->get('id');
+        return new Response('ok');
+    }
 
-		$game = $em->getRepository('BabyStatBundle:BabyGame')->find($id);
+    public function delgameAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $this->getRequest()->get('id');
 
-		$played = $em->getRepository('BabyStatBundle:BabyPlayed')->findBy(array('idGame' => $id));
+        $game = $em->getRepository('BabyStatBundle:BabyGame')->find($id);
 
-		foreach ($played as $p) {
-			$em->remove($p);
-			$em->flush();
-		}
+        $played = $em->getRepository('BabyStatBundle:BabyPlayed')->findBy(array('idGame' => $id));
 
-		$em->remove($game);
-		$em->flush();
+        foreach ($played as $p) {
+            $em->remove($p);
+            $em->flush();
+        }
 
-		return new Response('ok');
-	}
+        $em->remove($game);
+        $em->flush();
 
-	public function matchmakerAction()
-	{
-		$userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
-		$players = array();
+        return new Response('ok');
+    }
 
-		foreach($userEnt->getStandardUserList() as &$player) {
-			$players[] = array(
-				'id' => $player->getId(),
-				'img' => $userEnt::getGravatar($player->getEmail()),
-				'username' => $player->getUsername(),
-			);
-		}
+    public function matchmakerAction()
+    {
+        $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
+        $players = array();
 
-		return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
-					'players' => $players,
-		));
-	}
+        foreach ($userEnt->getStandardUserList() as &$player) {
+            $players[] = array(
+                'id' => $player->getId(),
+                'img' => $userEnt::getGravatar($player->getEmail()),
+                'username' => $player->getUsername(),
+            );
+        }
 
-	public function matchmakingAction()
-	{
-		$players = $this->getRequest()->get('ids', array());
+        return $this->render('BabyStatBundle:Stat:matchmaker.html.twig', array(
+            'players' => $players,
+        ));
+    }
 
-		$response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->matchMaking($players)));
-		$response->headers->set('Content-Type', 'application/json');
+    public function matchmakingAction()
+    {
+        $players = $this->getRequest()->get('ids', array());
 
-		return $response;
-	}
+        $response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->matchMaking($players)));
+        $response->headers->set('Content-Type', 'application/json');
 
-	public function useradminAction()
-	{
-		$em = $this->getDoctrine()->getManager();
+        return $response;
+    }
 
-		return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
-					'users' => $em->getRepository('BabyUserBundle:User')->getStandardUserList(-1),
-					'roles' => $em->getRepository('BabyUserBundle:Role')->findAll()
-		));
-	}
+    public function useradminAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
-	public function saveuserAction()
-	{
-		$userData = array(
-			'id' => $this->getRequest()->get('id', NULL),
-			'enabled' => $this->getRequest()->get('enabled', 0),
-			'position' => $this->getRequest()->get('position', 'Avant'),
-			'roles' => $this->getRequest()->get('roles', array()),
-			'username' => $this->getRequest()->get('username', NULL),
-			'password' => $this->getRequest()->get('password', 'secret'),
-			'email' => $this->getRequest()->get('email', NULL),
-		);
+        return $this->render('BabyStatBundle:Stat:useradmin.html.twig', array(
+            'users' => $em->getRepository('BabyUserBundle:User')->getStandardUserList(-1),
+            'roles' => $em->getRepository('BabyUserBundle:Role')->findAll()
+        ));
+    }
 
-		$em = $this->getDoctrine()->getManager();
+    public function saveuserAction()
+    {
+        $userData = array(
+            'id' => $this->getRequest()->get('id', null),
+            'enabled' => $this->getRequest()->get('enabled', 0),
+            'position' => $this->getRequest()->get('position', 'Avant'),
+            'roles' => $this->getRequest()->get('roles', array()),
+            'username' => $this->getRequest()->get('username', null),
+            'password' => $this->getRequest()->get('password', 'secret'),
+            'email' => $this->getRequest()->get('email', null),
+        );
 
-		if ($userData['id'] === NULL) {
-			$pl = new \Baby\UserBundle\Entity\User();
-			$pl->setUsername($userData['username']);
-			$pl->setPassword(hash('sha512', $userData['password']));
-			$pl->setSalt('');
-		} else {
-			$pl = $em->getRepository('BabyUserBundle:User')->find($userData['id']);
-		}
+        $em = $this->getDoctrine()->getManager();
 
-		$pl->setEnabled($userData['enabled']);
-		$pl->setPosition($userData['position']);
-		$pl->setEmail($userData['email']);
-		$pl->removeAllRoles();
+        if ($userData['id'] === null) {
+            $pl = new \Baby\UserBundle\Entity\User();
+            $pl->setUsername($userData['username']);
+            $pl->setPassword(hash('sha512', $userData['password']));
+            $pl->setSalt('');
+        } else {
+            $pl = $em->getRepository('BabyUserBundle:User')->find($userData['id']);
+        }
 
-		foreach ($userData['roles'] as $rid) {
-			$rl = $em->getRepository('BabyUserBundle:Role')->find($rid);
-			$pl->addRole($rl);
-		}
+        $pl->setEnabled($userData['enabled']);
+        $pl->setPosition($userData['position']);
+        $pl->setEmail($userData['email']);
+        $pl->removeAllRoles();
 
-		if ($userData['id'] === NULL) {
-			$em->persist($pl);
-		}
+        foreach ($userData['roles'] as $rid) {
+            $rl = $em->getRepository('BabyUserBundle:Role')->find($rid);
+            $pl->addRole($rl);
+        }
 
-		$em->flush();
+        if ($userData['id'] === null) {
+            $em->persist($pl);
+        }
 
-		return new Response('OK');
-	}
+        $em->flush();
 
+        return new Response('OK');
+    }
 }

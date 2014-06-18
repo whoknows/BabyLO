@@ -45,7 +45,6 @@ class BabySchedule
      */
     private $idPlayer;
 
-
     /**
      * Get id
      *

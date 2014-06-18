@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BabyGameType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -17,8 +17,7 @@ class BabyGameType extends AbstractType
         $builder
             ->add('date')
             ->add('scoreTeam1')
-            ->add('scoreTeam2')
-        ;
+            ->add('scoreTeam2');
     }
 
     /**
