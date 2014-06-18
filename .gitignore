@@ -5,3 +5,4 @@ composer.lock
 /web/bower_components/*
 .htaccess
 /nbproject
+/.idea
