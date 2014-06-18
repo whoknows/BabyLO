@@ -124,12 +124,12 @@ class BabyGameRepository extends EntityRepository
         foreach ($players as $p) {
             $tmp = $ple->getPlayerData($p, 'now', 0);
             $pdata[] = array(
-                'ratio' => round(array_sum($tmp['ratio']) / sizeof($tmp['ratio']), 2),
+                'score' => round(array_sum($tmp['score']) / sizeof($tmp['score']), 2),
                 'id' => $p
             );
         }
 
-        $ple::aasort($pdata, 'ratio');
+        $ple::aasort($pdata, 'score');
 
         $pdata = array_values($pdata);
 

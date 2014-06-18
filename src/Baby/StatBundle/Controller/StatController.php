@@ -4,6 +4,8 @@ namespace Baby\StatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use \Baby\StatBundle\Entity;
 
 class StatController extends Controller
 {
@@ -36,8 +38,9 @@ class StatController extends Controller
 
     public function playerstatgraphAction()
     {
-        $function = 'get' . strtoupper($this->getRequest()->get('action'));
-        $agregate = $this->getRequest()->get('agregate', 0);
+        $request = Request::createFromGlobals();
+        $function = 'get' . strtoupper($request->request->get('action'));
+        $agregate = $request->request->get('agregate', 0);
 
         $data = array(
             'date' => array(),
@@ -62,10 +65,11 @@ class StatController extends Controller
 
     public function morestatAction()
     {
-        $request = $this->getRequest();
-        $id = $request->get('playerId');
-        $dt = $request->get('date', 'now');
-        $ag = $request->get('aggregate', 0);
+        $request = Request::createFromGlobals();
+
+        $id = $request->request->get('playerId');
+        $dt = $request->request->get('date', 'now');
+        $ag = $request->request->get('aggregate', 0);
 
         $usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
@@ -81,9 +85,10 @@ class StatController extends Controller
 
     public function gameAction()
     {
+        $request = Request::createFromGlobals();
         $filters = array(
-            "date" => $this->getRequest()->get('date', date('d-m-Y')),
-            "player" => $this->getRequest()->get('joueur', null),
+            "date" => $request->request->get('date', date('d-m-Y')),
+            "player" => $request->request->get('joueur', null),
         );
 
         if ($filters["player"] == "") {
@@ -130,14 +135,14 @@ class StatController extends Controller
 
         $data = array();
 
-        $request = $this->getRequest();
+        $request = Request::createFromGlobals();
 
-        $id = $request->get('id');
+        $id = $request->request->get('id');
 
         if ($id === null) {
-            $schedule = new \Baby\StatBundle\Entity\BabySchedule();
+            $schedule = new Entity\BabySchedule();
             $schedule->setDate(new \DateTime(date('Y-m-d')));
-            $schedule->setCreneau($request->get('creneau'));
+            $schedule->setCreneau($request->request->get('creneau'));
             $schedule->setIdPlayer($this->getUser());
             $em->persist($schedule);
             $em->flush();
@@ -190,23 +195,23 @@ class StatController extends Controller
 
     public function savegameAction()
     {
-        $request = $this->getRequest();
+        $request = Request::createFromGlobals();
 
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $game = new \Baby\StatBundle\Entity\BabyGame();
-            $game->setDate(new \DateTime($request->get('date')));
-            $game->setScoreTeam1($request->get('score1'));
-            $game->setScoreTeam2($request->get('score2'));
+            $game = new Entity\BabyGame();
+            $game->setDate(new \DateTime($request->request->get('date')));
+            $game->setScoreTeam1($request->request->get('score1'));
+            $game->setScoreTeam2($request->request->get('score2'));
 
             $em->persist($game);
             $em->flush();
             for ($i = 1; $i <= 2; $i++) {
                 for ($j = 1; $j <= 2; $j++) {
-                    $played = new \Baby\StatBundle\Entity\BabyPlayed();
+                    $played = new Entity\BabyPlayed();
                     $played->setIdGame($em->getRepository('BabyStatBundle:BabyGame')->find($game->getId()));
-                    $played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->get('joueur' . $j . 'equipe' . $i)));
+                    $played->setIdPlayer($em->getRepository('BabyUserBundle:User')->find($request->request->get('joueur' . $j . 'equipe' . $i)));
                     $played->setTeam($i);
                     $em->persist($played);
                     $em->flush();
@@ -222,7 +227,7 @@ class StatController extends Controller
     public function delgameAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $id = $this->getRequest()->get('id');
+        $id = Request::createFromGlobals()->request->get('id');
 
         $game = $em->getRepository('BabyStatBundle:BabyGame')->find($id);
 
@@ -259,7 +264,7 @@ class StatController extends Controller
 
     public function matchmakingAction()
     {
-        $players = $this->getRequest()->get('ids', array());
+        $players = Request::createFromGlobals()->request->get('ids', array());
 
         $response = new Response(json_encode($this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabyGame')->matchMaking($players)));
         $response->headers->set('Content-Type', 'application/json');
