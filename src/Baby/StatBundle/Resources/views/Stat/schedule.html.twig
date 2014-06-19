@@ -11,12 +11,12 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="row-fluid">
-                    {% for i in 15..16 %}
-                        {% for j in 0..3 %}
-                            {% set creneau = i * 100 +  j * 15 %}
-                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 creneau">
+                    {% for i in 15..17 %}
+                        {% for j in 0..2 %}
+                            {% set creneau = (i * 100) +  (j * 20) + 10 %}
+                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 creneau">
                                 <div class="game-title">
-                                    <h3>{{ i }}h{% if j == 0 %}00{% else %}{{ j * 15 }}{% endif %}</h3>
+                                    <h3>{{ i }}h{% if j == 0 %}10{% else %}{{ j * 20 + 10 }}{% endif %}</h3>
                                 </div>
                                 <div class="game-players list-group">
                                     {% set cpt = 0 %}
