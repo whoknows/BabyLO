@@ -419,7 +419,7 @@ class UserRepository extends EntityRepository
                 $data['nbButTakenAvg'] = 0;
                 $data['nbButScoredAvg'] = 0;
             } else {
-                $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], $periode);
+                $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], ($filter ? $periode : 'all'));
                 $data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
                 $data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
             }
