@@ -9,9 +9,6 @@
 * Renseignement de partie depuis la planification
     - Via un bouton, accéder au formulaire d'ajout de partie avec les champs pré-remplis
 
-* "Widget" planification sur la page d'accueil
-    - Affichage des parties à venir dans un tableau
-
 * Système de recherche avancée des parties
     - Pouvoir rechercher une partie en fonction des équipes
 
