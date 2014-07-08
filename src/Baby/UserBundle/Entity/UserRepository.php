@@ -439,8 +439,8 @@ class UserRepository extends EntityRepository
 
         if ($periode != 'all') {
             $query->setParameters(array(
-                'start' => new \Datetime(date('Y-m-01')),
-                'stop' => new \Datetime(date('Y-m-t'))
+                'start' => new \Datetime(date('Y-m-01', strtotime($periode))),
+                'stop' => new \Datetime(date('Y-m-t', strtotime($periode)))
             ));
         }
 
