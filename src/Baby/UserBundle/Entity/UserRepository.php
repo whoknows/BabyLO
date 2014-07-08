@@ -98,7 +98,7 @@ class UserRepository extends EntityRepository
 
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
-            $p['ratio'] = $this->calculRatio($nb, $p['victoires'], true, true);
+            $p['ratio'] = $this->calculRatio($nb, $p['victoires'], 'now', true);
             $p['score'] = $this->calculRatio($nb, $p['victoires']);
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
@@ -132,7 +132,7 @@ class UserRepository extends EntityRepository
 
         foreach ($query->getResult() as $p) {
             $nb = $p['victoires'] + $p['defaites'];
-            $p['score'] = $this->calculRatio($nb, $p['victoires'], false);
+            $p['score'] = $this->calculRatio($nb, $p['victoires'], 'all');
             $players[$p['id']] = array_merge($players[$p['id']], $p);
         }
 
@@ -193,7 +193,7 @@ class UserRepository extends EntityRepository
                 $data['score'][] = $this->calculRatio(
                     intval($data['victoires'][sizeof($data['victoires']) - 1]) + intval($data['defaites'][sizeof($data['defaites']) - 1]),
                     intval($data['victoires'][sizeof($data['victoires']) - 1]),
-                    $dt != 'all'
+                    $dt
                 );
             } else {
                 $data['victoires'][] = intval($d['victoires']);
@@ -201,7 +201,7 @@ class UserRepository extends EntityRepository
                 $data['score'][] = $this->calculRatio(
                     intval($d['victoires']) + intval($d['defaites']),
                     intval($d['victoires']),
-                    false
+                    $dt
                 );
             }
         }
@@ -419,7 +419,7 @@ class UserRepository extends EntityRepository
                 $data['nbButTakenAvg'] = 0;
                 $data['nbButScoredAvg'] = 0;
             } else {
-                $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], $periode != 'all');
+                $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], $periode);
                 $data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
                 $data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
             }
@@ -428,17 +428,20 @@ class UserRepository extends EntityRepository
         return $data;
     }
 
-    public function calculRatio($parties, $victoires, $currentMonth = true, $onlyRatio = false)
+    public function calculRatio($parties, $victoires, $periode = 'now', $onlyRatio = false)
     {
         $dql = "SELECT COUNT(g.id) as total FROM BabyStatBundle:BabyGame g";
-        if ($currentMonth) {
-            $dql .= " WHERE g.date >= :date";
+        if ($periode != 'all') {
+            $dql .= " WHERE g.date BETWEEN :start AND :stop";
         }
 
         $query = $this->_em->createQuery($dql);
 
-        if ($currentMonth) {
-            $query->setParameter('date', new \Datetime(date('Y-m-01')));
+        if ($periode != 'all') {
+            $query->setParameters(array(
+                'start' => new \Datetime(date('Y-m-01')),
+                'stop' => new \Datetime(date('Y-m-t'))
+            ));
         }
 
         $total = $query->getResult();
