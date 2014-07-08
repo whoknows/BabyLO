@@ -18,6 +18,8 @@ class StatController extends Controller
             'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
             'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(4),
             'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
+            'comming' => array_slice($em->getRepository('BabyStatBundle:BabySchedule')->getComingGames(true), 0, 3, true),
+            'nbgames' => $em->getRepository('BabyStatBundle:BabyGame')->findBy(array('date' => new \DateTime(date('Y-m-d', strtotime('yesterday')))))
         ));
     }
 
@@ -104,28 +106,8 @@ class StatController extends Controller
 
     public function scheduleAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
-
-        $tmp = $em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
-
-        $data = array();
-
-        foreach ($tmp as $osef) {
-            $data[] = array(
-                'id' => $osef->getId(),
-                'creneau' => $osef->getCreneau(),
-                'player' => array(
-                    'id' => $osef->getIdPlayer()->getId(),
-                    'username' => $osef->getIdPlayer()->getUsername(),
-                    'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
-                )
-            );
-        }
-
         return $this->render('BabyStatBundle:Stat:schedule.html.twig', array(
-            'data' => $data,
+            'data' => $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabySchedule')->getComingGames(),
         ));
     }
 

@@ -14,3 +14,11 @@
 
 * Système de recherche avancée des parties
     - Pouvoir rechercher une partie en fonction des équipes
+
+* Système d'achievements
+    - Débloquer des achievements en jouant
+        . Jouer 1 parties avec Joon
+        . Gagner une partie fanny
+        . Jouer X parties (10,25,50,100,200)
+        . Jouer X partis avec chaque joueur actif (1,5,10)
+        . Perdre avec un écart de plus de 7 points.

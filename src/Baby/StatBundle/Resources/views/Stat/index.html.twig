@@ -4,16 +4,9 @@
 
 {% block body %}
     <div class="jumbotron">
-        <div class="container">
-            <h1>BabyLO</h1>
-
-            <p>
-                Gardez le contrôle de vos statistiques babyfoot grace à BabyLO.<br/>
-                <span class="text-info">Chaque mois les stats sont remises à zéro, le plus mauvais joueur du mois paye les chocos !</span><br/>
-            </p>
-
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6 col-xs-12 col-lg-6 col-sm-12">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <h3>Stats d'hier</h3>
                 </div>
                 <div class="col-md-6 col-xs-12 col-lg-6 col-sm-12">
@@ -21,26 +14,32 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
                     <div class="alert alert-success" data-toggle="tooltip" data-placement="top"
                          title="{{ tops.best.ct }} parties gagnées">
                         Plus de victoires : <b>{{ tops.best.name }}</b>
                     </div>
                 </div>
-                <div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
                     <div class="alert alert-danger" data-toggle="tooltip" data-placement="top"
                          title="{{ tops.worst.ct }} parties perdues">
                         Plus de défaites : <b>{{ tops.worst.name }}</b>
                     </div>
                 </div>
-                <div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                    <div class="alert alert-info" data-toggle="tooltip" data-placement="top"
+                         title="{{ nbgames|length }} parties jouées">
+                        Nombre de parties jouées : <b>{{ nbgames|length }}</b>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
                     <div class="alert alert-warning" data-toggle="tooltip" data-placement="top"
                          title="{{ tops.nextchoco.ratio }} de ratio">
                         <b>{{ tops.nextchoco.name }}</b> est dernier au classement !
                     </div>
                 </div>
-                <div class="col-md-3 col-xs-6 col-lg-3 col-sm-6">
-                    <div class="alert alert-info" data-toggle="tooltip" data-placement="top"
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                    <div class="alert alert-danger" data-toggle="tooltip" data-placement="top"
                          title="{{ tops.buts.ct }} buts pris par parties">
                         <b>{{ tops.buts.name }}</b> prend le plus de buts.
                     </div>
@@ -48,7 +47,37 @@
             </div>
 
             <div class="row">
-                <div class="col-md-7 col-xs-12 col-lg-7 col-sm-12">
+                <div class="col-lg-4 col-md-7 col-xs-12 col-sm-12">
+                    <h3>Prochaines parties</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Créneau</th>
+                            <th colspan="4">Joueurs</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set nbplanif = 0 %}
+                        {% for index, game in comming if index >= "now"|date('Hi') %}
+                            {% set nbplanif = nbplanif +1 %}
+                            <tr>
+                                <td><b>{{ game.creneau }}</b></td>
+                                <td colspan="4" class="go-left">
+                                    {% for player in game.players %}
+                                        <span class="creneau-player"><img src="{{ player.img }}" alt="gravatar"/> {{ player.username }}</span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        {% if nbplanif == 0 %}
+                            <tr><td colspan="5"><i>Aucune partie de prévue. C'est le moment d'aller s'inscrire !</i></td></tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                    <p><a class="btn btn-default btn-sm" href="{{ path('babystat_schedule') }}">Voir plus &raquo;</a></p>
+                </div>
+                <div class="col-lg-5 col-md-7 col-xs-12 col-sm-12">
                     <h3>Dernières parties</h3>
                     <table class="table table-bordered">
                         <thead>
@@ -84,7 +113,7 @@
                     </table>
                     <p><a class="btn btn-default btn-sm" href="{{ path('babystat_partie') }}">Voir plus &raquo;</a></p>
                 </div>
-                <div class="col-md-5 col-xs-12 col-lg-5 col-sm-12">
+                <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12">
                     <h3>Top players</h3>
                     <table class="table table-bordered">
                         <thead>

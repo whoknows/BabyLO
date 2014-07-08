@@ -130,3 +130,15 @@ td.player {
 .creneau {
 	border: 1px solid #CCC;
 }
+
+.creneau-player {
+	border: 1px solid #CCC;
+	display:inline-block;
+	margin: 4.5px 2px;
+	padding-right: 3px;
+	width:105px;
+}
+
+.go-left {
+	text-align:left!important;
+}

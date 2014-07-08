@@ -12,4 +12,44 @@ use Doctrine\ORM\EntityRepository;
  */
 class BabyScheduleRepository extends EntityRepository
 {
+    public function getComingGames($aggreg = false)
+    {
+        $rows = $this->_em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
+        $userEnt = $this->_em->getRepository('BabyUserBundle:User');
+        $data = array();
+
+        foreach ($rows as $osef) {
+            $data[] = array(
+                'id' => $osef->getId(),
+                'creneau' => $osef->getCreneau(),
+                'player' => array(
+                    'id' => $osef->getIdPlayer()->getId(),
+                    'username' => $osef->getIdPlayer()->getUsername(),
+                    'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
+                )
+            );
+        }
+
+        if($aggreg) {
+            return $this->aggregateGames($data);
+        } else {
+            return $data;
+        }
+    }
+
+    private function aggregateGames($data)
+    {
+        $return = array();
+
+        foreach($data as $row) {
+            if(!isset($return[$row['creneau']])) {
+                $cr = substr($row['creneau'],0,2).'h'.substr($row['creneau'],2,2);
+                $return[$row['creneau']] = array('creneau' => $cr, 'players' => array());
+            }
+            $return[$row['creneau']]['players'][] = $row['player'];
+        }
+
+        return $return;
+    }
+
 }
