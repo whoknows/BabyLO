@@ -393,7 +393,8 @@ $(document).ready(function () {
             });
             break;
         case '':
-            $('div[data-toggle="tooltip"]').tooltip();
+            $('div[data-toggle="tooltip"], span[data-toggle="tooltip"]').tooltip();
+
             $.post('nbgame', {playerId: $(this).data('id')}, function (pdata) {
                 $('#nbbaby').highcharts({
                     chart: {type: 'column'},
@@ -409,11 +410,27 @@ $(document).ready(function () {
                     },
                     series: [
                         {
-                            name: 'Nombre de parties',
+                            name: '',
                             data: pdata.nb
                         }
                     ], credits: {enabled: false}
                 });
+            });
+
+            $('.participate').click(function(){
+                $(this).hide();
+
+                var $td = $(this).parent();
+                var creneau = $td.data('creneau');
+
+                $.post('changeSchedule', {'creneau': creneau}, function (postData) {
+                    $td.append('<span class="creneau-player creneau-me" data-toggle="tooltip" title="Ne plus participer" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar"/> ' + postData.username + '</span>');
+                });
+            });
+
+            $('.table-creneau').on('click', '.creneau-me', function(){
+                $.post('changeSchedule', {'id': $(this).data('id')});
+                $(this).remove();
             });
             break;
     }

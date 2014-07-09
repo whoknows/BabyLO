@@ -127,6 +127,11 @@ td.player {
 	margin-bottom: 15px;
 }
 
+.top-panels {
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
 .creneau {
 	border: 1px solid #CCC;
 }
@@ -134,11 +139,35 @@ td.player {
 .creneau-player {
 	border: 1px solid #CCC;
 	display:inline-block;
-	margin: 2px;
+	margin: 4.5px 2px;
 	padding-right: 3px;
 	width:105px;
 }
 
+.creneau-me {
+	cursor: pointer;
+}
+
+.creneau-me:hover {
+	background-color: #f2dede;
+}
+
+.participate {
+	margin: 7px 0;
+}
+
 .go-left {
 	text-align:left!important;
+}
+
+.panel-body {
+	padding:0!important;
+}
+
+.panel-body table {
+	margin-bottom: 0!important;
+}
+
+.panel-title a {
+	color:white!important;
 }

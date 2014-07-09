@@ -46,6 +46,7 @@ class BabyScheduleRepository extends EntityRepository
                 $cr = substr($row['creneau'],0,2).'h'.substr($row['creneau'],2,2);
                 $return[$row['creneau']] = array('creneau' => $cr, 'players' => array());
             }
+            $row['player']['creneau_id'] = $row['id'];
             $return[$row['creneau']]['players'][] = $row['player'];
         }
 
