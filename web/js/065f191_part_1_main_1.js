@@ -398,7 +398,7 @@ $(document).ready(function () {
             $.post('nbgame', {playerId: $(this).data('id')}, function (pdata) {
                 $('#nbbaby').highcharts({
                     chart: {type: 'column'},
-                    title: {text: 'Nombre de parties jouées par jours'},
+                    title: false,
                     legend: {enabled: false},
                     xAxis: {
                         categories: pdata.date,
@@ -410,14 +410,14 @@ $(document).ready(function () {
                     },
                     series: [
                         {
-                            name: '',
+                            name: 'Nombre de parties',
                             data: pdata.nb
                         }
                     ], credits: {enabled: false}
                 });
             });
 
-            $('.participate').click(function(){
+            $('.table-creneau').on('click', '.participate', function(){
                 $(this).hide();
 
                 var $td = $(this).parent();
@@ -426,10 +426,9 @@ $(document).ready(function () {
                 $.post('changeSchedule', {'creneau': creneau}, function (postData) {
                     $td.append('<span class="creneau-player creneau-me" data-toggle="tooltip" title="Ne plus participer" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar"/> ' + postData.username + '</span>');
                 });
-            });
-
-            $('.table-creneau').on('click', '.creneau-me', function(){
+            }).on('click', '.creneau-me', function(){
                 $.post('changeSchedule', {'id': $(this).data('id')});
+                $(this).parent().append('<button class="btn btn-success btn-sm pull-right participate">Go !</button>');
                 $(this).remove();
             });
             break;

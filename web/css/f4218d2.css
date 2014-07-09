@@ -128,7 +128,7 @@ td.player {
 }
 
 .top-panels {
-	margin-top:20px;
+	margin-top:40px;
 	margin-bottom:20px;
 }
 
@@ -166,8 +166,4 @@ td.player {
 
 .panel-body table {
 	margin-bottom: 0!important;
-}
-
-.panel-title a {
-	color:white!important;
 }
