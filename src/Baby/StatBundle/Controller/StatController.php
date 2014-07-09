@@ -69,16 +69,24 @@ class StatController extends Controller
     {
         $request = Request::createFromGlobals();
 
-        $id = $request->request->get('playerId');
+        $id = $request->request->get('playerId', $this->getUser()->getId());
         $dt = $request->request->get('date', 'now');
-        $ag = $request->request->get('aggregate', 0);
+        $ag = $request->request->get('aggregate', 1);
+
+        $go = $request->request->get('graphOnly', 0);
 
         $usr = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
 
-        $response = new Response(json_encode(array(
-            'graph' => $usr->getPlayerData($id, $dt, $ag),
-            'stats' => $usr->getAllStats($id, true, $dt)
-        )));
+        if($go == 0) {
+            $response = new Response(json_encode(array(
+                'graph' => $usr->getPlayerData($id, $dt, $ag),
+                'stats' => $usr->getAllStats($id, true, $dt)
+            )));
+        } else {
+            $response = new Response(json_encode(array(
+                'graph' => $usr->getPlayerData($id, $dt, $ag)
+            )));
+        }
 
         $response->headers->set('Content-Type', 'application/json');
 

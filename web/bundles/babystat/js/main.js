@@ -170,59 +170,7 @@ $(document).ready(function () {
                         $('#playername').text($('.player.active').text());
                     }
 
-                    $('#chart1').highcharts({
-                        chart: {zoomType: 'xy'},
-                        credits: {enabled: false},
-                        title: {text: ''},
-                        plotOptions: {
-                            column: {
-                                stacking: 'normal'
-                            }
-                        },
-                        xAxis: {
-                            categories: pdata.graph.dates,
-                            labels: {enabled: false}
-                        },
-                        yAxis: [
-                            {
-                                min: 0,
-                                title: {text: 'Parties jouées'}
-                            },
-                            {
-                                min: 0,
-                                max: 1,
-                                title: {text: 'Score'},
-                                opposite: true
-                            }
-                        ],
-                        series: [
-                            {
-                                yAxis: 0,
-                                name: 'Victoires',
-                                data: pdata.graph.victoires,
-                                type: 'column',
-                                color: '#77b300'
-                            },
-                            {
-                                yAxis: 0,
-                                name: 'Défaites',
-                                data: pdata.graph.defaites,
-                                type: 'column',
-                                color: '#f04124'
-                            },
-                            {
-                                yAxis: 1,
-                                name: 'Score',
-                                data: pdata.graph.score,
-                                type: 'spline',
-                                color: '#2a9fd6'
-                            }
-                        ],
-                        tooltip: {
-                            shared: true,
-                            borderRadius: 0
-                        }
-                    });
+                    doTheChart(pdata);
                 }, 'json');
 
                 $('html, body').animate({
@@ -439,6 +387,34 @@ $(document).ready(function () {
                 $(this).parent().append('<button class="btn btn-success btn-sm pull-right participate">Go !</button>');
                 $(this).remove();
             });
+
+            $.post('morestat', {graphOnly:1}, function (pdata) {
+                doTheChart(pdata);
+            }, 'json');
             break;
+    }
+
+    function doTheChart(pdata)
+    {
+        $('#chart1').highcharts({
+            chart: {zoomType: 'xy'},
+            credits: {enabled: false},
+            title: {text: ''},
+            plotOptions: { column: { stacking: 'normal' }},
+            xAxis: {
+                categories: pdata.graph.dates,
+                labels: {enabled: false}
+            },
+            yAxis: [
+                { min: 0, title: {text: 'Parties jouées'}},
+                { min: 0, max: 1, title: {text: 'Score'}, opposite: true }
+            ],
+            series: [
+                { yAxis: 0, name: 'Victoires', data: pdata.graph.victoires, type: 'column', color: '#77b300' },
+                { yAxis: 0, name: 'Défaites', data: pdata.graph.defaites, type: 'column', color: '#f04124' },
+                { yAxis: 1, name: 'Score', data: pdata.graph.score, type: 'spline', color: '#2a9fd6' }
+            ],
+            tooltip: { shared: true, borderRadius: 0 }
+        });
     }
 });
