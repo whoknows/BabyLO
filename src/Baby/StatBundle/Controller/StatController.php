@@ -113,34 +113,12 @@ class StatController extends Controller
 
     public function changeScheduleAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $data = array();
-
         $request = Request::createFromGlobals();
 
-        $id = $request->request->get('id');
-
-        if ($id === null) {
-            $schedule = new Entity\BabySchedule();
-            $schedule->setDate(new \DateTime(date('Y-m-d')));
-            $schedule->setCreneau($request->request->get('creneau'));
-            $schedule->setIdPlayer($this->getUser());
-            $em->persist($schedule);
-            $em->flush();
-
-            $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
-
-            $data = array(
-                'id' => $schedule->getId(),
-                'img' => $userEnt::getGravatar($this->getUser()->getEmail()),
-                'username' => $this->getUser()->getUsername()
-            );
-        } else {
-            $schedule = $em->getRepository('BabyStatBundle:BabySchedule')->find($id);
-            $em->remove($schedule);
-            $em->flush();
-        }
+        $data = $this->getDoctrine()->getManager()->getRepository('BabyStatBundle:BabySchedule')->changeSchedule(
+            $request->request->get('id'),
+            $request->request->get('creneau'),
+            $this->getUser());
 
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');

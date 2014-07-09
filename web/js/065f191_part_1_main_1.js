@@ -322,8 +322,12 @@ $(document).ready(function () {
                         $listGroup.children('i').addClass('invisible');
                     }
                     $.post('changeSchedule', {'creneau': creneau}, function (postData) {
-                        $listGroup.next().children('.btn-danger').data('id', postData.id);
-                        $listGroup.prepend('<li class="list-group-item" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar" /> ' + postData.username + '</li>');
+                        if (postData.error && postData.error == 'full') {
+                            alert('La partie est déjà pleine');
+                        } else {
+                            $listGroup.next().children('.btn-danger').data('id', postData.id);
+                            $listGroup.prepend('<li class="list-group-item" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar" /> ' + postData.username + '</li>');
+                        }
                     });
                 } else if (typeof creneau === 'undefined') {
                     var $item = $('.list-group-item[data-id=' + id + ']');
@@ -424,7 +428,11 @@ $(document).ready(function () {
                 var creneau = $td.data('creneau');
 
                 $.post('changeSchedule', {'creneau': creneau}, function (postData) {
-                    $td.append('<span class="creneau-player creneau-me" data-toggle="tooltip" title="Ne plus participer" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar"/> ' + postData.username + '</span>');
+                    if (postData.error && postData.error == 'full') {
+                        alert('La partie est déjà pleine');
+                    } else {
+                        $td.append('<span class="creneau-player creneau-me" data-toggle="tooltip" title="Ne plus participer" data-id="' + postData.id + '"><img src="' + postData.img + '" alt="gravatar"/> ' + postData.username + '</span>');
+                    }
                 });
             }).on('click', '.creneau-me', function(){
                 $.post('changeSchedule', {'id': $(this).data('id')});
