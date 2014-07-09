@@ -14,7 +14,7 @@ class BabyScheduleRepository extends EntityRepository
 {
     public function getComingGames($aggreg = false)
     {
-        $rows = $this->_em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))));
+        $rows = $this->_em->getRepository('BabyStatBundle:BabySchedule')->findBy(array('date' => new \DateTime(date('Y-m-d'))), array('creneau' => 'ASC'));
         $userEnt = $this->_em->getRepository('BabyUserBundle:User');
         $data = array();
 
