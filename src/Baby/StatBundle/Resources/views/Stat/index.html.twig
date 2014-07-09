@@ -76,7 +76,7 @@
                             {% endfor %}
 
                             {% if nbplanif == 0 %}
-                                <tr><td colspan="5"><i>Aucune partie de prévue. C'est le moment d'aller s'inscrire !</i></td></tr>
+                                <tr><td colspan="5"><i>Aucune partie de prévue. <a href="{{ path('babystat_schedule') }}">C'est le moment d'aller s'inscrire !</a></i></td></tr>
                             {% endif %}
                             </tbody>
                         </table>
