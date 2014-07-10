@@ -3,66 +3,62 @@
 {% block title %}{{ parent() }} - Statistiques perso{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-
-        <div class="row">
-            <h3>Statistiques</h3>
-
-            <div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
-                <ul class="list-group" id="playerstatstable">
-                    <li class="list-group-item text-primary graphme" data-action="nbGames">
-                        <span class="badge">{{ stat.nbGames }}</span>
-                        Nombre de parties jouées
-                    </li>
-                    <li class="list-group-item text-primary graphme" data-action="nbWin">
-                        <span class="badge">{{ stat.nbWin }}</span>
-                        Nombre de parties gagnées
-                    </li>
-                    <li class="list-group-item text-primary graphme" data-action="nbLose">
-                        <span class="badge">{{ stat.nbLose }}</span>
-                        Nombre de parties perdues
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.score }}</span>
-                        Score
-                    </li>
-                    <li class="list-group-item text-primary graphme" data-action="nbButScored">
-                        <span class="badge">{{ stat.nbButScored }}</span>
-                        Nombre de buts marqués
-                    </li>
-                    <li class="list-group-item text-primary graphme" data-action="nbButTaken">
-                        <span class="badge">{{ stat.nbButTaken }}</span>
-                        Nombre de buts pris
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.nbButScoredAvg }}</span>
-                        Nombre moyen de buts marqués par parties
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.nbButTakenAvg }}</span>
-                        Nombre moyen de buts pris par parties
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.bestOponent }}</span>
-                        Pire ennemi
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.worstOponent }}</span>
-                        Moins bon adversaire
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.bestMate }}</span>
-                        Meilleur partenaire
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">{{ stat.worstMate }}</span>
-                        Pire partenaire
-                    </li>
-                </ul>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                <div id="customchart" style="width:100%; height:400px;"></div>
-            </div>
+    <h3>Statistiques</h3>
+    <div class="row">
+        <div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
+            <ul class="list-group" id="playerstatstable">
+                <li class="list-group-item text-primary graphme" data-action="nbGames">
+                    <span class="badge">{{ stat.nbGames }}</span>
+                    Nombre de parties jouées
+                </li>
+                <li class="list-group-item text-primary graphme" data-action="nbWin">
+                    <span class="badge">{{ stat.nbWin }}</span>
+                    Nombre de parties gagnées
+                </li>
+                <li class="list-group-item text-primary graphme" data-action="nbLose">
+                    <span class="badge">{{ stat.nbLose }}</span>
+                    Nombre de parties perdues
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.score }}</span>
+                    Score
+                </li>
+                <li class="list-group-item text-primary graphme" data-action="nbButScored">
+                    <span class="badge">{{ stat.nbButScored }}</span>
+                    Nombre de buts marqués
+                </li>
+                <li class="list-group-item text-primary graphme" data-action="nbButTaken">
+                    <span class="badge">{{ stat.nbButTaken }}</span>
+                    Nombre de buts pris
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.nbButScoredAvg }}</span>
+                    Nombre moyen de buts marqués par parties
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.nbButTakenAvg }}</span>
+                    Nombre moyen de buts pris par parties
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.bestOponent }}</span>
+                    Pire ennemi
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.worstOponent }}</span>
+                    Moins bon adversaire
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.bestMate }}</span>
+                    Meilleur partenaire
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ stat.worstMate }}</span>
+                    Pire partenaire
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div id="customchart" style="width:100%; height:400px;"></div>
         </div>
     </div>
 {% endblock %}

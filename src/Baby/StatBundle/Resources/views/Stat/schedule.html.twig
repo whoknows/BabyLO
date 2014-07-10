@@ -3,55 +3,52 @@
 {% block title %}{{ parent() }} - Planification{% endblock %}
 
 {% block body %}
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h3>Planification des parties</h3>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="row-fluid">
-                    {% for i in 15..17 %}
-                        {% for j in 0..2 %}
-                            {% set creneau = (i * 100) +  (j * 20) + 10 %}
-                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 creneau">
-                                <div class="game-title">
-                                    <h3>{{ i }}h{% if j == 0 %}10{% else %}{{ j * 20 + 10 }}{% endif %}</h3>
-                                </div>
-                                <div class="game-players list-group">
-                                    {% set cpt = 0 %}
-                                    {% set me = false %}
-                                    {% for d in data %}
-                                        {% if d.creneau == creneau %}
-                                            {% set cpt = cpt + 1 %}
-                                            {% if app.user.id == d.player.id %}
-                                                {% set me = d.id %}
-                                            {% endif %}
-                                            <li class="list-group-item" data-id="{{ d.id }}">
-                                                <img src="{{ d.player.img }}" alt="gravatar"/> {{ d.player.username }}
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    <i {% if cpt != 0 %} class="invisible" {% endif %}>Aucun joueur pour ce créneau.</i>
-                                </div>
-                                <div class="game-actions">
-                                    {% if creneau < "now"|date("Hi") %}
-                                        <i>Le créneau est déjà passé</i>
-                                    {% else %}
-                                        <button class="btn btn-sm btn-danger do-action-schedule{% if me != false %} {% else %} hidden {% endif %}"
-                                                data-id="{{ me }}">Je ne participe plus
-                                        </button>
-                                        <button class="btn btn-sm btn-success do-action-schedule{% if me == false and cpt < 4 %} {% else %} hidden {% endif %}"
-                                                data-creneau="{{ creneau }}">Je participe
-                                        </button>
-                                        <i {% if cpt == 4 and me == false %} {% else %} class="hidden" {% endif %}>Le créneau est déjà complet.</i>
-                                    {% endif %}
-                                </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3>Planification des parties</h3>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="row-fluid">
+                {% for i in 15..17 %}
+                    {% for j in 0..2 %}
+                        {% set creneau = (i * 100) +  (j * 20) + 10 %}
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 creneau">
+                            <div class="game-title">
+                                <h3>{{ i }}h{% if j == 0 %}10{% else %}{{ j * 20 + 10 }}{% endif %}</h3>
                             </div>
-                        {% endfor %}
+                            <div class="game-players list-group">
+                                {% set cpt = 0 %}
+                                {% set me = false %}
+                                {% for d in data %}
+                                    {% if d.creneau == creneau %}
+                                        {% set cpt = cpt + 1 %}
+                                        {% if app.user.id == d.player.id %}
+                                            {% set me = d.id %}
+                                        {% endif %}
+                                        <li class="list-group-item" data-id="{{ d.id }}">
+                                            <img src="{{ d.player.img }}" alt="gravatar"/> {{ d.player.username }}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <i {% if cpt != 0 %} class="invisible" {% endif %}>Aucun joueur pour ce créneau.</i>
+                            </div>
+                            <div class="game-actions">
+                                {% if creneau < "now"|date("Hi") %}
+                                    <i>Le créneau est déjà passé</i>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger do-action-schedule{% if me != false %} {% else %} hidden {% endif %}"
+                                            data-id="{{ me }}">Je ne participe plus
+                                    </button>
+                                    <button class="btn btn-sm btn-success do-action-schedule{% if me == false and cpt < 4 %} {% else %} hidden {% endif %}"
+                                            data-creneau="{{ creneau }}">Je participe
+                                    </button>
+                                    <i {% if cpt == 4 and me == false %} {% else %} class="hidden" {% endif %}>Le créneau est déjà complet.</i>
+                                {% endif %}
+                            </div>
+                        </div>
                     {% endfor %}
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

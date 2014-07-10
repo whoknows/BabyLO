@@ -3,39 +3,37 @@
 {% block title %}{{ parent() }} - Match Maker{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <h3>Match Making</h3>
+    <h3>Match Making</h3>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <h4>Joueurs disponibles</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <h4>Joueurs disponibles</h4>
 
-                <div class="list-group">
-                    {% for player in players %}
-                        <a href="javascript:void(0)" data-id="{{ player.id }}"
-                           class="list-group-item clickme-player"><img src="{{ player.img }}"
-                                                                       alt="gravatar"/> {{ player.username | capitalize }}
-                        </a>
-                    {% endfor %}
-                </div>
+            <div class="list-group">
+                {% for player in players %}
+                    <a href="javascript:void(0)" data-id="{{ player.id }}"
+                       class="list-group-item clickme-player"><img src="{{ player.img }}"
+                                                                   alt="gravatar"/> {{ player.username | capitalize }}
+                    </a>
+                {% endfor %}
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-lg" style="margin-top:200px;">
-                <button class="btn btn-primary buttonmaker">Match making&#32;<span
-                            class="glyphicon glyphicon-chevron-right"></span></button>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-lg">
-                <button class="btn btn-primary buttonmaker">Match making&#32;<span
-                            class="glyphicon glyphicon-chevron-right"></span></button>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <h4>Equipes possibles</h4>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-lg" style="margin-top:200px;">
+            <button class="btn btn-primary buttonmaker">Match making&#32;<span
+                        class="glyphicon glyphicon-chevron-right"></span></button>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-lg">
+            <button class="btn btn-primary buttonmaker">Match making&#32;<span
+                        class="glyphicon glyphicon-chevron-right"></span></button>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h4>Equipes possibles</h4>
 
-                <div class="text-danger hidden" id="error-matchmaking"><span
-                            class="glyphicon glyphicon-exclamation-sign"></span>&#32;Sélectionner au moins 4 joueurs.
-                </div>
-                <div class="row" id="teamsContainer"></div>
-                <p class="text-muted">Les équipes sont calculées en fonction du ratio.</p>
+            <div class="text-danger hidden" id="error-matchmaking"><span
+                        class="glyphicon glyphicon-exclamation-sign"></span>&#32;Sélectionner au moins 4 joueurs.
             </div>
+            <div class="row" id="teamsContainer"></div>
+            <p class="text-muted">Les équipes sont calculées en fonction du ratio.</p>
         </div>
     </div>
 {% endblock %}

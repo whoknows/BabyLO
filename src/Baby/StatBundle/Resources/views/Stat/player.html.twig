@@ -3,167 +3,165 @@
 {% block title %}{{ parent() }} - Joueurs{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <h3>Joueurs</h3>
+    <h3>Joueurs</h3>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-                <h4>Classement par score</h4>
-                <table class="table table-bordered">
-                    <thead>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+            <h4>Classement par score</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Victoires</th>
+                    <th>Défaites</th>
+                    <th class="text-primary">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players.score %}
                     <tr>
-                        <th>#</th>
-                        <th>Nom</th>
-                        <th>Victoires</th>
-                        <th>Défaites</th>
-                        <th class="text-primary">Score</th>
+                        <td>{{ loop.index }}</td>
+                        <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
+                                                                                              alt="gravatar"/> {{ player.name }}
+                            </a></td>
+                        <td class="success">{{ player.victoires }}</td>
+                        <td class="danger">{{ player.defaites }}</td>
+                        <td><strong>{{ player.score }}</strong></td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for player in players.score %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
-                                                                                                  alt="gravatar"/> {{ player.name }}
-                                </a></td>
-                            <td class="success">{{ player.victoires }}</td>
-                            <td class="danger">{{ player.defaites }}</td>
-                            <td><strong>{{ player.score }}</strong></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-                <h4>Classement par ratio</h4>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nom</th>
-                        <th>Victoires</th>
-                        <th>Défaites</th>
-                        <th class="text-primary">Ratio</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for player in players.ratio %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
-                                                                                                  alt="gravatar"/> {{ player.name }}
-                                </a></td>
-                            <td class="success">{{ player.victoires }}</td>
-                            <td class="danger">{{ player.defaites }}</td>
-                            <td><strong>{{ player.ratio }}</strong></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
-                <h4>Classement par score (depuis toujours)</h4>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nom</th>
-                        <th>Victoires</th>
-                        <th>Défaites</th>
-                        <th class="text-primary">Score</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for player in players.scorealltime %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
-                                                                                                  alt="gravatar"/> {{ player.name }}
-                                </a></td>
-                            <td class="success">{{ player.victoires }}</td>
-                            <td class="danger">{{ player.defaites }}</td>
-                            <td><strong>{{ player.score }}</strong></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div class="row" id="morestat">
-            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-                <h5 id="playerstatnotice"><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></h5>
-            </div>
-            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-                <h3 id="playerstattitle" class="hidden">Statistiques détaillées : <span class="text-primary" id="playername"></span></h3>
-                <ul class="nav nav-pills hidden" id="playerstatperiod">
-                    <li class="period-selector active"><a href="javascript:void(0)" data-value="now">Ce mois ci</a></li>
-                    <li class="period-selector"><a href="javascript:void(0)" data-value="last month">Le mois dernier</a></li>
-                    <li class="period-selector"><a href="javascript:void(0)" data-value="all">Depuis toujours</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
-                <ul class="list-group hidden" id="playerstatstable">
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-position"></span>
-                        Position favorite
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbGames"></span>
-                        Nombre de parties jouées
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbWin"></span>
-                        Nombre de parties gagnées
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbLose"></span>
-                        Nombre de parties perdues
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-score"></span>
-                        Score
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbButScored"></span>
-                        Nombre de buts marqués
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbButTaken"></span>
-                        Nombre de buts pris
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbButScoredAvg"></span>
-                        Nombre moyen de buts marqués par parties
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-nbButTakenAvg"></span>
-                        Nombre moyen de buts pris par parties
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-bestOponent"></span>
-                        Pire ennemi
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-worstOponent"></span>
-                        Moins bon adversaire
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-bestMate"></span>
-                        Meilleur partenaire
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge" id="stat-worstMate"></span>
-                        Pire partenaire
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-7 col-xs-12 col-lg-7 col-sm-12 hidden" id="chartContainer">
-                <div id="chart1"></div>
-                <ul class="nav nav-pills pull-right">
-                    <li class="aggregate-data"><a href="javascript:void(0)" data-value="1">Cumulé</a></li>
-                    <li class="aggregate-data active"><a href="javascript:void(0)" data-value="0">Non cumulé</a></li>
-                </ul>
-            </div>
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+            <h4>Classement par ratio</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Victoires</th>
+                    <th>Défaites</th>
+                    <th class="text-primary">Ratio</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players.ratio %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
+                                                                                              alt="gravatar"/> {{ player.name }}
+                            </a></td>
+                        <td class="success">{{ player.victoires }}</td>
+                        <td class="danger">{{ player.defaites }}</td>
+                        <td><strong>{{ player.ratio }}</strong></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+            <h4>Classement par score (depuis toujours)</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Victoires</th>
+                    <th>Défaites</th>
+                    <th class="text-primary">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players.scorealltime %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td class="player" data-id="{{ player.id }}"><a href="#morestat"><img src="{{ player.img }}"
+                                                                                              alt="gravatar"/> {{ player.name }}
+                            </a></td>
+                        <td class="success">{{ player.victoires }}</td>
+                        <td class="danger">{{ player.defaites }}</td>
+                        <td><strong>{{ player.score }}</strong></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" id="morestat">
+        <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <h5 id="playerstatnotice"><i>Cliquer sur le nom d'un joueur pour afficher ses statistiques</i></h5>
+        </div>
+        <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <h3 id="playerstattitle" class="hidden">Statistiques détaillées : <span class="text-primary" id="playername"></span></h3>
+            <ul class="nav nav-pills hidden" id="playerstatperiod">
+                <li class="period-selector active"><a href="javascript:void(0)" data-value="now">Ce mois ci</a></li>
+                <li class="period-selector"><a href="javascript:void(0)" data-value="last month">Le mois dernier</a></li>
+                <li class="period-selector"><a href="javascript:void(0)" data-value="all">Depuis toujours</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 col-xs-12 col-lg-4 col-sm-12">
+            <ul class="list-group hidden" id="playerstatstable">
+                <li class="list-group-item">
+                    <span class="badge" id="stat-position"></span>
+                    Position favorite
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbGames"></span>
+                    Nombre de parties jouées
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbWin"></span>
+                    Nombre de parties gagnées
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbLose"></span>
+                    Nombre de parties perdues
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-score"></span>
+                    Score
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbButScored"></span>
+                    Nombre de buts marqués
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbButTaken"></span>
+                    Nombre de buts pris
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbButScoredAvg"></span>
+                    Nombre moyen de buts marqués par parties
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-nbButTakenAvg"></span>
+                    Nombre moyen de buts pris par parties
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-bestOponent"></span>
+                    Pire ennemi
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-worstOponent"></span>
+                    Moins bon adversaire
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-bestMate"></span>
+                    Meilleur partenaire
+                </li>
+                <li class="list-group-item">
+                    <span class="badge" id="stat-worstMate"></span>
+                    Pire partenaire
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-7 col-xs-12 col-lg-7 col-sm-12 hidden" id="chartContainer">
+            <div id="chart1"></div>
+            <ul class="nav nav-pills pull-right">
+                <li class="aggregate-data"><a href="javascript:void(0)" data-value="1">Cumulé</a></li>
+                <li class="aggregate-data active"><a href="javascript:void(0)" data-value="0">Non cumulé</a></li>
+            </ul>
         </div>
     </div>
 {% endblock %}

@@ -105,8 +105,10 @@
     </div>
 </div>
 <div id="main-container">
-    {% block body %}
-    {% endblock %}
+    <div class="container-fluid">
+        {% block body %}
+        {% endblock %}
+    </div>
 </div>
 
 {% if app.user != null %}
