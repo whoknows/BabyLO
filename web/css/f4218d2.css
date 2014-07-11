@@ -193,3 +193,7 @@ td.player {
 .compare-progress .progress-bar {
 	line-height:18px;
 }
+
+.boldme {
+	font-weight:bold;
+}
