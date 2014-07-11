@@ -67,6 +67,22 @@ class UserRepository extends EntityRepository
         return $players;
     }
 
+    public function getPlayersForSelect()
+    {
+        $players = array();
+
+        foreach ($this->getStandardUserList() as &$player) {
+            $players[] = array(
+                'id' => $player->getId(),
+                'img' => self::getGravatar($player->getEmail()),
+                'name' => $player->getUsername(),
+                'position' => $player->getPosition()
+            );
+        }
+
+        return $players;
+    }
+
     public function getPlayerList($limit = null, $multi = false)
     {
         $players = $this->prepareReturnData();
@@ -422,6 +438,93 @@ class UserRepository extends EntityRepository
                 $data['score'] = $this->calculRatio($data['nbGames'], $data['nbWin'], ($filter ? $periode : 'all'));
                 $data['nbButTakenAvg'] = round($data['nbButTaken'] / $data['nbGames'], 3);
                 $data['nbButScoredAvg'] = round($data['nbButScored'] / $data['nbGames'], 3);
+            }
+        }
+
+        return $data;
+    }
+
+    public function getStatCompare($player1, $player2)
+    {
+        $sql = "SELECT
+                (
+                    SELECT COUNT(p.id) FROM baby_played p INNER JOIN baby_game g ON p.id_game = g.id WHERE id_player = $player1
+                ) as totalPlayed,
+                (
+                    SELECT COUNT(p.id)
+                    FROM baby_played p
+                    INNER JOIN baby_game g ON p.id_game = g.id
+                    WHERE id_player = $player1 AND IF(team = 1, score_team1 > score_team2, score_team1 < score_team2)
+                ) as totalWin,
+                (
+                    SELECT COUNT(p.id)
+                    FROM baby_played p
+                    INNER JOIN baby_game g ON p.id_game = g.id
+                    WHERE id_player = $player1 AND IF(team = 2, score_team1 > score_team2, score_team1 < score_team2)
+                ) as totalLose,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team = p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                ) as playedWith,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team = p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                        AND IF(p1.team = 1, score_team1 > score_team2, score_team1 < score_team2)
+                ) as wonWith,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team = p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                        AND IF(p1.team = 2, score_team1 > score_team2, score_team1 < score_team2)
+                ) as lostWith,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team != p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                ) as playedAgainst,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team != p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                        AND IF(p1.team = 1, score_team1 > score_team2, score_team1 < score_team2)
+                ) as wonAgainst,
+                (
+                    SELECT COUNT(g.id)
+                    FROM `baby_played` p1
+                    INNER JOIN baby_game g ON p1.id_game = g.id
+                    INNER JOIN baby_played p2 ON p2.id_game = g.id AND p1.team != p2.team
+                    WHERE ((p1.id_player = $player1 AND p2.id_player = $player2) OR (p2.id_player = $player2 AND p2.id_player = $player1))
+                        AND IF(p1.team = 2, score_team1 > score_team2, score_team1 < score_team2)
+                ) as lostAgainst";
+
+        $query = $this->_em->getConnection();
+        $data = $query->fetchAll($sql)[0];
+
+        if (sizeof($data) == 0) {
+            $data = array();
+        } else {
+            if ($data['totalPlayed'] == 0) {
+                $data['score'] = 0;
+                $data['ratio'] = 0;
+                $data['ratioWith'] = 0;
+                $data['ratioAgainst'] = 0;
+            } else {
+                $data['score'] = $this->calculRatio($data['totalPlayed'], $data['totalWin'], 'all');
+                $data['ratio'] = $this->calculRatio($data['totalPlayed'], $data['totalWin'], 'all', true);
+                $data['ratioWith'] = $this->calculRatio($data['playedWith'], $data['wonWith'], 'all', true);
+                $data['ratioAgainst'] = $this->calculRatio($data['playedAgainst'], $data['wonAgainst'], 'all', true);
             }
         }
 

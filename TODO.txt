@@ -19,3 +19,4 @@
         . Jouer X parties (10,25,50,100,200)
         . Jouer X partis avec chaque joueur actif (1,5,10)
         . Perdre avec un écart de plus de 7 points.
+        . Laisser gagner Cédric

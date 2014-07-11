@@ -167,3 +167,29 @@ td.player {
 .panel-body table {
 	margin-bottom: 0!important;
 }
+
+#go-compare {
+	margin: 10px 0;
+	width: 100%;
+}
+
+.compare-list {
+	color: #555555;
+	list-style-type: none;
+	margin-top:30px;
+	padding: 0;
+	text-align: center;
+}
+
+.compare-list li {
+	padding:12px;
+}
+
+.compare-progress {
+	margin: 0 10px;
+	width:90%;
+}
+
+.compare-progress .progress-bar {
+	line-height:18px;
+}

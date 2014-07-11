@@ -119,6 +119,28 @@ class StatController extends Controller
         ));
     }
 
+    public function compareAction()
+    {
+        return $this->render('BabyStatBundle:Stat:compare.html.twig', array(
+            'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayersForSelect()
+        ));
+    }
+
+    public function gocompareAction()
+    {
+        $request = Request::createFromGlobals()->request;
+
+        $data = array(
+            'player1' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getStatCompare($request->get('player1'), $request->get('player2')),
+            'player2' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getStatCompare($request->get('player2'), $request->get('player1'))
+        );
+
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     public function changeScheduleAction()
     {
         $request = Request::createFromGlobals();
@@ -144,20 +166,8 @@ class StatController extends Controller
 
     public function addgameAction()
     {
-        $userEnt = $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User');
-        $players = array();
-
-        foreach ($userEnt->getStandardUserList() as &$player) {
-            $players[] = array(
-                'id' => $player->getId(),
-                'img' => $userEnt::getGravatar($player->getEmail()),
-                'name' => $player->getUsername(),
-                'position' => $player->getPosition()
-            );
-        }
-
         return $this->render('BabyStatBundle:Stat:addgame.html.twig', array(
-            'players' => $players
+            'players' => $this->getDoctrine()->getManager()->getRepository('BabyUserBundle:User')->getPlayersForSelect()
         ));
     }
 

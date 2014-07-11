@@ -26,6 +26,14 @@ babystat_schedule:
     path:     /schedule
     defaults: { _controller: BabyStatBundle:Stat:schedule }
 
+babystat_compare:
+    path:     /compare
+    defaults: { _controller: BabyStatBundle:Stat:compare }
+
+babystat_gocompare:
+    path:     /gocompare
+    defaults: { _controller: BabyStatBundle:Stat:gocompare }
+
 babystat_changeSchedule:
     path:     /changeSchedule
     defaults: { _controller: BabyStatBundle:Stat:changeSchedule }

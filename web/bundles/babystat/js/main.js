@@ -29,15 +29,6 @@ $(document).ready(function () {
 
     switch (t[t.length - 1]) {
         case 'addgame':
-            var formatResult = function (player) {
-                return '<div class="media"><a class="pull-left" href="#"><img class="media-object" src="' +
-                    $(player.element).data('img')
-                    + '" alt="Gravatar"></a><div class="media-body"><h4>' +
-                    player.text
-                    + '</h4></div></div>';
-
-            };
-
             $(".select2").select2({
                 placeholder: "Sélectionner un joueur",
                 formatResult: formatResult,
@@ -179,6 +170,41 @@ $(document).ready(function () {
                 return false;
             });
             break;
+        case 'compare' :
+            $(".select2").select2({
+                placeholder: "Sélectionner un joueur",
+                formatResult: formatResult,
+                formatSelection: formatResult,
+                dropdownCssClass: "bigdrop",
+                minimumResultsForSearch: -1
+            });
+
+            $('#go-compare').click(function(){
+                $.post('gocompare', {player1: $('#player1').val(), player2: $('#player2').val()}, function(pdata){
+                    for (var p in pdata) {
+                        for (var i in pdata[p]) {
+                            var val = pdata[p][i];
+                            var pclass = 'progress-bar-success';
+                            var p2 = 'player2';
+
+                            if(p == 'player2') {
+                                p2 = 'player1';
+                            }
+
+                            if(val < pdata[p2][i]) {
+                                pclass = 'progress-bar-danger';
+                            } else if (val == pdata[p2][i]) {
+                                pclass = 'progress-bar-info';
+                            }
+
+                            $('.'+p+'data .badge[data-action="'+i+'"]').text(val)
+                                .next().children().attr('style','width:'+(val*100)+'%')
+                                        .attr('aria-valuenow', val).text(val)
+                                        .removeClass('progress-bar-info progress-bar-danger progress-bar-success').addClass(pclass);
+                        }
+                    }
+                });
+            });
         case 'playerstat' :
             $('.graphme').click(function () {
                 $.post('playerstatgraph', {action: $(this).data('action')}, function (ret) {
@@ -394,7 +420,17 @@ $(document).ready(function () {
             break;
     }
 
-    function doTheChart(pdata)
+    function formatResult (player)
+    {
+        return '<div class="media"><a class="pull-left" href="#"><img class="media-object" src="' +
+            $(player.element).data('img')
+            + '" alt="Gravatar"></a><div class="media-body"><h4>' +
+            player.text
+            + '</h4></div></div>';
+
+    }
+
+    function doTheChart (pdata)
     {
         $('#chart1').highcharts({
             chart: {zoomType: 'xy'},
