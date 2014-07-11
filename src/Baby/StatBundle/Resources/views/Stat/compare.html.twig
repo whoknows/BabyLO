@@ -1,0 +1,113 @@
+{% extends "BabyStatBundle:Stat:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Comparateur{% endblock %}
+
+{% block body %}
+    {% set select %}
+    {% for player in players %}
+        <option value="{{ player.id }}" data-img="{{ player.img }}">{{ player.name }}</option>
+    {% endfor %}
+    {% endset %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3>Comparer des joueurs</h3>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+            <select id="player1" class="select2 form-control">
+                {{ select }}
+            </select>
+            <div class="player1data">
+                <ul class="list-group compare-list" style="margin-top:50px;">
+                    <li class="list-group-item">
+                        <span class="badge boldme" data-action="score">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-right">
+                            <div class="progress-bar pull-right" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="totalPlayed">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="totalWin">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="totalLose">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge boldme" data-action="ratio">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-right">
+                            <div class="progress-bar pull-right" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="playedWith">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="wonWith">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="lostWith">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge boldme" data-action="ratioWith">N/A</span>&nbsp;
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="playedAgainst">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="wonAgainst">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge" data-action="lostAgainst">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge boldme" data-action="ratioAgainst">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-right">
+                            <div class="progress-bar pull-right" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <button class="btn btn-success" id="go-compare">Comparer</button>
+            <ul class="list-group compare-list" id="playerstatstable">
+                <li class="list-group-item">Score</li>
+                <li class="list-group-item">Nombre total de parties jouées</li>
+                <li class="list-group-item">Nombre total de parties gagnées</li>
+                <li class="list-group-item">Nombre total de parties perdues</li>
+                <li class="list-group-item">Ratio</li>
+                <li class="list-group-item">Nombre de parties jouées avec</li>
+                <li class="list-group-item">Nombre de parties gagnées avec</li>
+                <li class="list-group-item">Nombre de parties perdues avec</li>
+                <li class="list-group-item">Ratio avec</li>
+                <li class="list-group-item">Nombre de parties jouées contre</li>
+                <li class="list-group-item">Nombre de parties gagnées contre</li>
+                <li class="list-group-item">Nombre de parties perdues contre</li>
+                <li class="list-group-item">Ratio contre</li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+            <select id="player2" class="select2 form-control">
+                {{ select }}
+            </select>
+            <div class="player2data">
+                <ul class="list-group compare-list" style="margin-top:50px; padding-left:0;">
+                    <li class="list-group-item">
+                        <span class="badge pull-left boldme" data-action="score">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-left">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="totalPlayed">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="totalWin">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="totalLose">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge pull-left boldme" data-action="ratio">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-left">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="playedWith">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="wonWith">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="lostWith">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge pull-left boldme" data-action="ratioWith">N/A</span>&nbsp;
+                    </li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="playedAgainst">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="wonAgainst">N/A</span></li>
+                    <li class="list-group-item">&nbsp;<span class="badge pull-left" data-action="lostAgainst">N/A</span></li>
+                    <li class="list-group-item">
+                        <span class="badge pull-left boldme" data-action="ratioAgainst">N/A</span>&nbsp;
+                        <div class="progress compare-progress pull-left">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1" style="width: 0%;">0</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
