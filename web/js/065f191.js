@@ -6,7 +6,7 @@ $(document).ready(function () {
         e.stopPropagation();
     });
 
-    $('#updateUser').submit(function (e) {
+    /*$('#updateUser').submit(function (e) {
         e.preventDefault();
 
         var data = {
@@ -25,7 +25,7 @@ $(document).ready(function () {
         });
 
         return false;
-    });
+    });*/
 
     switch (t[t.length - 1]) {
         case 'addgame':
