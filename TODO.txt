@@ -1,8 +1,3 @@
-* Page comparatif
-    - Comparer les stats de deux joueurs, avec coloration rouge/vert en fonction du meilleur
-    - Nombre de parties jouées ensemble, et contre
-    - Taux de victoires/defaites
-
 * Intégrer matchmaker dans planification
     - Tri des joueurs par équipe si nombre = 4
 
@@ -20,3 +15,8 @@
         . Jouer X partis avec chaque joueur actif (1,5,10)
         . Perdre avec un écart de plus de 7 points.
         . Laisser gagner Cédric
+
+* Afficher tous les joueurs sur la page Joueurs si connecté en admin
+
+* Widget Comparateur
+    - Affichage d'un widget sur la page d'accueil qui propose un joueur au hasard comparé à sois même
