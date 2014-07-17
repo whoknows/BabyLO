@@ -23,9 +23,9 @@
                                     {% set cpt = cpt + 1 %}
                                     {% for player in data[creneau].players %}
                                         {% if app.user.id == player.id %}
-                                            {% set me = data[creneau].id %}
+                                            {% set me = player.creneau_id %}
                                         {% endif %}
-                                        <li class="list-group-item pteam{{ player.team }}" data-id="{{ data[creneau].id }}">
+                                        <li class="list-group-item pteam{{ player.team }}" data-id="{{ player.creneau_id }}">
                                             <img src="{{ player.img }}" alt="gravatar"/> {{ player.username }}
                                         </li>
                                     {% endfor %}
