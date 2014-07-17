@@ -61,6 +61,7 @@ class BabyScheduleRepository extends EntityRepository
                     'id' => $osef->getIdPlayer()->getId(),
                     'username' => $osef->getIdPlayer()->getUsername(),
                     'img' => $userEnt::getGravatar($osef->getIdPlayer()->getEmail()),
+                    'team' => 'NO'
                 )
             );
         }
@@ -85,7 +86,30 @@ class BabyScheduleRepository extends EntityRepository
             $return[$row['creneau']]['players'][] = $row['player'];
         }
 
-        return $return;
+        return $this->doMatchMaking($return);
+    }
+
+    private function doMatchMaking($data)
+    {
+        foreach ($data as &$creneau) {
+            if(sizeof($creneau['players']) == 4) {
+                $players = array();
+                foreach ($creneau['players'] as &$pl) {
+                    $players[] = $pl['id'];
+                }
+                $teams = $this->_em->getRepository('BabyStatBundle:BabyGame')->matchMaking($players);
+
+                foreach ($creneau['players'] as &$pl) {
+                    if(in_array($pl['username'], $teams[0])) {
+                        $pl['team'] = 0;
+                    } else {
+                        $pl['team'] = 1;
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 
 }

@@ -52,26 +52,29 @@
                         </thead>
                         <tbody>
                         {% set nbplanif = 0 %}
+
                         {% for index, game in comming if index >= "now"|date('Hi') %}
-                            {% set nbplanif = nbplanif +1 %}
-                            {% set me = false %}
-                            <tr>
-                                <td><b>{{ game.creneau }}</b></td>
-                                <td colspan="4" class="go-left" data-creneau="{{ index }}">
-                                    {% for player in game.players %}
-                                        {% if app.user.id == player.id %}
-                                            {% set me = true %}
+                            {% if nbplanif < 3 %}
+                                {% set nbplanif = nbplanif +1 %}
+                                {% set me = false %}
+                                <tr>
+                                    <td><b>{{ game.creneau }}</b></td>
+                                    <td colspan="4" class="go-left" data-creneau="{{ index }}">
+                                        {% for player in game.players %}
+                                            {% if app.user.id == player.id %}
+                                                {% set me = true %}
+                                            {% endif %}
+                                            {% set menow = app.user.id == player.id %}
+                                            <span class="creneau-player {% if menow %}creneau-me{% endif %} pteam{{ player.team }}" {% if menow %}data-toggle="tooltip" title="Ne plus participer"{% endif %} data-id="{{ player.creneau_id }}">
+                                                <img src="{{ player.img }}" alt="gravatar"/> {{ player.username }}
+                                            </span>
+                                        {% endfor %}
+                                        {% if game.players|length < 4 and me == false %}
+                                            <button class="btn btn-success btn-sm pull-right participate">Go !</button>
                                         {% endif %}
-                                        {% set menow = app.user.id == player.id %}
-                                        <span class="creneau-player {% if menow %}creneau-me{% endif %}" {% if menow %}data-toggle="tooltip" title="Ne plus participer"{% endif %} data-id="{{ player.creneau_id }}">
-                                            <img src="{{ player.img }}" alt="gravatar"/> {{ player.username }}
-                                        </span>
-                                    {% endfor %}
-                                    {% if game.players|length < 4 and me == false %}
-                                        <button class="btn btn-success btn-sm pull-right participate">Go !</button>
-                                    {% endif %}
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
 
                         {% if nbplanif == 0 %}

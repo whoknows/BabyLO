@@ -1,6 +1,3 @@
-* Intégrer matchmaker dans planification
-    - Tri des joueurs par équipe si nombre = 4
-
 * Renseignement de partie depuis la planification
     - Via un bouton, accéder au formulaire d'ajout de partie avec les champs pré-remplis
 

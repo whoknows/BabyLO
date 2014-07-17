@@ -137,11 +137,11 @@ td.player {
 }
 
 .creneau-player {
-	border: 1px solid #CCC;
+	/*border: 1px solid #CCC;*/
 	display:inline-block;
 	margin: 4.5px 2px;
+	min-width:95px;
 	padding-right: 3px;
-	width:105px;
 }
 
 .creneau-me {
@@ -192,4 +192,16 @@ td.player {
 
 .compare-progress .progress-bar {
 	line-height:18px;
+}
+
+.boldme {
+	font-weight:bold;
+}
+
+.pteam0 {
+	background-color: #e99002;
+}
+
+.pteam1 {
+	background-color: #5bc0de;
 }

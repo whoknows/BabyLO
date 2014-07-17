@@ -18,7 +18,7 @@ class StatController extends Controller
             'games' => $em->getRepository('BabyStatBundle:BabyGame')->getGameList(5),
             'players' => $em->getRepository('BabyUserBundle:User')->getPlayerList(4),
             'tops' => $em->getRepository('BabyUserBundle:User')->getDailyTops(),
-            'comming' => array_slice($em->getRepository('BabyStatBundle:BabySchedule')->getComingGames(true), 0, 3, true),
+            'comming' => $em->getRepository('BabyStatBundle:BabySchedule')->getComingGames(true),
             'nbgames' => $em->getRepository('BabyStatBundle:BabyGame')->findBy(array('date' => new \DateTime(date('Y-m-d', strtotime('yesterday'))))),
         ));
     }

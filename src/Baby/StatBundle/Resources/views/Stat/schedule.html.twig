@@ -25,7 +25,7 @@
                                         {% if app.user.id == d.player.id %}
                                             {% set me = d.id %}
                                         {% endif %}
-                                        <li class="list-group-item" data-id="{{ d.id }}">
+                                        <li class="list-group-item pteam{{ d.player.team }}" data-id="{{ d.id }}">
                                             <img src="{{ d.player.img }}" alt="gravatar"/> {{ d.player.username }}
                                         </li>
                                     {% endif %}

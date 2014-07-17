@@ -197,3 +197,11 @@ td.player {
 .boldme {
 	font-weight:bold;
 }
+
+.pteam0 {
+	background-color: #fcf8e3;
+}
+
+.pteam1 {
+	background-color: #d9edf7;
+}
