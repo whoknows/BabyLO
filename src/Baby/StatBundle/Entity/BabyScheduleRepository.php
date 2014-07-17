@@ -66,11 +66,11 @@ class BabyScheduleRepository extends EntityRepository
             );
         }
 
-        if($aggreg) {
+        //if($aggreg) {
             return $this->aggregateGames($data);
-        } else {
-            return $data;
-        }
+        //} else {
+        //    return $data;
+        //}
     }
 
     private function aggregateGames($data)
@@ -80,7 +80,7 @@ class BabyScheduleRepository extends EntityRepository
         foreach($data as $row) {
             if(!isset($return[$row['creneau']])) {
                 $cr = substr($row['creneau'],0,2).'h'.substr($row['creneau'],2,2);
-                $return[$row['creneau']] = array('creneau' => $cr, 'players' => array());
+                $return[$row['creneau']] = array('creneau' => $cr, 'players' => array(), 'id' => $row['id']);
             }
             $row['player']['creneau_id'] = $row['id'];
             $return[$row['creneau']]['players'][] = $row['player'];

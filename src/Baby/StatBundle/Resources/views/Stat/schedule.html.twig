@@ -19,17 +19,17 @@
                             <div class="game-players list-group">
                                 {% set cpt = 0 %}
                                 {% set me = false %}
-                                {% for d in data %}
-                                    {% if d.creneau == creneau %}
-                                        {% set cpt = cpt + 1 %}
-                                        {% if app.user.id == d.player.id %}
-                                            {% set me = d.id %}
+                                {% if data[creneau] is defined %}
+                                    {% set cpt = cpt + 1 %}
+                                    {% for player in data[creneau].players %}
+                                        {% if app.user.id == player.id %}
+                                            {% set me = data[creneau].id %}
                                         {% endif %}
-                                        <li class="list-group-item pteam{{ d.player.team }}" data-id="{{ d.id }}">
-                                            <img src="{{ d.player.img }}" alt="gravatar"/> {{ d.player.username }}
+                                        <li class="list-group-item pteam{{ player.team }}" data-id="{{ data[creneau].id }}">
+                                            <img src="{{ player.img }}" alt="gravatar"/> {{ player.username }}
                                         </li>
-                                    {% endif %}
-                                {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
 
                                 <i {% if cpt != 0 %} class="invisible" {% endif %}>Aucun joueur pour ce créneau.</i>
                             </div>
